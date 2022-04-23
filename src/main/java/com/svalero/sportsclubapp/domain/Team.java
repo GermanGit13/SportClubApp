@@ -1,21 +1,41 @@
 package com.svalero.sportsclubapp.domain;
 
-import static util.Constants.QUOTA;
+import static com.svalero.sportsclubapp.util.Constants.QUOTA;
+
 
 public class Team {
 
+    private int id;
     private String name;
     private String category;
     private String coach;
-    private int maxPlayer;
 
-    public Team(String name, String category, String coach, int maxPlayer, float quota) {
+    //MÉTODO PARA PRUEBAS
+    public Team(String name, String category, float quota) {
+        this.name = name;
+        this.category = category;
+        quota = QUOTA;
+    }
+
+    //MÉTODO PARA BUSCAR POR CATEGORY
+    public Team(String name, String category) {
+        this.name = name;
+        this.category = category;
+    }
+
+    //CONSTRUCTOR VACIO PARA USARLO EN EL DAO EN LOS ARRAYLIST
+    public Team() {
+
+    }
+    public Team(String name, String category, String coach, float quota) {
         this.name = name;
         this.category = category;
         this.coach = coach;
-        this.maxPlayer = maxPlayer;
         quota = QUOTA;
+    }
 
+    public int getId() {
+        return id;
     }
 
     public String getName() {
@@ -30,12 +50,12 @@ public class Team {
         return coach;
     }
 
-    public int getMaxPlayer() {
-        return maxPlayer;
-    }
-
     public float getQuota() {
         return QUOTA;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setName(String name) {
@@ -48,9 +68,5 @@ public class Team {
 
     public void setCoach(String coach) {
         this.coach = coach;
-    }
-
-    public void setMaxPlayer(int maxPlayer) {
-        this.maxPlayer = maxPlayer;
     }
 }

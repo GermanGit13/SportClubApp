@@ -1,2 +1,4 @@
-package com.svalero.sportsclubapp.domain;public class User {
+package com.svalero.sportsclubapp.domain;
+
+public class User {
 }
