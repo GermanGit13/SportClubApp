@@ -6,15 +6,15 @@ import java.sql.Connection;
 
 public class PlayerDao {
 
-    //Atributo de tipo connection
+    //ATRIBUTO DE TIPO connection
     private Connection connection;
 
-    //Mediante el constructor le pasamos el objeto conexion para hablar con la BBDD
+    //MEDIANTE EL CONSTRUCTOR LE PASAMOS EL OBJETO conexion PARA HABLAR CON LA BBDD
     public PlayerDao(Connection connection) {
         this.connection = connection;
     }
 
-    //Añadimos un objeto de la clase Player
+    //AÑADIMOS UN OBJETO DE LA CLASE PLAYER
     public void add(Player player) {
 
     }

@@ -23,7 +23,7 @@ public class Team {
         this.category = category;
     }
 
-    //CONSTRUCTOR VACIO PARA USARLO EN EL DAO EN LOS ARRAYLIST
+    //CONSTRUCTOR VACÍO PARA USARLO EN EL DAO EN LOS ARRAYLIST
     public Team() {
 
     }

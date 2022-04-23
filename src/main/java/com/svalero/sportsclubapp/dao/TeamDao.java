@@ -14,7 +14,7 @@ public class TeamDao {
 
     private Connection connection;
 
-    //MEDIANTE EL CONSTRUCTOR LE PASAMOS LA CONEXION PARA HABLAR CON LA BBDD
+    //MEDIANTE EL CONSTRUCTOR LE PASAMOS LA CONEXIÓN PARA HABLAR CON LA BBDD
     public TeamDao(Connection connection) {
         this.connection = connection;
     }
@@ -29,15 +29,15 @@ public class TeamDao {
             statement.setString(1, team.getName());
             statement.setString(2, team.getCategory());
             statement.setFloat(3, team.getQuota());
-            //CUALQUIER CONSULTA QUE NO SEA UN SELECT SE LA CON executeUpdate PARA SELECT USAMOS executeQuery
+            //CUALQUIER CONSULTA QUE NO SEA UN SELECT SE LANZA CON executeUpdate. PARA SELECT USAMOS executeQuery
             statement.executeUpdate();
             } catch (SQLException sqle){
                 System.out.println("No se ha podido conectar con el servidor de base de datos. Comprueba que los datos son correctos y que el servidor se ha iniciado");
-                sqle.printStackTrace();  //Para obtener las trazas de la Excepción
+                sqle.printStackTrace();  //PARA OBTENER LAS TRAZAS DE LA EXCEPCIÓN Y ASI LUEGO SEGUIR CON PRECISION EL ERROR
             }
         }
 
-    //LE PASAMOS QUE NOMBRE QUIERO MODIFICAR EL OBJETO PARA A MODIFICAR
+        //LE PASAMOS QUE NOMBRE QUE QUEREMOS MODIFICAR Y EL OBJETO PARA A MODIFICAR
     public boolean modify(String name, Team team) {
         String sql = "UPDATE TEAM SET NAME = ?, CATEGORY = ? WHERE NAME = ?";
         try {
@@ -51,7 +51,7 @@ public class TeamDao {
             return rows ==1;
         } catch (SQLException sqle) {
             System.out.println("No se ha podido conectar con el servidor de base de datos. Comprueba que los datos son correctos y que el servidor se ha iniciado");
-            sqle.printStackTrace();  //Para obtener las trazas de la Excepción
+            sqle.printStackTrace();  //PARA OBTENER LAS TRAZAS DE LA EXCEPCIÓN Y ASI LUEGO SEGUIR CON PRECISION EL ERROR
         }
 
         return false;
@@ -68,7 +68,7 @@ public class TeamDao {
             return rows ==1;
         } catch (SQLException sqle){
             System.out.println("No se ha podido conectar con el servidor de base de datos. Comprueba que los datos son correctos y que el servidor se ha iniciado");
-            sqle.printStackTrace();  //Para obtener las trazas de la Excepción
+            sqle.printStackTrace();  //PARA OBTENER LAS TRAZAS DE LA EXCEPCIÓN Y ASI LUEGO SEGUIR CON PRECISION EL ERROR
         }
         //SI DEVUELVE FALSE SI NO SE HA BORRADO NINGUNA FILA
         return false;
@@ -76,14 +76,14 @@ public class TeamDao {
 
     public ArrayList<Team> findAll() {
         //PRIMERO EL Sql, ASÍ EVITAMOS LAS INYECCIONES SQL
-        String sql = "SELECT * FROM TEAM";
+        String sql = "SELECT * FROM TEAM ORDEN BY name";
         ArrayList<Team> teams = new ArrayList<>();
         try {
             //COMPONER EL SQL CON PreparedStatement EN BASE A LA SENTENCIA sql
             PreparedStatement statement = connection.prepareStatement(sql);
             //ResultSet ESPECIE DE ARRAYLIST CURSOR QUE APUNTE AL CONTENIDO CARGADO EN LA MEMORIA JAVA DONDE METEMOS EL RESULTADO DE statement.executeQuery
             ResultSet resultSet = statement.executeQuery();
-            //RECORREMOS EL RESULTSET
+            //RECORREMOS EL resultSet
             while (resultSet.next()) {
                 Team team = new Team();
                 team.setName(resultSet.getString("Name"));
@@ -94,9 +94,9 @@ public class TeamDao {
             return teams;
         } catch (SQLException sqle){
             System.out.println("No se ha podido conectar con el servidor de base de datos. Comprueba que los datos son correctos y que el servidor se ha iniciado");
-            sqle.printStackTrace();  //Para obtener las trazas de la Excepción
+            sqle.printStackTrace();  //PARA OBTENER LAS TRAZAS DE LA EXCEPCIÓN Y ASI LUEGO SEGUIR CON PRECISION EL ERROR
         }
-        //SI LLEGA HASTA AQUÍ ES QUE SE HA SALTADO EL TRY Y DEVUELVE EL ARRAYLIST VACIO
+        //SI LLEGA HASTA AQUÍ ES QUE SE HA SALTADO EL TRY Y DEVUELVE EL ARRAYLIST VACÍO
         return teams;
     }
 
