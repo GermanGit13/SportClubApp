@@ -1,18 +1,27 @@
 package com.svalero.sportsclubapp;
 
 
+import com.svalero.sportsclubapp.dao.ClothingDao;
+import com.svalero.sportsclubapp.dao.Database;
+import com.svalero.sportsclubapp.dao.PlayerDao;
+import com.svalero.sportsclubapp.dao.TeamDao;
 import com.svalero.sportsclubapp.domain.Clothing;
 import com.svalero.sportsclubapp.domain.Player;
 import com.svalero.sportsclubapp.domain.Team;
 import com.svalero.sportsclubapp.util.Constants;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+//import java.util.Optional;
 import java.util.Scanner;
 
 public class Menu {
 
     private Scanner keyboard;
+    private Database database;
+    private Connection connection;
 
     private List<Player> catalagoPlayer;
     private List<Team> catalogoTeam;
@@ -25,7 +34,16 @@ public class Menu {
         catalogoClothing = new ArrayList<>();
     }
 
+    //MÉTODO PARA CONECTAR CON LA BBDD
+    public void connect() {
+        database = new Database();
+        connection = database.getConnection();
+    }
+
     public void showMenu() {
+        //NADA MÁS ARRANCAR MENU CONECTAMOS CON LA BBDD MEDIANTE MÉTODO ANTERIOR connect
+        connect();
+
         String choice = null;
 
         do {
@@ -75,8 +93,21 @@ public class Menu {
                 case "10":
                     showClothing();
                     break;
+                case "11":
+                    deleteTeam();
+                    break;
+                case "12":
+                    //deletePlayer();
+                    break;
+                case "13":
+                    //deleteClothing();
+                    break;
+                case "14":
+                    //deleteClothing();
+                    break;
+
             }
-        } while (!choice.equals("11"));
+        } while (!choice.equals("15"));
     }
 
     private void addTeam() {
@@ -84,12 +115,15 @@ public class Menu {
         String name = keyboard.nextLine();
         System.out.print("Introduzca la categoría equipo: ");
         String category = keyboard.nextLine();
-        System.out.print("Introduzca el entrenador del equipo: ");
-        String coach = keyboard.nextLine();
-        System.out.print("Introduzca el número máximo de jugadores: ");
-        int maxPlayer = keyboard.nextInt();
-        Team team = new Team(name.trim(), category.trim(), coach.trim(), maxPlayer, Constants.QUOTA);
-        catalogoTeam.add(team);
+        //TODO FALTA ENTRENADOR
+        //System.out.print("Introduzca el entrenador del equipo: ");
+        //String coach = keyboard.nextLine();
+        //CREAMOS EL OBJETO TEAM CON LOS DATOS INTRODUCIDOS POR KEYBOARD
+        Team team = new Team(name.trim(), category.trim(), Constants.QUOTA);
+
+        //PARA DARLO DE ALTA EN LA BBDD CON EL DAO
+        TeamDao teamDao = new TeamDao(connection);
+        teamDao.add(team);
     }
 
     private void addPlayer() {
@@ -103,8 +137,12 @@ public class Menu {
         int yearOfBirth = keyboard.nextInt();
         System.out.print("Introduzca el DNI del Jugador: ");
         String dni = keyboard.nextLine();
+        //CREAMOS EL OBJETO PLAYER CON LOS DATOS INTRODUCIDOS POR KEYBOARD
         Player player = new Player(firstName.trim(), lastName.trim(), number, yearOfBirth, dni.trim());
-        catalagoPlayer.add(player);
+
+        //PARA DARLO DE ALTA EN LA BBDD CON EL DAO
+        PlayerDao playerDao = new PlayerDao(connection);
+        playerDao.add(player);
     }
 
     private void addClothing() {
@@ -118,9 +156,15 @@ public class Menu {
         int number = keyboard.nextInt();
         System.out.print("Introduzca la talla del Jugador: ");
         String size = keyboard.nextLine();
+        //CREAMOS EL OBJETO PLAYER CON LOS DATOS INTRODUCIDOS POR KEYBOARD
         Clothing clothing = new Clothing(name.trim(), dni.trim(), serigraphy.trim(), number, size.trim(), Constants.PRICE);
-        catalogoClothing.add(clothing);
+
+        //PARA DARLO DE ALTA EN LA BBDD CON EL DAO
+        ClothingDao clothingDao = new ClothingDao(connection);
+        clothingDao.add(clothing);
     }
+
+    //TODO Buscar Equipo, Jugador y Ropa Webinar5 min 37
 
     private void assignTeam() {
         boolean assign = false;
@@ -149,92 +193,48 @@ public class Menu {
     }
 
     private void modifyTeam() {
-        boolean modify = false;
         System.out.println("Introduzca el nombre de equipo a modificar: ");
         String nameTeam = keyboard.nextLine();
-        for (Team team :catalogoTeam) {
-            if (team.getName().equalsIgnoreCase(nameTeam)) {
-                System.out.println("Nuevo nombre equipo");
-                String newName = keyboard.nextLine();
-                System.out.println("Nueva categoría del equipo");
-                String newCategory = keyboard.nextLine();
-                System.out.println("Nuevo entrenador del equipo");
-                String newCoach = keyboard.nextLine();
-                System.out.println("Número máximo de jugadores");
-                int newMaxPlayer = keyboard.nextInt();
-                team.setName(newName);
-                team.setCategory(newCategory);
-                team.setCoach(newCoach);
-                team.setMaxPlayer(newMaxPlayer);
-                System.out.println("Equipo modificado correctamente");
-                modify = true;
-            }
-        if (!modify)
-            System.out.println("No se ha encontrado el equipo");
-        }
+        //TODO BUSCAR EL LIBRO ANTES DE MODIFICARLO
+        System.out.print("Introduzca nuevo nombre del equipo: ");
+        String newName = keyboard.nextLine();
+        System.out.print("Introduzca la categoría equipo: ");
+        String newCategory = keyboard.nextLine();
+        //TODO FALTA ENTRENADOR
+        //System.out.print("Introduzca el entrenador del equipo: ");
+        //String coach = keyboard.nextLine();
+        //CREAMOS EL OBJETO TEAM CON LOS DATOS INTRODUCIDOS POR KEYBOARD
+        Team newTeam = new Team(newName.trim(), newCategory.trim(), Constants.QUOTA);
+
+        //PARA DARLO DE ALTA EN LA BBDD CON EL DAO
+        TeamDao teamDao = new TeamDao(connection);
+        boolean modified = teamDao.modify(nameTeam, newTeam);
+        if (modified)
+            System.out.println("Equipo modificado correctamente");
+        else
+            System.out.println("Equipo NO modificado o NO existe");
     }
-    //TODO realizar modificar Player
+
     private void modifyPlayer() {
         boolean modify = false;
         System.out.println("Introduzca el nombre de equipo a modificar: ");
         String nameTeam = keyboard.nextLine();
-        for (Team team :catalogoTeam) {
-            if (team.getName().equalsIgnoreCase(nameTeam)) {
-                System.out.println("Nuevo nombre equipo");
-                String newName = keyboard.nextLine();
-                System.out.println("Nueva categoría del equipo");
-                String newCategory = keyboard.nextLine();
-                System.out.println("Nuevo entrenador del equipo");
-                String newCoach = keyboard.nextLine();
-                System.out.println("Número máximo de jugadores");
-                int newMaxPlayer = keyboard.nextInt();
-                team.setName(newName);
-                team.setCategory(newCategory);
-                team.setCoach(newCoach);
-                team.setMaxPlayer(newMaxPlayer);
-                team.getQuota();
-                System.out.println("Equipo modificado correctamente");
-                modify = true;
-            }
-            if (!modify)
-                System.out.println("No se ha encontrado el equipo");
-        }
+        //TODO realizar modificar Player
     }
 
     private void modifyClothing() {
         boolean modify = false;
         System.out.println("Introduzca el dni del jugador para modificar su pedido: ");
         String dni = keyboard.nextLine();
-        for (Clothing clothing : catalogoClothing) {
-            if (clothing.getDni().equalsIgnoreCase(dni)) {
-                System.out.println("Nombre y Apellidos del jugador");
-                String newName = keyboard.nextLine();
-                System.out.println("Dni del Jugador");
-                String newDni = keyboard.nextLine();
-                System.out.println("Serigrafia");
-                String newSerigraphy = keyboard.nextLine();
-                System.out.println("Talla de la equipación");
-                String newSize = keyboard.nextLine();
-                clothing.setName(newName);
-                clothing.setDni(newDni);
-                clothing.setSerigraphy(newSerigraphy);
-                clothing.setSize(newSize);
-                clothing.getSize();
-                System.out.println("Equipo modificado correctamente");
-                modify = true;
-            }
-            if (!modify)
-                System.out.println("No se ha encontrado el equipo");
-        }
+        //TODO realizar modificar Clothing
     }
 
     private void showTeam() {
-        for (Team team : catalogoTeam) {
-            System.out.println("Equipo: " + team.getName());
-            System.out.println("Categoría: " + team.getCategory());
-            System.out.println("Entrenador: " + team.getCoach());
-            System.out.println("Máximo de jugadores: " + team.getMaxPlayer());
-            System.out.println("Cuota anual: " + team.getQuota());
+        TeamDao teamDao = new TeamDao(connection);
+        //TODO PROPAGAR LA EXCEPCIÓN AL MENU DE USUARIO
+        ArrayList<Team> teams = teamDao.findAll();
+        for (Team team : teams) {
+            System.out.println(team.getName());
         }
     }
 
@@ -258,4 +258,33 @@ public class Menu {
             System.out.println("Cuota: " + clothing.getSize());
         }
     }
+
+    public void deleteTeam() {
+        System.out.println("nombre del equipo a borrar");
+        String nameTeam = keyboard.nextLine();
+        TeamDao teamDao = new TeamDao(connection);
+        boolean deleted = teamDao.delete(nameTeam);
+            if (deleted)
+                System.out.println("Equipo borrado correctamente");
+            else
+                System.out.println("Equipo NO borrado o NO existe");
+    }
+
+    /*
+    public void searchTeam() {
+        System.out.print("Búsqueda por categoría: ");
+        String category = keyboard.nextLine();
+
+        TeamDao teamDao = new TeamDao(connection);
+        try {
+            Optional<Team> optionalTeam = teamDao.findByCategory(category);
+            Team team = optionalTeam.orElse(new Team("No existe el título", ""));
+
+            System.out.println(team.getName());
+            System.out.println(team.getCategory());
+            //TODO IMPRIMIR ENTRENADOR Y DEMÁS
+        } catch (SQLException sqle) {
+            System.out.println("No se ha podido comunicar con la base de datos. Inténtelo de nuevo");
+        }
+    } */
 }
