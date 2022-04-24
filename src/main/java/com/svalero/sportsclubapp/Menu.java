@@ -11,11 +11,13 @@ import com.svalero.sportsclubapp.domain.Team;
 import com.svalero.sportsclubapp.exception.TeamAlreadyExistException;
 import com.svalero.sportsclubapp.util.Constants;
 
+import javax.xml.namespace.QName;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 //import java.util.Optional;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class Menu {
@@ -175,7 +177,7 @@ public class Menu {
         clothingDao.add(clothing);
     }
 
-    //TODO Buscar Equipo, Jugador y Ropa Webinar5 min 37
+    //TODO Buscar Jugador y Ropa Webinar5 min 37
 
     private void assignTeam() {
         boolean assign = false;
@@ -296,15 +298,15 @@ public class Menu {
         }
     }
 
-    /*
+
     public void searchTeam() {
-        System.out.print("Búsqueda por categoría: ");
-        String category = keyboard.nextLine();
+        System.out.print("Búsqueda por name: ");
+        String name = keyboard.nextLine();
 
         TeamDao teamDao = new TeamDao(connection);
         try {
-            Optional<Team> optionalTeam = teamDao.findByCategory(category);
-            Team team = optionalTeam.orElse(new Team("No existe el título", ""));
+            Optional<Team> optionalTeam = teamDao.findByName(name);
+            Team team = optionalTeam.orElse(new Team("No existe el equipo", "")); //ME DAS EL EQUIPO O ESTE OTRO VACÍO QUE TE PINTO YO. ASÍ NUNCA DEVOLVERÁ NULO
 
             System.out.println(team.getName());
             System.out.println(team.getCategory());
@@ -312,5 +314,5 @@ public class Menu {
         } catch (SQLException sqle) {
             System.out.println("No se ha podido comunicar con la base de datos. Inténtelo de nuevo");
         }
-    } */
+    }
 }

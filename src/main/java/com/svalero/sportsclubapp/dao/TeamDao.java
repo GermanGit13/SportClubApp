@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Optional;
 //import java.util.Optional;
 
 public class TeamDao {
@@ -24,7 +25,7 @@ public class TeamDao {
     //AÑADIMOS UN OBJETO DE LA CLASE TEAM
     public void add(Team team) throws SQLException, TeamAlreadyExistException { //throws PARA PROPAGAR LA EXCEPCIÓN HACIA UNA CAPA SUPERIOR
         //BUSCAMOS PRIMERO SI EL EQUIPO EXISTE, SE PUEDE USAR PARA BUSCAR EL DNI
-        if (existTeam(team.getName(), team.getCategory()))
+        if (existTeamAndCategory(team.getName(), team.getCategory()))
             throw new TeamAlreadyExistException();  //AL SER UN OBJETO LA EXCEPCIÓN LA CREAMOS CON NEW
 
         //PRIMERO EL Sql, ASÍ EVITAMOS LAS INYECCIONES SQL
@@ -82,7 +83,26 @@ public class TeamDao {
         return teams;
     }
 
-    //TODO REVISAR FALLO DE OPTIONAL
+    //OPTIONAL SE USA PARA CONTROLAR LA POSIBLE EXCEPCIÓN QUE DEVUELVE UN OBJETO NULO
+    public Optional<Team> findByName(String name) throws SQLException { //throws PARA PROPAGAR LA EXCEPCIÓN HACIA UNA CAPA SUPERIOR
+        //PRIMERO EL Sql, ASÍ EVITAMOS LAS INYECCIONES SQL
+        String sql = "SELECT * FROM TEAM WHERE name = ?";
+        Team team = null;
+
+        //COMPONER EL SQL CON PreparedStatement EN BASE A LA SENTENCIA sql
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, name);
+        //ResultSet ESPECIE DE ARRAYLIST CURSOR QUE APUNTE AL CONTENIDO CARGADO EN LA MEMORIA JAVA DONDE METEMOS EL RESULTADO DE statement.executeQuery
+        ResultSet resultSet = statement.executeQuery();
+        if (resultSet.next()) {
+            team = new Team();
+            team.setName(resultSet.getString("Name"));
+            team.setCategory(resultSet.getString("Category"));
+            //TODO REVISAR COMO IMPRIMIR LA QUOTA
+        }
+
+        return Optional.ofNullable(team);
+    }
 
     public Team findByCategory(String category) throws SQLException { //throws PARA PROPAGAR LA EXCEPCIÓN HACIA UNA CAPA SUPERIOR
         //PRIMERO EL Sql, ASÍ EVITAMOS LAS INYECCIONES SQL
@@ -124,8 +144,15 @@ public class TeamDao {
     }
 
     //TODO modificar para que busque si existe por ejemplo el DNI, LO HACEMOS PRIVATE PORQUE SOLO USAREMOS INTERNAMENTE
-    private boolean existTeam(String name, String category) throws SQLException{
+    private boolean existTeamAndCategory(String name, String category) throws SQLException{
         Team team = findByTeamAndCategory(name, category);
         return team != null;
     }
+
+    //TODO modificar para que busque si existe por ejemplo el DNI, LO HACEMOS PRIVATE PORQUE SOLO USAREMOS INTERNAMENTE
+    private boolean existTeam(String name) throws SQLException{
+        Optional<Team> team = findByName(name);
+        return team.isPresent();
+    }
+
 }
