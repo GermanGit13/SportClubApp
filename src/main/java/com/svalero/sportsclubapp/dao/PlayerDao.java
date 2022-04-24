@@ -9,7 +9,7 @@ public class PlayerDao {
     //ATRIBUTO DE TIPO connection
     private Connection connection;
 
-    //MEDIANTE EL CONSTRUCTOR LE PASAMOS EL OBJETO conexion PARA HABLAR CON LA BBDD
+    //MEDIANTE EL CONSTRUCTOR LE PASAMOS LA CONEXIÓN PARA HABLAR CON LA BBDD
     public PlayerDao(Connection connection) {
         this.connection = connection;
     }

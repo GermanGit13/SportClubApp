@@ -8,6 +8,7 @@ import com.svalero.sportsclubapp.dao.TeamDao;
 import com.svalero.sportsclubapp.domain.Clothing;
 import com.svalero.sportsclubapp.domain.Player;
 import com.svalero.sportsclubapp.domain.Team;
+import com.svalero.sportsclubapp.exception.TeamAlreadyExistException;
 import com.svalero.sportsclubapp.util.Constants;
 
 import java.sql.Connection;
@@ -111,6 +112,9 @@ public class Menu {
     }
 
     private void addTeam() {
+        //PARA DARLO DE ALTA EN LA BBDD CON EL DAO
+        TeamDao teamDao = new TeamDao(connection);
+
         System.out.print("Introduzca nombre del equipo: ");
         String name = keyboard.nextLine();
         System.out.print("Introduzca la categoría equipo: ");
@@ -121,9 +125,16 @@ public class Menu {
         //CREAMOS EL OBJETO TEAM CON LOS DATOS INTRODUCIDOS POR KEYBOARD
         Team team = new Team(name.trim(), category.trim(), Constants.QUOTA);
 
-        //PARA DARLO DE ALTA EN LA BBDD CON EL DAO
-        TeamDao teamDao = new TeamDao(connection);
-        teamDao.add(team);
+        //CONTROLAMOS LAS EXCEPCIONES QUE NO MANDAN DESDE EL TEAMDAO
+        try {
+            teamDao.add(team);
+            System.out.println("Se ha registrado un nuevo equipo correctamente.");
+        } catch (TeamAlreadyExistException taee) {
+            System.out.println(taee.getMessage()); //RECOGE EL MENSAJE DE LA EXCEPCIÓN PERSONALIZADA
+        } catch (SQLException sqle){
+            System.out.println("No se ha podido conectar con el servidor de base de datos. Comprueba que los datos son correctos y que el servidor se ha iniciado");
+            sqle.printStackTrace();  //PARA OBTENER LAS TRAZAS DE LA EXCEPCIÓN Y ASI LUEGO SEGUIR CON PRECISION EL ERROR
+        }
     }
 
     private void addPlayer() {
@@ -195,7 +206,7 @@ public class Menu {
     private void modifyTeam() {
         System.out.println("Introduzca el nombre de equipo a modificar: ");
         String nameTeam = keyboard.nextLine();
-        //TODO BUSCAR EL LIBRO ANTES DE MODIFICARLO
+        //TODO BUSCAR EL EQUIPO ANTES DE MODIFICARLO
         System.out.print("Introduzca nuevo nombre del equipo: ");
         String newName = keyboard.nextLine();
         System.out.print("Introduzca la categoría equipo: ");
@@ -208,17 +219,22 @@ public class Menu {
 
         //PARA DARLO DE ALTA EN LA BBDD CON EL DAO
         TeamDao teamDao = new TeamDao(connection);
-        boolean modified = teamDao.modify(nameTeam, newTeam);
-        if (modified)
-            System.out.println("Equipo modificado correctamente");
-        else
-            System.out.println("Equipo NO modificado o NO existe");
+        try {
+            boolean modified = teamDao.modify(nameTeam, newTeam);
+            if (modified)
+                System.out.println("Equipo modificado correctamente");
+            else
+                System.out.println("Equipo NO modificado o NO existe");
+        } catch (SQLException sqle) {
+            System.out.println("No se ha podido conectar con el servidor de base de datos. Comprueba que los datos son correctos y que el servidor se ha iniciado");
+            sqle.printStackTrace();  //PARA OBTENER LAS TRAZAS DE LA EXCEPCIÓN Y ASI LUEGO SEGUIR CON PRECISION EL ERROR
+        }
     }
 
     private void modifyPlayer() {
         boolean modify = false;
         System.out.println("Introduzca el nombre de equipo a modificar: ");
-        String nameTeam = keyboard.nextLine();
+        String namePlayer = keyboard.nextLine();
         //TODO realizar modificar Player
     }
 
@@ -231,10 +247,15 @@ public class Menu {
 
     private void showTeam() {
         TeamDao teamDao = new TeamDao(connection);
-        //TODO PROPAGAR LA EXCEPCIÓN AL MENU DE USUARIO
-        ArrayList<Team> teams = teamDao.findAll();
-        for (Team team : teams) {
-            System.out.println(team.getName());
+
+        try {
+            ArrayList<Team> teams = teamDao.findAll();
+            for (Team team : teams) {
+                System.out.println(team.getName());
+            }
+        } catch (SQLException sqle) {
+            System.out.println("No se ha podido conectar con el servidor de base de datos. Comprueba que los datos son correctos y que el servidor se ha iniciado");
+            sqle.printStackTrace();  //PARA OBTENER LAS TRAZAS DE LA EXCEPCIÓN Y ASI LUEGO SEGUIR CON PRECISION EL ERROR
         }
     }
 
@@ -263,11 +284,16 @@ public class Menu {
         System.out.println("nombre del equipo a borrar");
         String nameTeam = keyboard.nextLine();
         TeamDao teamDao = new TeamDao(connection);
-        boolean deleted = teamDao.delete(nameTeam);
+        try {
+            boolean deleted = teamDao.delete(nameTeam);
             if (deleted)
                 System.out.println("Equipo borrado correctamente");
             else
                 System.out.println("Equipo NO borrado o NO existe");
+        } catch (SQLException sqle) {
+            System.out.println("No se ha podido conectar con el servidor de base de datos. Comprueba que los datos son correctos y que el servidor se ha iniciado");
+            sqle.printStackTrace();  //PARA OBTENER LAS TRAZAS DE LA EXCEPCIÓN Y ASI LUEGO SEGUIR CON PRECISION EL ERROR
+        }
     }
 
     /*

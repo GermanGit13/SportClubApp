@@ -8,7 +8,7 @@ public class ClothingDao {
 
     private Connection connection;
 
-    //Mediante el constructor le pasamos el objeto conexion para hablar con la BBDD
+    ////MEDIANTE EL CONSTRUCTOR LE PASAMOS LA CONEXIÓN PARA HABLAR CON LA BBDD
     public ClothingDao(Connection connection) {
         this.connection = connection;
     }
