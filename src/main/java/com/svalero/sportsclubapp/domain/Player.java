@@ -7,7 +7,12 @@ public class Player {
     private int number;
     private int yearOfBirth;
     private String dni;
-    private Team team;
+
+    private Team team; //PARA RELACIONAR LOS EQUIPOS CON LOS JUGADORES
+
+    public Player() {
+
+    }
 
     public Player(String firstName, String lastName, int number, int yearOfBirth, String dni, Team team) {
         this.firstName = firstName;

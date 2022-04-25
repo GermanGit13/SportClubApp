@@ -10,6 +10,8 @@ public class Team {
     private String category;
     private String coach;
 
+    private User user; //PARA RELACIONAR LOS ENTRENADORES
+
     //MÉTODO PARA PRUEBAS
     public Team(String name, String category, float quota) {
         this.name = name;

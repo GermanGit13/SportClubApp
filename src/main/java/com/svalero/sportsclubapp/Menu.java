@@ -51,66 +51,98 @@ public class Menu {
 
         do {
             System.out.println("Aplicación de Baloncesto: ");
-            System.out.println("1. Añadir Equipo: ");
-            System.out.println("2. Añadir Jugador: ");
-            System.out.println("3. Crear Pedido Ropa: ");
-            System.out.println("4. Asignar Jugador a Equipo: ");
-            System.out.println("5. Modificar Equipo: ");
-            System.out.println("6. Modificar Jugador: ");
-            System.out.println("7. Modificar Pedido: ");
-            System.out.println("8. Mostrar Equipos: ");
-            System.out.println("9. Mostrar Jugadores: ");
-            System.out.println("10. Mostrar Pedidos: ");
-            System.out.println("11. Salir");
+            System.out.println("1. Registrar nuevo Usuario: ");
+            System.out.println("2. Registrar Equipo: ");
+            System.out.println("3. Registrar Jugador: ");
+            System.out.println("4. Registrar Pedido Ropa: ");
+            System.out.println("5. Asignar Jugador a Equipo: ");
+            System.out.println("6. Asignar Entrenador: ");
+            System.out.println("7. Modificar Equipo: ");
+            System.out.println("8. Modificar Jugador: ");
+            System.out.println("9. Modificar Pedido: ");
+            System.out.println("10. Mostrar Usuario: ");
+            System.out.println("11. Mostrar Equipos: ");
+            System.out.println("12. Mostrar Equipos con jugadores: ");
+            System.out.println("13. Mostrar Equipo en categoría: ");
+            System.out.println("14. Mostrar Jugadores: ");
+            System.out.println("15. Mostrar Pedidos: ");
+            System.out.println("16. Mostrar Pedidos Usuario: ");
+            System.out.println("17. Marcar Pagado Pedido: ");
+            System.out.println("18. Borrar Jugador: ");
+            System.out.println("19. Borrar Equipo: ");
+            System.out.println("20. Borrar Pedido: ");
+            System.out.println("21. Borrar Usuario: ");
+            System.out.println("s. Salir");
             System.out.println("Opción: ");
             choice = keyboard.nextLine();
 
             switch (choice) {
                 case "1":
-                    addTeam();
+                    //addUser();
                     break;
                 case "2":
-                    addPlayer();
+                    addTeam();
                     break;
                 case "3":
-                    addClothing();
+                    addPlayer();
                     break;
                 case "4":
-                    assignTeam();
+                    //registrarPedido();
                     break;
                 case "5":
-                    modifyTeam();
+                    assignTeam();
                     break;
                 case "6":
-                    modifyPlayer();
+                    //asignaEntrenador();
                     break;
                 case "7":
-                    modifyClothing();
+                    modifyTeam();
                     break;
                 case "8":
-                    showTeam();
+                    modifyPlayer();
                     break;
                 case "9":
-                    showPlayer();
+                    modifyClothing(); //MODIFICAR PEDIDO
                     break;
                 case "10":
-                    showClothing();
+                    //showUser();
                     break;
                 case "11":
-                    deleteTeam();
+                    showTeam();
                     break;
                 case "12":
-                    //deletePlayer();
+                    //showTeamPlayer();
                     break;
                 case "13":
-                    //deleteClothing();
+                    //showTeamCategory();
                     break;
                 case "14":
-                    //deleteClothing();
+                    showPlayer();
+                    break;
+                case "15":
+                    //showOrder();
+                    break;
+                case "16":
+                    //showOrderUser();
+                    break;
+                case "17":
+                    //payOrder();
+                    break;
+                case "18":
+                    //deletePlayer();
+                    break;
+                case "19":
+                    //deleteTeam();
+                    break;
+                case "20":
+                    //deleteOrder();
+                    break;
+                case "21":
+                    //deleteUser();
                     break;
 
             }
-        } while (!choice.equals("15"));
+        } while (!choice.equals("s"));
     }
 
     private void addTeam() {
@@ -160,7 +192,7 @@ public class Menu {
 
     private void addClothing() {
         System.out.print("Introduzca el nombre y apellidos del jugador:");
-        String name = keyboard.nextLine();
+        boolean gameKit = true;
         System.out.print("Introduzca el DNI del jugador:");
         String dni = keyboard.nextLine();
         System.out.print("Introduzca la serigrafía que llevará la equipación:");
@@ -170,7 +202,7 @@ public class Menu {
         System.out.print("Introduzca la talla del Jugador: ");
         String size = keyboard.nextLine();
         //CREAMOS EL OBJETO PLAYER CON LOS DATOS INTRODUCIDOS POR KEYBOARD
-        Clothing clothing = new Clothing(name.trim(), dni.trim(), serigraphy.trim(), number, size.trim(), Constants.PRICE);
+        Clothing clothing = new Clothing(gameKit, dni.trim(), serigraphy.trim(), number, size.trim(), Constants.PRICE);
 
         //PARA DARLO DE ALTA EN LA BBDD CON EL DAO
         ClothingDao clothingDao = new ClothingDao(connection);
@@ -274,7 +306,7 @@ public class Menu {
 
     private void showClothing() {
         for (Clothing clothing : catalogoClothing) {
-            System.out.println("Nombre y apellidos: " +clothing.getName());
+            System.out.println("Kit Uniforme Juego: " +clothing.isGameKit());
             System.out.println("DNI: " +clothing.getDni());
             System.out.println("Serigrafía: " +clothing.getSerigraphy());
             System.out.println("Dorsal: " +clothing.getNumber());
