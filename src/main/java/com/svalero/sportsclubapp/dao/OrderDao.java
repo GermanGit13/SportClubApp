@@ -1,9 +1,14 @@
 package com.svalero.sportsclubapp.dao;
 
 
+import com.svalero.sportsclubapp.domain.Clothing;
 import com.svalero.sportsclubapp.domain.Order;
+import com.svalero.sportsclubapp.domain.User;
+import oracle.jdbc.proxy.annotation.Pre;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.util.List;
 
 public class OrderDao {
 
@@ -13,7 +18,17 @@ public class OrderDao {
         this.connection = connection;
     }
 
-    public void add() {
+    public void add(User user, List<Clothing> clothings) {
+        String sql = "INSERT INTO order (date, paid, code, id_users) VALUES (?, ?, ?, ?)";
+
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setStrin;
+
+        //DAMOS DE ALTA EN UNA SEGUNDA TABLA
+        String sql2 = "INSERT INTO orders_clothing (date, paid, code, id_users) VALUES (?, ?, ?, ?)";
+
+        PreparedStatement statement2 = connection.prepareStatement(sql2);
+
 
     }
 
@@ -22,9 +37,11 @@ public class OrderDao {
         return null;
     }
 
-    //MARCAR PEDIDO COMO PAGADO
+    //MARCAR PEDIDO COMO PAGADO, idem para marcar coach
     public void payOrder() {
 
     }
+
+
 
 }

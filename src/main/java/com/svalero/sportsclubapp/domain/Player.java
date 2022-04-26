@@ -2,6 +2,7 @@ package com.svalero.sportsclubapp.domain;
 
 public class Player {
 
+    private int id;
     private String firstName;
     private String lastName;
     private int number;
@@ -31,6 +32,10 @@ public class Player {
         this.dni = dni;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public String getFirstName() {
         return firstName;
     }
@@ -53,6 +58,10 @@ public class Player {
 
     public Team getTeam() {
         return team;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setFirstName(String firstName) {

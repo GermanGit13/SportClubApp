@@ -8,6 +8,7 @@ import static com.svalero.sportsclubapp.util.Constants.PRICE;
 
 public class Clothing {
 
+    private int id;
     private boolean gameKit;
     private String dni;
     private String serigraphy;
@@ -19,9 +20,10 @@ public class Clothing {
     public Clothing() {
         orders = new ArrayList<>();
     }
-    public Clothing(boolean gameKit, String dni, String serigraphy, int number, String size, float price) {
-        this.gameKit = gameKit;
-        this.dni = dni;
+
+    public Clothing(/*boolean gameKit, String dni,*/String serigraphy, int number, String size, float price) {
+        //this.gameKit = gameKit;
+        //this.dni = dni;
         this.serigraphy = serigraphy;
         this.number = number;
         this.size = size;
@@ -29,13 +31,17 @@ public class Clothing {
         orders = new ArrayList<>();
     }
 
-    public boolean isGameKit() {
-        return gameKit;
+    public int getId() {
+        return id;
     }
 
-    public String getDni() {
+    /*public boolean isGameKit() {
+        return gameKit;
+    }*/
+
+    /*public String getDni() {
         return dni;
-    }
+    }*/
 
     public String getSerigraphy() {
         return serigraphy;
@@ -53,13 +59,17 @@ public class Clothing {
         return PRICE;
     }
 
-    public void setName(boolean gameKit) {
-        this.gameKit = gameKit;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setDni(String dni) {
+    /*public void setGameKit(boolean gameKit) {
+        this.gameKit = gameKit;
+    }*/
+
+    /*public void setDni(String dni) {
         this.dni = dni;
-    }
+    }*/
 
     public void setSerigraphy(String serigraphy) {
         this.serigraphy = serigraphy;

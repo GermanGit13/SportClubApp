@@ -29,6 +29,7 @@ public class Team {
     public Team() {
 
     }
+
     public Team(String name, String category, String coach, float quota) {
         this.name = name;
         this.category = category;

@@ -8,6 +8,7 @@ import com.svalero.sportsclubapp.dao.TeamDao;
 import com.svalero.sportsclubapp.domain.Clothing;
 import com.svalero.sportsclubapp.domain.Player;
 import com.svalero.sportsclubapp.domain.Team;
+import com.svalero.sportsclubapp.exception.DniAlredyExistException;
 import com.svalero.sportsclubapp.exception.TeamAlreadyExistException;
 import com.svalero.sportsclubapp.util.Constants;
 
@@ -87,28 +88,28 @@ public class Menu {
                     addPlayer();
                     break;
                 case "4":
-                    //registrarPedido();
+                    addClothing();
                     break;
                 case "5":
-                    assignTeam();
+                    //assignTeam();
                     break;
                 case "6":
-                    //asignaEntrenador();
+                    //assignCoach);
                     break;
                 case "7":
                     modifyTeam();
                     break;
                 case "8":
-                    modifyPlayer();
+                    //modifyPlayer();
                     break;
                 case "9":
-                    modifyClothing(); //MODIFICAR PEDIDO
+                    //modifyClothing(); //MODIFICAR PEDIDO
                     break;
                 case "10":
                     //showUser();
                     break;
                 case "11":
-                    showTeam();
+                    //showTeam();
                     break;
                 case "12":
                     //showTeamPlayer();
@@ -117,7 +118,7 @@ public class Menu {
                     //showTeamCategory();
                     break;
                 case "14":
-                    showPlayer();
+                    //showPlayer();
                     break;
                 case "15":
                     //showOrder();
@@ -144,6 +145,8 @@ public class Menu {
             }
         } while (!choice.equals("s"));
     }
+
+    //TODO FALTA AÑADIR USUARIO
 
     private void addTeam() {
         //PARA DARLO DE ALTA EN LA BBDD CON EL DAO
@@ -172,11 +175,14 @@ public class Menu {
     }
 
     private void addPlayer() {
+        //PARA DARLO DE ALTA EN LA BBDD CON EL DAO
+        PlayerDao playerDao = new PlayerDao(connection);
+
         System.out.print("Introduzca nombre del Jugador: ");
         String firstName = keyboard.nextLine();
         System.out.print("Introduzca apellidos del Jugador: ");
         String lastName = keyboard.nextLine();
-        System.out.print("Introduzca el número de dorsal del Jugador: ");
+        System.out.print("Introduzca el número de dorsal del Jugador (si disponía del año pasado): ");
         int number = keyboard.nextInt();
         System.out.print("Introduzca la fecha de nacimiento del Jugador: ");
         int yearOfBirth = keyboard.nextInt();
@@ -185,16 +191,26 @@ public class Menu {
         //CREAMOS EL OBJETO PLAYER CON LOS DATOS INTRODUCIDOS POR KEYBOARD
         Player player = new Player(firstName.trim(), lastName.trim(), number, yearOfBirth, dni.trim());
 
-        //PARA DARLO DE ALTA EN LA BBDD CON EL DAO
-        PlayerDao playerDao = new PlayerDao(connection);
-        playerDao.add(player);
+        //CONTROLAMOS LAS EXCEPCIONES QUE NO MANDAN DESDE EL TEAMDAO
+        try {
+            playerDao.add(player);
+            System.out.println("Se ha registrado un nuevo jugador correctamente.");
+
+        } catch (DniAlredyExistException daee) {
+            System.out.println(daee.getMessage()); //RECOGE EL MENSAJE DE LA EXCEPCIÓN PERSONALIZADA
+        } catch (SQLException sqle) {
+            System.out.println("No se ha podido conectar con el servidor de base de datos. Comprueba que los datos son correctos y que el servidor se ha iniciado");
+            sqle.printStackTrace();  //PARA OBTENER LAS TRAZAS DE LA EXCEPCIÓN Y ASI LUEGO SEGUIR CON PRECISION EL ERROR
+        }
     }
 
     private void addClothing() {
-        System.out.print("Introduzca el nombre y apellidos del jugador:");
-        boolean gameKit = true;
-        System.out.print("Introduzca el DNI del jugador:");
-        String dni = keyboard.nextLine();
+        ClothingDao clothingDao = new ClothingDao(connection);
+
+        //System.out.print("Introduzca el nombre y apellidos del jugador:");
+        //boolean gameKit = true;
+        //System.out.print("Introduzca el DNI del jugador:");
+        //String dni = keyboard.nextLine();
         System.out.print("Introduzca la serigrafía que llevará la equipación:");
         String serigraphy = keyboard.nextLine();
         System.out.print("Introduzca el número de dorsal del Jugador: ");
@@ -202,11 +218,14 @@ public class Menu {
         System.out.print("Introduzca la talla del Jugador: ");
         String size = keyboard.nextLine();
         //CREAMOS EL OBJETO PLAYER CON LOS DATOS INTRODUCIDOS POR KEYBOARD
-        Clothing clothing = new Clothing(gameKit, dni.trim(), serigraphy.trim(), number, size.trim(), Constants.PRICE);
+        Clothing clothing = new Clothing(serigraphy.trim(), number, size.trim(), Constants.PRICE);
 
-        //PARA DARLO DE ALTA EN LA BBDD CON EL DAO
-        ClothingDao clothingDao = new ClothingDao(connection);
-        clothingDao.add(clothing);
+        try {
+            clothingDao.add(clothing);
+        } catch (SQLException sqle) {
+            System.out.println("No se ha podido conectar con el servidor de base de datos. Comprueba que los datos son correctos y que el servidor se ha iniciado");
+            sqle.printStackTrace();  //PARA OBTENER LAS TRAZAS DE LA EXCEPCIÓN Y ASI LUEGO SEGUIR CON PRECISION EL ERROR
+        }
     }
 
     //TODO Buscar Jugador y Ropa Webinar5 min 37

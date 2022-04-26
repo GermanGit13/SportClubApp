@@ -11,7 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Optional;
-//import java.util.Optional;
+
 
 public class TeamDao {
 
@@ -24,7 +24,7 @@ public class TeamDao {
 
     //AÑADIMOS UN OBJETO DE LA CLASE TEAM
     public void add(Team team) throws SQLException, TeamAlreadyExistException { //throws PARA PROPAGAR LA EXCEPCIÓN HACIA UNA CAPA SUPERIOR
-        //BUSCAMOS PRIMERO SI EL EQUIPO EXISTE, SE PUEDE USAR PARA BUSCAR EL DNI
+        //BUSCAMOS PRIMERO SI EL EQUIPO EXISTE
         if (existTeamAndCategory(team.getName(), team.getCategory()))
             throw new TeamAlreadyExistException();  //AL SER UN OBJETO LA EXCEPCIÓN LA CREAMOS CON NEW
 
@@ -42,19 +42,19 @@ public class TeamDao {
 
     //LE PASAMOS QUE NOMBRE QUE QUEREMOS MODIFICAR Y EL OBJETO PARA A MODIFICAR
     public boolean modify(String name, Team team) throws SQLException{ //throws PARA PROPAGAR LA EXCEPCIÓN HACIA UNA CAPA SUPERIOR
-        String sql = "UPDATE TEAM SET NAME = ?, CATEGORY = ? WHERE NAME = ?";
+        String sql = "UPDATE team SET name = ?, category = ? WHERE name = ?";
 
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, team.getName());
         statement.setString(2, team.getCategory());
         statement.setString(3, name);
-        //PARA DECIRNOS EL NÚMERO DE FILAS QUE HA BORRADO
+        //PARA DECIRNOS EL NÚMERO DE FILAS QUE HA MODIFICADO
         int rows = statement.executeUpdate();
         return rows ==1;
     }
 
     public boolean delete(String name) throws SQLException { //throws PARA PROPAGAR LA EXCEPCIÓN HACIA UNA CAPA SUPERIOR
-        String sql = "DELETE FROM TEAM WHERE name = ?";
+        String sql = "DELETE FROM team WHERE name = ?";
 
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, name);
@@ -65,7 +65,7 @@ public class TeamDao {
 
     public ArrayList<Team> findAll() throws SQLException { //throws PARA PROPAGAR LA EXCEPCIÓN HACIA UNA CAPA SUPERIOR
         //PRIMERO EL Sql, ASÍ EVITAMOS LAS INYECCIONES SQL
-        String sql = "SELECT * FROM TEAM ORDEN BY name";
+        String sql = "SELECT * FROM team ORDEN BY category";
         ArrayList<Team> teams = new ArrayList<>();
 
         //COMPONER EL SQL CON PreparedStatement EN BASE A LA SENTENCIA sql
@@ -77,7 +77,8 @@ public class TeamDao {
             Team team = new Team();
             team.setName(resultSet.getString("Name"));
             team.setCategory(resultSet.getString("Category"));
-            //TODO REVISAR COMO IMPRIMIR LA QUOTA
+            team.setCoach(resultSet.getString("Coach"));
+            team.getQuota();//TODO REVISAR ESTO
             teams.add(team);
         }
         return teams;
@@ -86,7 +87,7 @@ public class TeamDao {
     //OPTIONAL SE USA PARA CONTROLAR LA POSIBLE EXCEPCIÓN QUE DEVUELVE UN OBJETO NULO
     public Optional<Team> findByName(String name) throws SQLException { //throws PARA PROPAGAR LA EXCEPCIÓN HACIA UNA CAPA SUPERIOR
         //PRIMERO EL Sql, ASÍ EVITAMOS LAS INYECCIONES SQL
-        String sql = "SELECT * FROM TEAM WHERE name = ?";
+        String sql = "SELECT * FROM team WHERE name = ?";
         Team team = null;
 
         //COMPONER EL SQL CON PreparedStatement EN BASE A LA SENTENCIA sql
@@ -106,7 +107,7 @@ public class TeamDao {
 
     public Team findByCategory(String category) throws SQLException { //throws PARA PROPAGAR LA EXCEPCIÓN HACIA UNA CAPA SUPERIOR
         //PRIMERO EL Sql, ASÍ EVITAMOS LAS INYECCIONES SQL
-        String sql = "SELECT * FROM TEAM WHERE category = ?";
+        String sql = "SELECT * FROM team WHERE category = ?";
         Team team = null;
 
         //COMPONER EL SQL CON PreparedStatement EN BASE A LA SENTENCIA sql
@@ -125,7 +126,7 @@ public class TeamDao {
     }
 
     public Team findByTeamAndCategory(String name, String category) throws SQLException {
-        String sql ="SELECT * FROM TEAM WHERE name = ? AND CATEGORY = ?";
+        String sql ="SELECT * FROM team WHERE name = ? AND category = ?";
         Team team = null;
 
         //PRIMERO EL Sql, ASÍ EVITAMOS LAS INYECCIONES SQL
