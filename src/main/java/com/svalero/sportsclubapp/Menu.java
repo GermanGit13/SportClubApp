@@ -325,8 +325,6 @@ public class Menu {
 
     private void showClothing() {
         for (Clothing clothing : catalogoClothing) {
-            System.out.println("Kit Uniforme Juego: " +clothing.isGameKit());
-            System.out.println("DNI: " +clothing.getDni());
             System.out.println("Serigrafía: " +clothing.getSerigraphy());
             System.out.println("Dorsal: " +clothing.getNumber());
             System.out.println("Cuota: " + clothing.getSize());

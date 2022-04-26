@@ -1,10 +1,13 @@
 package com.svalero.sportsclubapp.dao;
 
 import com.svalero.sportsclubapp.domain.Clothing;
+import oracle.jdbc.proxy.annotation.Pre;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class ClothingDao {
 
@@ -46,15 +49,30 @@ public class ClothingDao {
         return rows == 1;
     }
 
-    public void delete() {
+    public boolean delete(String serigraphy, int number, Clothing clothing) throws SQLException {
+        String sql = "DELETE FROM clothing WHERE serigraphy = ? AND number = ?";
 
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, serigraphy);
+        statement.setInt(2, number);
+        int rows = statement.executeUpdate();
+        return rows == 1;
     }
 
-    public void findAll() {
+    public ArrayList<Clothing> findAll() throws SQLException {
+        String sql = "SELECT * FROM clothing ORDER BY serigraphy";
+        ArrayList<Clothing> clothings = new ArrayList<>();
 
-    }
+        PreparedStatement statement = connection.prepareStatement(sql);
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            Clothing clothing = new Clothing();
+            clothing.setSerigraphy(resultSet.getString("serigraphy"));
+            clothing.setNumber(resultSet.getInt("number"));
+            clothing.setSize(resultSet.getString("talla"));
+            clothings.add(clothing);
+        }
 
-    public void findOne() {
-
+        return clothings;
     }
 }
