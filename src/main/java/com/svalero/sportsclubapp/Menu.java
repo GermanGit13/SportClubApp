@@ -1,18 +1,17 @@
 package com.svalero.sportsclubapp;
 
 
-import com.svalero.sportsclubapp.dao.ClothingDao;
-import com.svalero.sportsclubapp.dao.Database;
-import com.svalero.sportsclubapp.dao.PlayerDao;
-import com.svalero.sportsclubapp.dao.TeamDao;
+import com.svalero.sportsclubapp.dao.*;
 import com.svalero.sportsclubapp.domain.Clothing;
 import com.svalero.sportsclubapp.domain.Player;
 import com.svalero.sportsclubapp.domain.Team;
+import com.svalero.sportsclubapp.domain.User;
 import com.svalero.sportsclubapp.exception.DniAlredyExistException;
 import com.svalero.sportsclubapp.exception.TeamAlreadyExistException;
+import com.svalero.sportsclubapp.exception.UserAlredyExistException;
+import com.svalero.sportsclubapp.exception.UserNotFoundException;
 import com.svalero.sportsclubapp.util.Constants;
 
-import javax.xml.namespace.QName;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -26,6 +25,8 @@ public class Menu {
     private Scanner keyboard;
     private Database database;
     private Connection connection;
+    private User currentUser;
+
 
     private List<Player> catalagoPlayer;
     private List<Team> catalogoTeam;
@@ -47,6 +48,7 @@ public class Menu {
     public void showMenu() {
         //NADA MÁS ARRANCAR MENU CONECTAMOS CON LA BBDD MEDIANTE MÉTODO ANTERIOR connect
         connect();
+        login();
 
         String choice = null;
 
@@ -79,7 +81,7 @@ public class Menu {
 
             switch (choice) {
                 case "1":
-                    //addUser();
+                    addUser();
                     break;
                 case "2":
                     addTeam();
@@ -100,7 +102,7 @@ public class Menu {
                     modifyTeam();
                     break;
                 case "8":
-                    //modifyPlayer();
+                    modifyPlayer();
                     break;
                 case "9":
                     //modifyClothing(); //MODIFICAR PEDIDO
@@ -109,7 +111,7 @@ public class Menu {
                     //showUser();
                     break;
                 case "11":
-                    //showTeam();
+                    showTeam();
                     break;
                 case "12":
                     //showTeamPlayer();
@@ -118,7 +120,7 @@ public class Menu {
                     //showTeamCategory();
                     break;
                 case "14":
-                    //showPlayer();
+                    showPlayer();
                     break;
                 case "15":
                     //showOrder();
@@ -146,7 +148,60 @@ public class Menu {
         } while (!choice.equals("s"));
     }
 
-    //TODO FALTA AÑADIR USUARIO
+    private void login() {
+        System.out.print("¿Cuál es tu usuario? ");
+        String username = keyboard.nextLine();
+        System.out.print("¿Cuál es tu contraseña? ");
+        String password = keyboard.nextLine();
+
+        UserDao userDao = new UserDao(connection);
+        try {
+            currentUser = userDao.getUser(username, password)
+                    .orElseThrow(UserNotFoundException::new);
+        } catch (SQLException sqle) {
+            System.out.println("No se ha podido comunicar con la base de datos. Inténtelo de nuevo");
+            System.exit(0);
+        } catch (UserNotFoundException unfe) {
+            System.out.println(unfe.getMessage());
+            System.exit(0);
+        }
+    }
+
+    public void addUser() {
+        UserDao userDao = new UserDao(connection);
+        String username;
+
+        System.out.println("Escribe tú nombre: ");
+        String firstName = keyboard.nextLine();
+        System.out.println("Escribe tu apellido: ");
+        String lastName = keyboard.nextLine();
+        System.out.println("Escribe tu email: ");
+        String email = keyboard.nextLine();
+        System.out.println("Escribe tu DNI: ");
+        String dni = keyboard.nextLine();
+        do {
+            System.out.println("Nombre de usuario: ");
+            username = keyboard.nextLine();
+            if (searchUsername(username)) {
+                System.out.println("El usuario ya existe: ");
+            } else {
+                System.out.println("El usuario no existe en la BBDD: ");
+            }
+        } while (!searchUsername(username));
+        System.out.println("Escribe tu contraseña: ");
+        String password = keyboard.nextLine();
+        User user = new User(firstName.trim(), lastName.trim(), email.trim(), dni.trim(), username.trim(), password.trim());
+
+        try {
+            userDao.add(user);
+            System.out.println("Se ha registrado un nuevo equipo correctamente.");
+        } catch (UserAlredyExistException uaee) {
+            System.out.println(uaee.getMessage()); //RECOGE EL MENSAJE DE LA EXCEPCIÓN PERSONALIZADA
+        } catch (SQLException sqle) {
+            System.out.println("No se ha podido conectar con el servidor de base de datos. Comprueba que los datos son correctos y que el servidor se ha iniciado");
+            sqle.printStackTrace();  //PARA OBTENER LAS TRAZAS DE LA EXCEPCIÓN Y ASI LUEGO SEGUIR CON PRECISION EL ERROR
+        }
+    }
 
     private void addTeam() {
         //PARA DARLO DE ALTA EN LA BBDD CON EL DAO
@@ -257,8 +312,13 @@ public class Menu {
     }
 
     private void modifyTeam() {
+        //PARA DARLO DE ALTA EN LA BBDD CON EL DAO
+        TeamDao teamDao = new TeamDao(connection);
+
         System.out.println("Introduzca el nombre de equipo a modificar: ");
         String nameTeam = keyboard.nextLine();
+        System.out.println(("Introduzca la categoría del equipo"));
+        String categoryTeam = keyboard.next();
         //TODO BUSCAR EL EQUIPO ANTES DE MODIFICARLO
         System.out.print("Introduzca nuevo nombre del equipo: ");
         String newName = keyboard.nextLine();
@@ -270,10 +330,8 @@ public class Menu {
         //CREAMOS EL OBJETO TEAM CON LOS DATOS INTRODUCIDOS POR KEYBOARD
         Team newTeam = new Team(newName.trim(), newCategory.trim(), Constants.QUOTA);
 
-        //PARA DARLO DE ALTA EN LA BBDD CON EL DAO
-        TeamDao teamDao = new TeamDao(connection);
         try {
-            boolean modified = teamDao.modify(nameTeam, newTeam);
+            boolean modified = teamDao.modify(nameTeam, categoryTeam, newTeam);
             if (modified)
                 System.out.println("Equipo modificado correctamente");
             else
@@ -285,10 +343,26 @@ public class Menu {
     }
 
     private void modifyPlayer() {
-        boolean modify = false;
-        System.out.println("Introduzca el nombre de equipo a modificar: ");
-        String namePlayer = keyboard.nextLine();
-        //TODO realizar modificar Player
+        PlayerDao playerDao = new PlayerDao(connection);
+        Player player = new Player();
+
+        System.out.println("Introduzca el dni del Jugador a modificar: ");
+        String dniPlayer = keyboard.nextLine();
+        addPlayer();
+
+        try {
+            playerDao.findByDni(dniPlayer);
+
+            boolean modified = playerDao.modify(dniPlayer, player); //TODO REVISAR SI CREA EL OBJETO PLAYER USANDO YA EL MÉTODO ADDPLAYER SINO HACER IGUAL QUE MODIFICAR TEAM
+            if (modified)
+                System.out.println("Jugador Modificado correctamente");
+            else
+                System.out.println("Jugador no modificado");
+        } catch (SQLException sqle) {
+            System.out.println("No se ha podido conectar con el servidor de base de datos. Comprueba que los datos son correctos y que el servidor se ha iniciado");
+            sqle.printStackTrace();  //PARA OBTENER LAS TRAZAS DE LA EXCEPCIÓN Y ASI LUEGO SEGUIR CON PRECISION EL ERROR
+        }
+
     }
 
     private void modifyClothing() {
@@ -304,7 +378,7 @@ public class Menu {
         try {
             ArrayList<Team> teams = teamDao.findAll();
             for (Team team : teams) {
-                System.out.println(team.getName());
+                System.out.println(team.getName() + team.getCategory());
             }
         } catch (SQLException sqle) {
             System.out.println("No se ha podido conectar con el servidor de base de datos. Comprueba que los datos son correctos y que el servidor se ha iniciado");
@@ -313,13 +387,16 @@ public class Menu {
     }
 
     private void showPlayer() {
-        for (Player player : catalagoPlayer) {
-            System.out.println("Nombre: " + player.getFirstName());
-            System.out.println("Apellidos: " + player.getLastName());
-            System.out.println("Dorsal: " + player.getNumber());
-            System.out.println("Fecha Nacimiento: " + player.getYearOfBirth());
-            System.out.println("DNI: " + player.getDni());
-            System.out.println("Equipo: " + player.getTeam());
+        PlayerDao playerDao = new PlayerDao(connection);
+
+        try {
+            ArrayList<Player> players = playerDao.findAll();
+            for ( Player player : players) {
+                System.out.println(player.getFirstName() + player.getLastName() + player.getDni() + player.getYearOfBirth());
+            }
+        } catch (SQLException sqle) {
+            System.out.println("No se ha podido conectar con el servidor de base de datos. Comprueba que los datos son correctos y que el servidor se ha iniciado");
+            sqle.printStackTrace();  //PARA OBTENER LAS TRAZAS DE LA EXCEPCIÓN Y ASI LUEGO SEGUIR CON PRECISION EL ERROR
         }
     }
 
@@ -334,9 +411,12 @@ public class Menu {
     public void deleteTeam() {
         System.out.println("nombre del equipo a borrar");
         String nameTeam = keyboard.nextLine();
+        System.out.println("categoria del equipo");
+        String categoryTeam = keyboard.next();
+
         TeamDao teamDao = new TeamDao(connection);
         try {
-            boolean deleted = teamDao.delete(nameTeam);
+            boolean deleted = teamDao.delete(nameTeam, categoryTeam);
             if (deleted)
                 System.out.println("Equipo borrado correctamente");
             else
@@ -363,5 +443,17 @@ public class Menu {
         } catch (SQLException sqle) {
             System.out.println("No se ha podido comunicar con la base de datos. Inténtelo de nuevo");
         }
+    }
+
+    public boolean searchUsername(String username) {
+        UserDao userDao = new UserDao(connection);
+
+        try {
+            userDao.findByUsername(username);
+
+        } catch (SQLException sqle) {
+            System.out.println("No se ha podido comunicar con la base de datos. Inténtelo de nuevo");
+        }
+        return true;
     }
 }

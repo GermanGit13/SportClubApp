@@ -1,8 +1,9 @@
 package com.svalero.sportsclubapp.dao;
 
+import com.svalero.sportsclubapp.domain.Player;
+import com.svalero.sportsclubapp.domain.Team;
 import com.svalero.sportsclubapp.domain.User;
-import com.svalero.sportsclubapp.exception.TeamAlreadyExistException;
-import oracle.jdbc.proxy.annotation.Pre;
+import com.svalero.sportsclubapp.exception.UserAlredyExistException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,8 +22,9 @@ public class UserDao {
 
     //AÑADIMOS UN OBJETO DE LA CLASE TEAM
     //TODO CREAR EXCEPCIÓN SI EL USUARIO YA EXISTE
-    public void add(User user) throws SQLException { //throws PARA PROPAGAR LA EXCEPCIÓN HACIA UNA CAPA SUPERIOR
-        //BUSCAMOS PRIMERO SI EL EQUIPO EXISTE, SE PUEDE USAR PARA BUSCAR EL DNI
+    public void add(User user) throws SQLException, UserAlredyExistException { //throws PARA PROPAGAR LA EXCEPCIÓN HACIA UNA CAPA SUPERIOR
+        if (existUsername(user.getUsername()))
+            throw new UserAlredyExistException();
 
         //PRIMERO EL Sql, ASÍ EVITAMOS LAS INYECCIONES SQL
         String sql = "INSERT INTO user (firstname, lastname, email, dni, username, password, coach) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -40,6 +42,29 @@ public class UserDao {
         statement.executeUpdate();
     }
 
+    //LE PASAMOS QUE USERNAME QUEREMOS MODIFICAR Y EL OBJETO PARA A MODIFICAR
+    public boolean modify(String username, User user) throws SQLException{ //throws PARA PROPAGAR LA EXCEPCIÓN HACIA UNA CAPA SUPERIOR
+        String sql = "UPDATE user SET username = ?, category = ? WHERE username = ?";
+
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, user.getUsername());
+        statement.setString(3, username);
+        //PARA DECIRNOS EL NÚMERO DE FILAS QUE HA MODIFICADO
+        int rows = statement.executeUpdate();
+        return rows ==1;
+    }
+
+    public boolean delete(String username, User user) throws SQLException {
+        String sql = "DELETE FROM username WHERE username = ?";
+
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, username);
+        //PARA DECIRNOS EL NÚMERO DE FILAS QUE HA BORRADO
+        int rows = statement.executeUpdate();
+        return rows ==1;
+    }
+
+    //PARA PODER OBTENER UN USUARIO EN CONCRETO
     public Optional<User> getUser(String username, String password) throws SQLException {
         String sql ="SELECT * FROM user WHERE user = ? AND password = ?"; //ENCRIPTAR LA PASS CON SHA1(?)
         User user = null;
@@ -59,6 +84,53 @@ public class UserDao {
         return Optional.ofNullable(user);
     }
 
-    //TODO TERMINAR RESTO DE MÉTODOS: modifyUser, deleteUser, getters and setters
+
+
+    public User findByDni(String dni) throws SQLException {
+        String sql ="SELECT * FROM user WHERE dni = ?";
+        User user = null;
+
+        //PRIMERO EL Sql, ASÍ EVITAMOS LAS INYECCIONES SQL
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, dni);
+        //ResultSet ESPECIE DE ARRAYLIST CURSOR QUE APUNTE AL CONTENIDO CARGADO EN LA MEMORIA JAVA DONDE METEMOS EL RESULTADO DE statement.executeQuery
+        ResultSet resultSet = statement.executeQuery();
+        if (resultSet.next()) {
+            user = new User();
+            user.setFirstName(resultSet.getString("FirstName"));
+            user.setLastName(resultSet.getString("LastName"));
+            user.setDni(resultSet.getString("DNI"));
+        }
+
+        return user;
+    }
+
+    private boolean existDni(String dni) throws SQLException{
+        User user = findByDni(dni);
+        return user != null;
+    }
+
+    public User findByUsername(String username) throws SQLException {
+        String sql ="SELECT * FROM user WHERE username = ?";
+        User user = null;
+
+        //PRIMERO EL Sql, ASÍ EVITAMOS LAS INYECCIONES SQL
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, username);
+        //ResultSet ESPECIE DE ARRAYLIST CURSOR QUE APUNTE AL CONTENIDO CARGADO EN LA MEMORIA JAVA DONDE METEMOS EL RESULTADO DE statement.executeQuery
+        ResultSet resultSet = statement.executeQuery();
+        if (resultSet.next()) {
+            user = new User();
+            user.setUsername(resultSet.getString("username"));
+        }
+
+        return user;
+    }
+
+    private boolean existUsername(String username) throws SQLException{
+        User user = findByUsername(username);
+        return user != null;
+    }
+
 }
 

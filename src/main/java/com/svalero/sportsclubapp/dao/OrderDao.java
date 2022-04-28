@@ -6,9 +6,9 @@ import com.svalero.sportsclubapp.domain.Order;
 import com.svalero.sportsclubapp.domain.User;
 import oracle.jdbc.proxy.annotation.Pre;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
+import java.sql.*;
 import java.util.List;
+import java.util.UUID;
 
 public class OrderDao {
 
@@ -18,19 +18,36 @@ public class OrderDao {
         this.connection = connection;
     }
 
-    public void add(User user, List<Clothing> clothings) {
-        String sql = "INSERT INTO order (date, paid, code, id_users) VALUES (?, ?, ?, ?)";
+    public void add(User user, List<Clothing> clothings) throws SQLException {
+        String orderSql = "INSERT INTO order (date, code, id_users) VALUES (?, ?, ?)";
 
-        PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setStrin;
+        //DEJAMOS EN FALSO QUE MARCA LA TRANSACCIÓN COMO OK
+        connection.setAutoCommit(false);
 
-        //DAMOS DE ALTA EN UNA SEGUNDA TABLA
-        String sql2 = "INSERT INTO orders_clothing (date, paid, code, id_users) VALUES (?, ?, ?, ?)";
+        PreparedStatement orderStatement = connection.prepareStatement(orderSql,
+                PreparedStatement.RETURN_GENERATED_KEYS);
+        orderStatement.setDate(1, new Date(System.currentTimeMillis())); //ASIGNA LA FECHA DEL SISTEMA EN ELP MOMENTO DE REALIZAR EL PEDIDO
+        orderStatement.setString(2, UUID.randomUUID().toString()); //GENERA UN NUMERO ALEATORIO PARA ASIGNARSELO A LA ORDEN DE PEDIDO
+        orderStatement.setInt(3, user.getId()); //ASIGNA EL ID DEL USUARIO A LA ORDEN DE PEDIDO
+        orderStatement.executeUpdate();
 
-        PreparedStatement statement2 = connection.prepareStatement(sql2);
+        //OBTENER EL ORDERID GENERADO EN LA SENTENCIA ANTERIOR - ÚLTIMO AUTO_INCREMENT GENERADO
+            ResultSet orderKeys = orderStatement.getGeneratedKeys();
+        orderKeys.next();
+        int orderId = orderKeys.getInt(1);
+        orderKeys.close();
 
+        for (Clothing clothing : clothings) {
+            String clothingSql = "INSERT INTO order_clothing (order_id, clothing_id) VALUES (?, ?,)";
 
-    }
+            PreparedStatement clothingStatement = connection. prepareStatement(clothingSql);
+            clothingStatement.setInt(1, orderId);
+            clothingStatement.setInt(2, clothing.getId());
+        }
+
+        connection.commit(); //PARA CONFIRMAR LA TRANSACCIÓN
+        connection.setAutoCommit(true); //PONEMOS A TRUE DE NUEVO EL AUTOCOMMIT
+      }
 
     //DETALLES DE UN PEDIDO
     public Order getOrder() {

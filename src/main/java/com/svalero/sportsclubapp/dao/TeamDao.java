@@ -41,23 +41,25 @@ public class TeamDao {
     }
 
     //LE PASAMOS QUE NOMBRE QUE QUEREMOS MODIFICAR Y EL OBJETO PARA A MODIFICAR
-    public boolean modify(String name, Team team) throws SQLException{ //throws PARA PROPAGAR LA EXCEPCIÓN HACIA UNA CAPA SUPERIOR
-        String sql = "UPDATE team SET name = ?, category = ? WHERE name = ?";
+    public boolean modify(String name, String category, Team team) throws SQLException{ //throws PARA PROPAGAR LA EXCEPCIÓN HACIA UNA CAPA SUPERIOR
+        String sql = "UPDATE team SET name = ?, category = ? WHERE name = ? AND category = ?";
 
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, team.getName());
         statement.setString(2, team.getCategory());
         statement.setString(3, name);
+        statement.setString(4, category);
         //PARA DECIRNOS EL NÚMERO DE FILAS QUE HA MODIFICADO
         int rows = statement.executeUpdate();
         return rows ==1;
     }
 
-    public boolean delete(String name) throws SQLException { //throws PARA PROPAGAR LA EXCEPCIÓN HACIA UNA CAPA SUPERIOR
-        String sql = "DELETE FROM team WHERE name = ?";
+    public boolean delete(String name, String category) throws SQLException { //throws PARA PROPAGAR LA EXCEPCIÓN HACIA UNA CAPA SUPERIOR
+        String sql = "DELETE FROM team WHERE name = ? AND category = ?";
 
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, name);
+        statement.setString(2, category);
         //PARA DECIRNOS EL NÚMERO DE FILAS QUE HA BORRADO
         int rows = statement.executeUpdate();
         return rows ==1;
@@ -78,7 +80,7 @@ public class TeamDao {
             team.setName(resultSet.getString("Name"));
             team.setCategory(resultSet.getString("Category"));
             team.setCoach(resultSet.getString("Coach"));
-            team.getQuota();//TODO REVISAR ESTO
+            team.getQuota();//TODO REVISAR ESTO QUE SALE BIEN
             teams.add(team);
         }
         return teams;

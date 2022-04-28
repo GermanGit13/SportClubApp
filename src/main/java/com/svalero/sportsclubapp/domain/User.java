@@ -17,7 +17,13 @@ public class User {
 
     }
 
-    public User(String firstName, String lastName, String email, String dni, String username, String password, boolean coach) {
+    //CONSTRUCTOR PARA PODER BUSCAR SI EXISTE EL USERNAME AL CREARLO
+    public User(String username) {
+        this.username = username;
+    }
+
+    //TODO REVISAR COMO HACER COACH A LOS USUARIOS
+    public User(String firstName, String lastName, String email, String dni, String username, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

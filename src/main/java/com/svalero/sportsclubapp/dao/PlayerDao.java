@@ -89,7 +89,7 @@ public class PlayerDao {
     }
 
     public Player findByDni(String dni) throws SQLException {
-        String sql ="SELECT * FROM user WHERE dni = ?";
+        String sql ="SELECT * FROM player WHERE dni = ?";
         Player player = null;
 
         //PRIMERO EL Sql, ASÍ EVITAMOS LAS INYECCIONES SQL
