@@ -2,10 +2,7 @@ package com.svalero.sportsclubapp;
 
 
 import com.svalero.sportsclubapp.dao.*;
-import com.svalero.sportsclubapp.domain.Clothing;
-import com.svalero.sportsclubapp.domain.Player;
-import com.svalero.sportsclubapp.domain.Team;
-import com.svalero.sportsclubapp.domain.User;
+import com.svalero.sportsclubapp.domain.*;
 import com.svalero.sportsclubapp.exception.DniAlredyExistException;
 import com.svalero.sportsclubapp.exception.TeamAlreadyExistException;
 import com.svalero.sportsclubapp.exception.UserAlredyExistException;
@@ -16,7 +13,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-//import java.util.Optional;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -93,7 +89,7 @@ public class Menu {
                     addClothing();
                     break;
                 case "5":
-                    //assignTeam();
+                    assignTeam();
                     break;
                 case "6":
                     //assignCoach);
@@ -123,10 +119,10 @@ public class Menu {
                     showPlayer();
                     break;
                 case "15":
-                    //showOrder();
+                    addOrder();
                     break;
                 case "16":
-                    //showOrderUser();
+                    showOrderDetails();
                     break;
                 case "17":
                     //payOrder();
@@ -156,14 +152,14 @@ public class Menu {
 
         UserDao userDao = new UserDao(connection);
         try {
-            currentUser = userDao.getUser(username, password)
-                    .orElseThrow(UserNotFoundException::new);
+            User user = userDao.getUser(username, password) //REVISAMOS SI EXISTE EL USUARIO CON LOS DATOS INTRODUCIDOS
+                    .orElseThrow(UserNotFoundException::new); //SINO LANZAMOS LA EXCEPCIÓN QUE NO EXISTE
         } catch (SQLException sqle) {
             System.out.println("No se ha podido comunicar con la base de datos. Inténtelo de nuevo");
-            System.exit(0);
+            System.exit(0); //SI NO SE PUEDE CONECTAR LE ECHAMOS DE LA APP
         } catch (UserNotFoundException unfe) {
             System.out.println(unfe.getMessage());
-            System.exit(0);
+            System.exit(0); //SI EL USUARIO NO EXISTE LE ECHAMOS DE LA APP
         }
     }
 
@@ -179,6 +175,7 @@ public class Menu {
         String email = keyboard.nextLine();
         System.out.println("Escribe tu DNI: ");
         String dni = keyboard.nextLine();
+        dni.toUpperCase();//NOS ASEGURAMOS QUE TODAS LAS LETRAS DEL DNI ESTARÁN EN MAYÚSCULAS
         do {
             System.out.println("Nombre de usuario: ");
             username = keyboard.nextLine();
@@ -243,6 +240,7 @@ public class Menu {
         int yearOfBirth = keyboard.nextInt();
         System.out.print("Introduzca el DNI del Jugador: ");
         String dni = keyboard.nextLine();
+        dni.toUpperCase();//NOS ASEGURAMOS QUE TODAS LAS LETRAS DEL DNI ESTARÁN EN MAYÚSCULAS
         //CREAMOS EL OBJETO PLAYER CON LOS DATOS INTRODUCIDOS POR KEYBOARD
         Player player = new Player(firstName.trim(), lastName.trim(), number, yearOfBirth, dni.trim());
 
@@ -262,10 +260,9 @@ public class Menu {
     private void addClothing() {
         ClothingDao clothingDao = new ClothingDao(connection);
 
-        //System.out.print("Introduzca el nombre y apellidos del jugador:");
-        //boolean gameKit = true;
-        //System.out.print("Introduzca el DNI del jugador:");
-        //String dni = keyboard.nextLine();
+        System.out.print("Introduce tu DNI del jugador:");
+        String dni = keyboard.nextLine();
+        dni.toUpperCase();//NOS ASEGURAMOS QUE TODAS LAS LETRAS DEL DNI ESTARÁN EN MAYÚSCULAS
         System.out.print("Introduzca la serigrafía que llevará la equipación:");
         String serigraphy = keyboard.nextLine();
         System.out.print("Introduzca el número de dorsal del Jugador: ");
@@ -273,7 +270,7 @@ public class Menu {
         System.out.print("Introduzca la talla del Jugador: ");
         String size = keyboard.nextLine();
         //CREAMOS EL OBJETO PLAYER CON LOS DATOS INTRODUCIDOS POR KEYBOARD
-        Clothing clothing = new Clothing(serigraphy.trim(), number, size.trim(), Constants.PRICE);
+        Clothing clothing = new Clothing(dni.trim(), serigraphy.trim(), number, size.trim(), Constants.PRICE);
 
         try {
             clothingDao.add(clothing);
@@ -283,31 +280,28 @@ public class Menu {
         }
     }
 
-    //TODO Buscar Jugador y Ropa Webinar5 min 37
-
     private void assignTeam() {
-        boolean assign = false;
+        PlayerDao playerDao = new PlayerDao(connection);
+        TeamDao teamDao = new TeamDao(connection);
+        //boolean assign = false;
+
         System.out.println("Introduzca el DNI del jugador para asignar el equipo");
         String dni = keyboard.nextLine();
-        for (Player player : catalagoPlayer) {
-            if (player.getDni().equalsIgnoreCase(dni)) {
-                System.out.println("Introduzca el equipo a asignar: ");
-                String searchTeam = keyboard.nextLine();
-                for (Team team : catalogoTeam) {
-                    if (team.getName().equalsIgnoreCase(searchTeam)) {
-                        player.getFirstName();
-                        player.getLastName();
-                        player.getNumber();
-                        player.getYearOfBirth();
-                        player.getDni();
-                        player.setTeam(team);
-                        System.out.println("Equipo asignado correctamente");
-                        assign = true;
-                    } else
-                        System.out.println("Equipo no encontrado");
-                }
-            } if (!assign)
-                System.out.println("Jugador no asignado a equipo");
+        dni.toUpperCase();//NOS ASEGURAMOS QUE TODAS LAS LETRAS DEL DNI ESTARÁN EN MAYÚSCULAS
+        System.out.println("Cual es su categoría: ");
+        String searchCategory = keyboard.nextLine();
+        System.out.println("Cual es el nombre del equipo: ");
+        String searchName = keyboard.nextLine();
+
+        try {
+            Team team = teamDao.findByTeamAndCategory(searchName, searchCategory);
+            Player player = playerDao.findByDni(dni);
+            playerDao.addPlayerTeam(player, team);
+        } catch (SQLException sqle) {
+            System.out.println("No se ha podido conectar con el servidor de base de datos. Comprueba que los datos son correctos y que el servidor se ha iniciado");
+            sqle.printStackTrace();  //PARA OBTENER LAS TRAZAS DE LA EXCEPCIÓN Y ASI LUEGO SEGUIR CON PRECISION EL ERROR
+        } catch (DniAlredyExistException daee) {
+            System.out.println(daee.getMessage());
         }
     }
 
@@ -348,6 +342,7 @@ public class Menu {
 
         System.out.println("Introduzca el dni del Jugador a modificar: ");
         String dniPlayer = keyboard.nextLine();
+        dniPlayer.toUpperCase();//NOS ASEGURAMOS QUE TODAS LAS LETRAS DEL DNI ESTARÁN EN MAYÚSCULAS
         addPlayer();
 
         try {
@@ -398,6 +393,47 @@ public class Menu {
             System.out.println("No se ha podido conectar con el servidor de base de datos. Comprueba que los datos son correctos y que el servidor se ha iniciado");
             sqle.printStackTrace();  //PARA OBTENER LAS TRAZAS DE LA EXCEPCIÓN Y ASI LUEGO SEGUIR CON PRECISION EL ERROR
         }
+    }
+
+    private void addOrder() {
+        System.out.println("Dni del jugador o los jugadores que pides su equipación (separados por comas): ");
+        String ordenClothings = keyboard.nextLine();
+        ordenClothings.toUpperCase();//NOS ASEGURAMOS QUE TODAS LAS LETRAS DEL DNI ESTARÁN EN MAYÚSCULAS
+
+        try {
+            String[] clothingArray = ordenClothings.split(","); // EN CADA POSICIÓN DEL ARRAY UN DNI
+            ClothingDao clothingDao = new ClothingDao(connection);// NOS CONECTADOS USANDO EL DAO CORRESPONDIENTE
+            List<Clothing> clothings = new ArrayList<>(); //CREAMOS LA LISTA DE ROPA
+            for (String clothingDni : clothingArray) { //RECORREMOS EL ARRAY
+                Clothing clothing = clothingDao.findByDni(clothingDni.trim()).get();//AL SER UN OPCIONAL USAMOS .GET PARA QUE NOS LO DEVUELVA SIEMPRE
+                clothings.add(clothing);
+            }
+
+            OrderDao orderDao = new OrderDao(connection);
+            orderDao.add(currentUser, clothings); //CREAMOS LA ORDEN DE PEDIDO CON EL USUARIO QUE ESTA LOGEADO EN LA APP Y LA ROPA
+            System.out.println("Pedido creado");
+        } catch (SQLException sqle) {
+            System.out.println("No se ha podido conectar con el servidor de base de datos. Comprueba que los datos son correctos y que el servidor se ha iniciado");
+            sqle.printStackTrace();  //PARA OBTENER LAS TRAZAS DE LA EXCEPCIÓN Y ASI LUEGO SEGUIR CON PRECISION EL ERROR
+        }
+    }
+
+    private void showOrderDetails() {
+        OrderDao orderDao = new OrderDao(connection);
+
+        //TODO INDICAR QUE PEDIDO QUIERE VER
+
+        Order order = orderDao.getOrder(); //PARA TRAERNOS EL OBJETO Y PODER MOSTRARLO
+
+        //TODO MOSTRAR DATOS DEL PEDIDO
+    }
+
+    private void payOrder() {
+        OrderDao orderDao = new OrderDao(connection);
+
+        //TODO INDICAR EL PEDIDO - OJO ME SIRVE PARA ASIGNAR EL ENTRENADOR
+
+        orderDao.payOrder();
     }
 
     private void showClothing() {

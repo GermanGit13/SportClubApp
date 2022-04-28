@@ -1,6 +1,7 @@
 package com.svalero.sportsclubapp.dao;
 
 import com.svalero.sportsclubapp.domain.Clothing;
+import com.svalero.sportsclubapp.domain.Team;
 import oracle.jdbc.proxy.annotation.Pre;
 
 import java.sql.Connection;
@@ -8,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class ClothingDao {
 
@@ -74,5 +76,29 @@ public class ClothingDao {
         }
 
         return clothings;
+    }
+
+    //OPTIONAL SE USA PARA CONTROLAR LA POSIBLE EXCEPCIÓN QUE DEVUELVE UN OBJETO NULO
+    public Optional<Clothing> findByDni(String dni) throws SQLException { //throws PARA PROPAGAR LA EXCEPCIÓN HACIA UNA CAPA SUPERIOR
+        //PRIMERO EL Sql, ASÍ EVITAMOS LAS INYECCIONES SQL
+        String sql = "SELECT * FROM clothing WHERE dni = ?";
+        Clothing clothing = null;
+
+        //COMPONER EL SQL CON PreparedStatement EN BASE A LA SENTENCIA sql
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, dni);
+        //ResultSet ESPECIE DE ARRAYLIST CURSOR QUE APUNTE AL CONTENIDO CARGADO EN LA MEMORIA JAVA DONDE METEMOS EL RESULTADO DE statement.executeQuery
+        ResultSet resultSet = statement.executeQuery();
+        if (resultSet.next()) {
+            clothing = new Clothing();
+            clothing.setSerigraphy(resultSet.getString("Serigrafia"));
+            clothing.setNumber(resultSet.getInt("Dorsal"));
+            clothing.setSize(resultSet.getString("Talla"));
+            clothing.getPrice(resultSet.getFloat("Precio"));
+
+            //TODO REVISAR COMO IMPRIMIR LA QUOTA
+        }
+
+        return Optional.ofNullable(clothing);
     }
 }

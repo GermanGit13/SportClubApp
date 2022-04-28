@@ -1,7 +1,6 @@
 package com.svalero.sportsclubapp.dao;
 
 import com.svalero.sportsclubapp.domain.Player;
-import com.svalero.sportsclubapp.domain.Team;
 import com.svalero.sportsclubapp.domain.User;
 import com.svalero.sportsclubapp.exception.UserAlredyExistException;
 
@@ -12,7 +11,6 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 public class UserDao {
-    //TODO preparar este DAO con las operaciones básicas (CRUD: Create Read Update Delete)
 
     private Connection connection;
 
@@ -20,8 +18,6 @@ public class UserDao {
         this.connection = connection;
     }
 
-    //AÑADIMOS UN OBJETO DE LA CLASE TEAM
-    //TODO CREAR EXCEPCIÓN SI EL USUARIO YA EXISTE
     public void add(User user) throws SQLException, UserAlredyExistException { //throws PARA PROPAGAR LA EXCEPCIÓN HACIA UNA CAPA SUPERIOR
         if (existUsername(user.getUsername()))
             throw new UserAlredyExistException();

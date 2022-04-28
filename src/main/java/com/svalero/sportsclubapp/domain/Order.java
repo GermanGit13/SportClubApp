@@ -12,7 +12,7 @@ public class Order {
     private LocalDate date;
 
     private List<Clothing> clothings; //RELACIÓN N A N ENTRE LAS TABLAS ORDER Y CLOTHING - CON ESTA LISTA MANTIENE LA RELACIÓN DE LADO A LADO
-    private User user;
+    private User user; //OBJETO RELACIONADO CON EL PEDIDO
 
     public Order() {
         clothings = new ArrayList<>();

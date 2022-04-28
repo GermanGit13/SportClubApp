@@ -4,7 +4,6 @@ package com.svalero.sportsclubapp.dao;
 import com.svalero.sportsclubapp.domain.Clothing;
 import com.svalero.sportsclubapp.domain.Order;
 import com.svalero.sportsclubapp.domain.User;
-import oracle.jdbc.proxy.annotation.Pre;
 
 import java.sql.*;
 import java.util.List;
@@ -25,9 +24,9 @@ public class OrderDao {
         connection.setAutoCommit(false);
 
         PreparedStatement orderStatement = connection.prepareStatement(orderSql,
-                PreparedStatement.RETURN_GENERATED_KEYS);
+                PreparedStatement.RETURN_GENERATED_KEYS);// PARA PEDIR LA CLAVE GENERADA Y ASI PODER O NO RECOGERLA, EN ESTE CASO EN EL ORDERID
         orderStatement.setDate(1, new Date(System.currentTimeMillis())); //ASIGNA LA FECHA DEL SISTEMA EN ELP MOMENTO DE REALIZAR EL PEDIDO
-        orderStatement.setString(2, UUID.randomUUID().toString()); //GENERA UN NUMERO ALEATORIO PARA ASIGNARSELO A LA ORDEN DE PEDIDO
+        orderStatement.setString(2, UUID.randomUUID().toString()); //GENERA UN NUMERO ALEATORIO PARA ASIGNÁRSELO A LA ORDEN DE PEDIDO
         orderStatement.setInt(3, user.getId()); //ASIGNA EL ID DEL USUARIO A LA ORDEN DE PEDIDO
         orderStatement.executeUpdate();
 
@@ -37,7 +36,7 @@ public class OrderDao {
         int orderId = orderKeys.getInt(1);
         orderKeys.close();
 
-        for (Clothing clothing : clothings) {
+        for (Clothing clothing : clothings) { //BUCLE POR CADA LINEA DE PEDIDO POR SI TIENEN VARIOS HIJOS Y PIDEN VARIAS EQUIPACIONES
             String clothingSql = "INSERT INTO order_clothing (order_id, clothing_id) VALUES (?, ?,)";
 
             PreparedStatement clothingStatement = connection. prepareStatement(clothingSql);

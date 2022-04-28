@@ -40,6 +40,21 @@ public class PlayerDao {
         statement.executeUpdate();
     }
 
+    //AÑADIMOS UN OBJETO DE LA CLASE PLAYER
+    public void addPlayerTeam(Player player, Team team)throws SQLException, DniAlredyExistException {
+        //PRIMERO EL Sql, ASÍ EVITAMOS LAS INYECCIONES SQL
+        String sql = "INSERT INTO player (firstname, lastname, number, yearOfBirth, dni) VALUES (?, ?, ?, ?, ?)";
+
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, player.getFirstName());
+        statement.setString(2, player.getLastName());
+        statement.setInt(3, player.getNumber());
+        statement.setInt(4, player.getYearOfBirth());
+        statement.setString(5, player.getDni());
+        //CUALQUIER CONSULTA QUE NO SEA UN SELECT SE LANZA CON executeUpdate. PARA SELECT USAMOS executeQuery
+        statement.executeUpdate();
+    }
+
     //LE PASAMOS QUE NOMBRE QUE QUEREMOS MODIFICAR Y EL OBJETO PARA A MODIFICAR
     public boolean modify(String dni, Player player) throws SQLException {
         String sql = "UPDATE player SET firstname = ?, lastname = ?, number = ?, yearOfBirth = ?, dni = ? WHERE DNI = ?";
