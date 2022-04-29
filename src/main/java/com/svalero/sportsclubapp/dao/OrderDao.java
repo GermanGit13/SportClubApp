@@ -4,8 +4,11 @@ package com.svalero.sportsclubapp.dao;
 import com.svalero.sportsclubapp.domain.Clothing;
 import com.svalero.sportsclubapp.domain.Order;
 import com.svalero.sportsclubapp.domain.User;
+import com.svalero.sportsclubapp.util.DateUtils;
 
 import java.sql.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -58,6 +61,24 @@ public class OrderDao {
 
     }
 
+    //DETALLES DE UN PEDIDO ENTRE DOS FECHAS
+    public List<Order> getOrdersBetweenDates(LocalDate fromDate, LocalDate toDate) throws SQLException{
+        String sql = "SELECT * FROM orders ORDER WHERE  date BETWEEN ? AND ?";
+        List<Order> orders = new ArrayList<>();
 
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setDate(1, DateUtils.toSqlDate(fromDate)); //CONVERTIMOS EL TIEMPO JAVA EN TIEMPO SQL
+        statement.setDate(2, DateUtils.toSqlDate(toDate));
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            Order order = new Order();
+            order.setId(resultSet.getInt(1));
+            order.setCode(resultSet.getString(2));
+            order.setPaid(resultSet.getBoolean(3));
+            order.setDate(DateUtils.toLocalDate(resultSet.getDate(4))); //USAMOS DateUtils.toLocalDate para el cambio de fechas de sql a LocalDate
+            orders.add(order);
+        }
 
+        return orders;
+    }
 }

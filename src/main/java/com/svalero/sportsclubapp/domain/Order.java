@@ -1,5 +1,7 @@
 package com.svalero.sportsclubapp.domain;
 
+import com.svalero.sportsclubapp.util.DateUtils;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,5 +58,13 @@ public class Order {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    //SOBREESCRIBIMOS toString PARA DEVUELVA POR PANTALLA LO QUE NOS INTERESA Y COMO
+    @Override
+    public String toString() {
+        return "Código: " + code + "\n" +
+                "Pagado: " + paid + "\n" +
+                "Fecha: " + DateUtils.formatLocalDate(date); //NOS FORMATEA LA FECHA COMO NOSOTROS QUEREMOS DESDE DateUtils
     }
 }

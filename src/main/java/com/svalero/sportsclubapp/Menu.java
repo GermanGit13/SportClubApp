@@ -8,9 +8,12 @@ import com.svalero.sportsclubapp.exception.TeamAlreadyExistException;
 import com.svalero.sportsclubapp.exception.UserAlredyExistException;
 import com.svalero.sportsclubapp.exception.UserNotFoundException;
 import com.svalero.sportsclubapp.util.Constants;
+import com.svalero.sportsclubapp.util.DateUtils;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -71,6 +74,7 @@ public class Menu {
             System.out.println("19. Borrar Equipo: ");
             System.out.println("20. Borrar Pedido: ");
             System.out.println("21. Borrar Usuario: ");
+            System.out.println("22. Pedidos entre dos fechas: ");
             System.out.println("s. Salir");
             System.out.println("Opción: ");
             choice = keyboard.nextLine();
@@ -138,6 +142,9 @@ public class Menu {
                     break;
                 case "21":
                     //deleteUser();
+                    break;
+                case "22":
+                    showOrdersBetweenDates();
                     break;
 
             }
@@ -478,6 +485,7 @@ public class Menu {
             //TODO IMPRIMIR ENTRENADOR Y DEMÁS
         } catch (SQLException sqle) {
             System.out.println("No se ha podido comunicar con la base de datos. Inténtelo de nuevo");
+            sqle.printStackTrace();  //PARA OBTENER LAS TRAZAS DE LA EXCEPCIÓN Y ASI LUEGO SEGUIR CON PRECISION EL ERROR
         }
     }
 
@@ -489,7 +497,26 @@ public class Menu {
 
         } catch (SQLException sqle) {
             System.out.println("No se ha podido comunicar con la base de datos. Inténtelo de nuevo");
+            sqle.printStackTrace();  //PARA OBTENER LAS TRAZAS DE LA EXCEPCIÓN Y ASI LUEGO SEGUIR CON PRECISION EL ERROR
         }
         return true;
+    }
+
+    private void showOrdersBetweenDates() {
+        System.out.println("Desde que fecha (dd.MM.yyyy): ");
+        String fromDateString = keyboard.nextLine(); //ES EN EL FORMATO QUE NOS LLEGA DEL USUARIO TENEMOS QUE PARSEARLA
+        System.out.println("Hasta que fecha (dd.MM.yyyy): ");
+        String toDateString = keyboard.nextLine();
+        LocalDate fromDate = DateUtils.parseLocalDate(fromDateString); //FORMATEA LAS FECHAS DESDE DateUtil QUE NOS HEMOS CREADO EN util
+        LocalDate toDate = DateUtils.parseLocalDate(fromDateString);
+
+        OrderDao orderDao = new OrderDao(connection);
+        try {
+            List<Order> orders = orderDao.getOrdersBetweenDates(fromDate, toDate); //NOS DEVUELVE UNA LISTA CON LOS PEDIDOS ENTRE LAS FECHAS
+            orders.forEach(System.out::println); //RECORREMOS LA COLECCIÓN DE PEDIDOS Y PINTAMOS POR PANTALLA CADA OBJETO DE LA COLECCIÓN "los :: es una referencia a método"
+        } catch (SQLException sqle) {
+            System.out.println("No se ha podido comunicar con la base de datos. Inténtelo de nuevo");
+            sqle.printStackTrace();  //PARA OBTENER LAS TRAZAS DE LA EXCEPCIÓN Y ASI LUEGO SEGUIR CON PRECISION EL ERROR
+        }
     }
 }
