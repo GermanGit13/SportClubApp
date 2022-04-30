@@ -5,29 +5,32 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.svalero.SportsClubApp</groupId>
-  <artifactId>SportsClubApp</artifactId>
+  <artifactId>sportsClubApp</artifactId>
   <version>1.0</version>
   <packaging>war</packaging>
 
-  <name>SportsClubApp Maven Webapp</name>
+  <name>SportsClubApp Webapp</name>
   <!-- FIXME change it to the project's website -->
-  <url>http://www.example.com</url>
+  <url>http://www.SportsClubApp.com</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.7</maven.compiler.source>
-    <maven.compiler.target>1.7</maven.compiler.target>
+    <maven.compiler.source>11</maven.compiler.source>  <!-- Ponemos la versión de Java que usamos -->
+    <maven.compiler.target>11</maven.compiler.target>
   </properties>
 
   <dependencies>
 
+    <!-- Librería de Servlet para poder trabajar con Java y Html a la vez -->
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>
       <version>4.0.1</version>
       <scope>provided</scope>
     </dependency>
+    <!-- FIN Librería de Servlet -->
 
+    <!-- Librería para las BBDD -->
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
@@ -39,6 +42,7 @@
       <artifactId>ojdbc8</artifactId>
       <version>21.5.0.0</version>
     </dependency>
+    <!-- FIN Librería BBDD -->
 
     <dependency>
       <groupId>junit</groupId>
@@ -52,6 +56,27 @@
     <finalName>SportsClubApp</finalName>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
       <plugins>
+        <!-- Plugin para Tomcat -->
+        <plugin>
+          <!--
+          Descargar e iniciar Tomcat
+          mvn tomcat7:deploy
+          mvn tomcat7:undeploy
+          mvn tomcat7:redeploy
+          -->
+          <groupId>org.apache.tomcat.maven</groupId>
+          <artifactId>tomcat7-maven-plugin</artifactId>
+          <version>2.2</version>
+          <configuration>
+            <url>http://localhost:8081/manager/text</url>
+            <server>tomcat8</server>
+            <username>tomcat</username>
+            <password>tomcat</password>
+            <path>/SportsClubApp</path> <!-- Mismo nombre que en el path que pusimos en context.xml -->
+          </configuration>
+        </plugin>
+        <!-- FIN Plugin para Tomcat -->
+
         <plugin>
           <artifactId>maven-clean-plugin</artifactId>
           <version>3.1.0</version>
