@@ -1,27 +1,37 @@
 package com.svalero.sportsclubapp.domain;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.svalero.sportsclubapp.util.Constants.PRICE;
 
 public class Clothing {
 
-    private String name;
+    private int id;
     private String dni;
     private String serigraphy;
     private int number;
     private String size;
 
-    public Clothing(String name, String dni, String serigraphy, int number, String size, float price) {
-        this.name = name;
+    private List<Order> orders; //RELACIÓN N A N ENTRE LAS TABLAS ORDER Y CLOTHING - CON ESTA LISTA MANTIENE LA RELACIÓN DE LADO A LADO
+
+
+    public Clothing() {
+        orders = new ArrayList<>();
+    }
+
+    public Clothing(String dni,String serigraphy, int number, String size, float price) {
         this.dni = dni;
         this.serigraphy = serigraphy;
         this.number = number;
         this.size = size;
         price = PRICE;
+        orders = new ArrayList<>();
     }
 
-    public String getName() {
-        return name;
+    public int getId() {
+        return id;
     }
 
     public String getDni() {
@@ -40,12 +50,12 @@ public class Clothing {
         return size;
     }
 
-    public float getPrice() {
+    public float getPrice(float precio) {
         return PRICE;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setDni(String dni) {

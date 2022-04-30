@@ -10,6 +10,8 @@ public class Team {
     private String category;
     private String coach;
 
+    private User user; //PARA RELACIONAR LOS ENTRENADORES
+
     //MÉTODO PARA PRUEBAS
     public Team(String name, String category, float quota) {
         this.name = name;
@@ -27,6 +29,7 @@ public class Team {
     public Team() {
 
     }
+
     public Team(String name, String category, String coach, float quota) {
         this.name = name;
         this.category = category;

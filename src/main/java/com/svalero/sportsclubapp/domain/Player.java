@@ -2,12 +2,18 @@ package com.svalero.sportsclubapp.domain;
 
 public class Player {
 
+    private int id;
     private String firstName;
     private String lastName;
     private int number;
     private int yearOfBirth;
     private String dni;
-    private Team team;
+
+    private Team team; //PARA RELACIONAR LOS EQUIPOS CON LOS JUGADORES
+
+    public Player() {
+
+    }
 
     public Player(String firstName, String lastName, int number, int yearOfBirth, String dni, Team team) {
         this.firstName = firstName;
@@ -24,6 +30,10 @@ public class Player {
         this.number = number;
         this.yearOfBirth = yearOfBirth;
         this.dni = dni;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getFirstName() {
@@ -48,6 +58,10 @@ public class Player {
 
     public Team getTeam() {
         return team;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setFirstName(String firstName) {
