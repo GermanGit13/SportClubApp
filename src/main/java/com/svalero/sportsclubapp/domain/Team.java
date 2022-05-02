@@ -1,14 +1,16 @@
 package com.svalero.sportsclubapp.domain;
 
+import javax.swing.*;
+
 import static com.svalero.sportsclubapp.util.Constants.QUOTA;
 
 
 public class Team {
 
     private int id;
+    private int idUser;
     private String name;
     private String category;
-    private String coach;
 
     private User user; //PARA RELACIONAR LOS ENTRENADORES
 
@@ -30,15 +32,19 @@ public class Team {
 
     }
 
-    public Team(String name, String category, String coach, float quota) {
+    public Team(String name, String category, User user, float quota) {
         this.name = name;
         this.category = category;
-        this.coach = coach;
+        this.user = user;
         quota = QUOTA;
     }
 
     public int getId() {
         return id;
+    }
+
+    public int getIdUser() {
+        return idUser;
     }
 
     public String getName() {
@@ -49,10 +55,6 @@ public class Team {
         return category;
     }
 
-    public String getCoach() {
-        return coach;
-    }
-
     public float getQuota() {
         return QUOTA;
     }
@@ -61,15 +63,15 @@ public class Team {
         this.id = id;
     }
 
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
 
     public void setCategory(String category) {
         this.category = category;
-    }
-
-    public void setCoach(String coach) {
-        this.coach = coach;
     }
 }

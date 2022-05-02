@@ -67,7 +67,7 @@ public class TeamDao {
 
     public ArrayList<Team> findAll() throws SQLException { //throws PARA PROPAGAR LA EXCEPCIÓN HACIA UNA CAPA SUPERIOR
         //PRIMERO EL Sql, ASÍ EVITAMOS LAS INYECCIONES SQL
-        String sql = "SELECT * FROM team ORDEN BY category";
+        String sql = "SELECT * FROM team";
         ArrayList<Team> teams = new ArrayList<>();
 
         //COMPONER EL SQL CON PreparedStatement EN BASE A LA SENTENCIA sql
@@ -79,8 +79,9 @@ public class TeamDao {
             Team team = new Team();
             team.setName(resultSet.getString("Name"));
             team.setCategory(resultSet.getString("Category"));
-            team.setCoach(resultSet.getString("Coach"));
-            team.getQuota();//TODO REVISAR ESTO QUE SALE BIEN
+            team.setId(resultSet.getInt("id_team"));
+            team.setIdUser(resultSet.getInt("id_user"));
+            //TODO REVISAR QUOTA - ID USER
             teams.add(team);
         }
         return teams;
@@ -140,7 +141,7 @@ public class TeamDao {
         if (resultSet.next()) {
             team = new Team();
             team.setName(resultSet.getString("Name"));
-            team.setName(resultSet.getString("Category"));
+            team.setCategory(resultSet.getString("Category"));
         }
 
         return team;

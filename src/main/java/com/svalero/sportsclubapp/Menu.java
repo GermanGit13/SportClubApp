@@ -47,7 +47,7 @@ public class Menu {
     public void showMenu() {
         //NADA MÁS ARRANCAR MENU CONECTAMOS CON LA BBDD MEDIANTE MÉTODO ANTERIOR connect
         connect();
-        login();
+        //login();
 
         String choice = null;
 
@@ -81,16 +81,16 @@ public class Menu {
 
             switch (choice) {
                 case "1":
-                    addUser();
+                    addUser(); //OK
                     break;
                 case "2":
-                    addTeam();
+                    addTeam(); //OK
                     break;
                 case "3":
-                    addPlayer();
+                    addPlayer(); //TODO REVISAR PARA ASIGNAR EL CURRENTUSER
                     break;
                 case "4":
-                    addClothing();
+                    addClothing(); //OK
                     break;
                 case "5":
                     assignTeam();
@@ -111,7 +111,7 @@ public class Menu {
                     //showUser();
                     break;
                 case "11":
-                    showTeam();
+                    showTeam(); //OK
                     break;
                 case "12":
                     //showTeamPlayer();
@@ -161,12 +161,12 @@ public class Menu {
         try {
             User user = userDao.getUser(username, password) //REVISAMOS SI EXISTE EL USUARIO CON LOS DATOS INTRODUCIDOS
                     .orElseThrow(UserNotFoundException::new); //SINO LANZAMOS LA EXCEPCIÓN QUE NO EXISTE
-        } catch (SQLException sqle) {
-            System.out.println("No se ha podido comunicar con la base de datos. Inténtelo de nuevo");
-            System.exit(0); //SI NO SE PUEDE CONECTAR LE ECHAMOS DE LA APP
         } catch (UserNotFoundException unfe) {
             System.out.println(unfe.getMessage());
             System.exit(0); //SI EL USUARIO NO EXISTE LE ECHAMOS DE LA APP
+        } catch (SQLException sqle) {
+            System.out.println("No se ha podido comunicar con la base de datos. Inténtelo de nuevo");
+            System.exit(0); //SI NO SE PUEDE CONECTAR LE ECHAMOS DE LA APP
         }
     }
 
@@ -182,16 +182,9 @@ public class Menu {
         String email = keyboard.nextLine();
         System.out.println("Escribe tu DNI: ");
         String dni = keyboard.nextLine();
-        dni.toUpperCase();//NOS ASEGURAMOS QUE TODAS LAS LETRAS DEL DNI ESTARÁN EN MAYÚSCULAS
-        do {
-            System.out.println("Nombre de usuario: ");
-            username = keyboard.nextLine();
-            if (searchUsername(username)) {
-                System.out.println("El usuario ya existe: ");
-            } else {
-                System.out.println("El usuario no existe en la BBDD: ");
-            }
-        } while (!searchUsername(username));
+        dni= dni.toUpperCase();//NOS ASEGURAMOS QUE TODAS LAS LETRAS DEL DNI ESTARÁN EN MAYÚSCULAS
+        System.out.println("Nombre de usuario: ");
+        username = keyboard.nextLine();
         System.out.println("Escribe tu contraseña: ");
         String password = keyboard.nextLine();
         User user = new User(firstName.trim(), lastName.trim(), email.trim(), dni.trim(), username.trim(), password.trim());
@@ -269,13 +262,14 @@ public class Menu {
 
         System.out.print("Introduce tu DNI del jugador:");
         String dni = keyboard.nextLine();
-        dni.toUpperCase();//NOS ASEGURAMOS QUE TODAS LAS LETRAS DEL DNI ESTARÁN EN MAYÚSCULAS
+        dni= dni.toUpperCase();//NOS ASEGURAMOS QUE TODAS LAS LETRAS DEL DNI ESTARÁN EN MAYÚSCULAS
         System.out.print("Introduzca la serigrafía que llevará la equipación:");
         String serigraphy = keyboard.nextLine();
-        System.out.print("Introduzca el número de dorsal del Jugador: ");
-        int number = keyboard.nextInt();
         System.out.print("Introduzca la talla del Jugador: ");
         String size = keyboard.nextLine();
+        System.out.print("Introduzca el número de dorsal del Jugador: ");
+        int number = keyboard.nextInt();
+
         //CREAMOS EL OBJETO PLAYER CON LOS DATOS INTRODUCIDOS POR KEYBOARD
         Clothing clothing = new Clothing(dni.trim(), serigraphy.trim(), number, size.trim(), Constants.PRICE);
 
@@ -294,21 +288,23 @@ public class Menu {
 
         System.out.println("Introduzca el DNI del jugador para asignar el equipo");
         String dni = keyboard.nextLine();
-        dni.toUpperCase();//NOS ASEGURAMOS QUE TODAS LAS LETRAS DEL DNI ESTARÁN EN MAYÚSCULAS
+        dni= dni.toUpperCase();//NOS ASEGURAMOS QUE TODAS LAS LETRAS DEL DNI ESTARÁN EN MAYÚSCULAS
         System.out.println("Cual es su categoría: ");
         String searchCategory = keyboard.nextLine();
         System.out.println("Cual es el nombre del equipo: ");
         String searchName = keyboard.nextLine();
 
         try {
-            Team team = teamDao.findByTeamAndCategory(searchName, searchCategory);
             Player player = playerDao.findByDni(dni);
-            playerDao.addPlayerTeam(player, team);
+            System.out.println(player);
+            Team team = teamDao.findByTeamAndCategory(searchName, searchCategory);
+            System.out.println(team);
+            playerDao.addPlayerTeam(dni, player, team);
+        } catch (DniAlredyExistException daee) {
+            System.out.println(daee.getMessage());
         } catch (SQLException sqle) {
             System.out.println("No se ha podido conectar con el servidor de base de datos. Comprueba que los datos son correctos y que el servidor se ha iniciado");
             sqle.printStackTrace();  //PARA OBTENER LAS TRAZAS DE LA EXCEPCIÓN Y ASI LUEGO SEGUIR CON PRECISION EL ERROR
-        } catch (DniAlredyExistException daee) {
-            System.out.println(daee.getMessage());
         }
     }
 

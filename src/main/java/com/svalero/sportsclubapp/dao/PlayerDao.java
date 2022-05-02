@@ -28,7 +28,7 @@ public class PlayerDao {
             throw new DniAlredyExistException();
 
         //PRIMERO EL Sql, ASÍ EVITAMOS LAS INYECCIONES SQL
-        String sql = "INSERT INTO player (firstname, lastname, number, yearOfBirth, dni) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO player (firstname, lastname, numbers, yearOfBirth, dni) VALUES (?, ?, ?, ?, ?)";
 
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, player.getFirstName());
@@ -40,10 +40,10 @@ public class PlayerDao {
         statement.executeUpdate();
     }
 
-    //AÑADIMOS UN OBJETO DE LA CLASE PLAYER
-    public void addPlayerTeam(Player player, Team team)throws SQLException, DniAlredyExistException {
+    //AÑADIMOS UN OBJETO DE LA CLASE TEAM
+    public void addPlayerTeam(String dni, Player player, Team team)throws SQLException, DniAlredyExistException {
         //PRIMERO EL Sql, ASÍ EVITAMOS LAS INYECCIONES SQL
-        String sql = "INSERT INTO player (firstname, lastname, number, yearOfBirth, dni) VALUES (?, ?, ?, ?, ?)";
+        String sql = "UPDATE player SET firstname = ?, lastname = ?, numbers = ?, yearOfBirth = ?, dni = ?, id_team = ? WHERE DNI = ?)";
 
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, player.getFirstName());
@@ -51,13 +51,16 @@ public class PlayerDao {
         statement.setInt(3, player.getNumber());
         statement.setInt(4, player.getYearOfBirth());
         statement.setString(5, player.getDni());
+        statement.setInt(6, team.getId());;
+        statement.setString(7, dni);
+
         //CUALQUIER CONSULTA QUE NO SEA UN SELECT SE LANZA CON executeUpdate. PARA SELECT USAMOS executeQuery
         statement.executeUpdate();
     }
 
     //LE PASAMOS QUE NOMBRE QUE QUEREMOS MODIFICAR Y EL OBJETO PARA A MODIFICAR
     public boolean modify(String dni, Player player) throws SQLException {
-        String sql = "UPDATE player SET firstname = ?, lastname = ?, number = ?, yearOfBirth = ?, dni = ? WHERE DNI = ?";
+        String sql = "UPDATE player SET firstname = ?, lastname = ?, numbers = ?, yearOfBirth = ?, dni = ? WHERE DNI = ?";
 
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, player.getFirstName());
@@ -65,7 +68,7 @@ public class PlayerDao {
         statement.setInt(3, player.getNumber());
         statement.setInt(4, player.getYearOfBirth());
         statement.setString(5, player.getDni());
-        statement.setString(5, dni);
+        statement.setString(6, dni);
         //PARA DECIRNOS EL NÚMERO DE FILAS QUE HA MODIFICADO
         int rows = statement.executeUpdate();
         return rows ==1;
@@ -96,7 +99,7 @@ public class PlayerDao {
             player.setFirstName(resultSet.getString("Name"));
             player.setLastName(resultSet.getString("Apellidos"));
             player.setNumber(resultSet.getInt("Dorsal"));
-            player.setYearOfBirth(resultSet.getInt("Fecha nacimiento"));
+            player.setYearOfBirth(resultSet.getInt("Año de nacimiento"));
             player.setDni(resultSet.getString("Dni"));
             players.add(player);
         }
@@ -116,8 +119,11 @@ public class PlayerDao {
             player = new Player();
             player.setFirstName(resultSet.getString("FirstName"));
             player.setLastName(resultSet.getString("LastName"));
+            player.setNumber(resultSet.getInt("Number"));
             player.setDni(resultSet.getString("DNI"));
-            //TODO ver como devolver el objeto equipo
+            player.setYearOfBirth(resultSet.getInt("Año Nacimiento"));
+            player.setId(resultSet.getInt("id"));
+            //TODO ver como devolver el id_equipo y el id_user
         }
 
         return player;
