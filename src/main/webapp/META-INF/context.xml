@@ -1,4 +1,2 @@
-<!-- Configuración para el proyecto, la carpeta META-INF y el fichero context.xml lo creamos nosotros
- Ponemos el nombre de la Aplicación - URL Base para la Web -->
 <?xml version="1.0" encoding="UTF-8" ?>
 <Context path="SportsClubApp"/>
