@@ -1,9 +1,7 @@
 package com.svalero.sportsclubapp.dao;
 
-import com.mysql.cj.util.DnsSrv;
 import com.svalero.sportsclubapp.domain.Team;
 import com.svalero.sportsclubapp.exception.TeamAlreadyExistException;
-import oracle.jdbc.proxy.annotation.Pre;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -79,9 +77,9 @@ public class TeamDao {
             Team team = new Team();
             team.setName(resultSet.getString("Name"));
             team.setCategory(resultSet.getString("Category"));
-            team.setId(resultSet.getInt("id_team"));
+            team.setIdTeam(resultSet.getInt("id_team"));
             team.setIdUser(resultSet.getInt("id_user"));
-            //TODO REVISAR QUOTA - ID USER
+            //TODO REVISAR QUOTA
             teams.add(team);
         }
         return teams;
@@ -102,6 +100,7 @@ public class TeamDao {
             team = new Team();
             team.setName(resultSet.getString("Name"));
             team.setCategory(resultSet.getString("Category"));
+            team.setIdTeam(resultSet.getInt("id_team"));
             //TODO REVISAR COMO IMPRIMIR LA QUOTA
         }
 

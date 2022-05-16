@@ -376,7 +376,7 @@ public class Menu {
         try {
             ArrayList<Team> teams = teamDao.findAll();
             for (Team team : teams) {
-                System.out.println(team.getName() + team.getCategory());
+                System.out.println(team.getName() + team.getCategory() + team.getIdTeam() + team.getIdUser());
             }
         } catch (SQLException sqle) {
             System.out.println("No se ha podido conectar con el servidor de base de datos. Comprueba que los datos son correctos y que el servidor se ha iniciado");

@@ -1,13 +1,11 @@
 package com.svalero.sportsclubapp.domain;
 
-import javax.swing.*;
-
 import static com.svalero.sportsclubapp.util.Constants.QUOTA;
 
 
 public class Team {
 
-    private int id;
+    private int idTeam;
     private int idUser;
     private String name;
     private String category;
@@ -39,8 +37,8 @@ public class Team {
         quota = QUOTA;
     }
 
-    public int getId() {
-        return id;
+    public int getIdTeam() {
+        return idTeam;
     }
 
     public int getIdUser() {
@@ -59,8 +57,8 @@ public class Team {
         return QUOTA;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdTeam(int idTeam) {
+        this.idTeam = idTeam;
     }
 
     public void setIdUser(int idUser) {

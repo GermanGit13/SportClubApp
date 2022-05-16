@@ -9,7 +9,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Optional;
 
 public class PlayerDao {
 
@@ -51,7 +50,7 @@ public class PlayerDao {
         statement.setInt(3, player.getNumber());
         statement.setInt(4, player.getYearOfBirth());
         statement.setString(5, player.getDni());
-        statement.setInt(6, team.getId());;
+        statement.setInt(6, team.getIdTeam());;
         statement.setString(7, dni);
 
         //CUALQUIER CONSULTA QUE NO SEA UN SELECT SE LANZA CON executeUpdate. PARA SELECT USAMOS executeQuery
