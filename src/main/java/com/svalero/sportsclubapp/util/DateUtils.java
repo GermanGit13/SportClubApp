@@ -50,5 +50,4 @@ public class DateUtils {
         return new java.util.Date(date.getTime());
     }
 
-
 }
