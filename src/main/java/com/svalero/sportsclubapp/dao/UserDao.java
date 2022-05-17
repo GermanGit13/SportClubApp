@@ -1,5 +1,6 @@
 package com.svalero.sportsclubapp.dao;
 
+import com.svalero.sportsclubapp.domain.Team;
 import com.svalero.sportsclubapp.domain.User;
 import com.svalero.sportsclubapp.exception.UserAlredyExistException;
 
@@ -38,7 +39,7 @@ public class UserDao {
 
     //LE PASAMOS QUE USERNAME QUEREMOS MODIFICAR Y EL OBJETO PARA A MODIFICAR
     public boolean modify(String username, User user) throws SQLException{ //throws PARA PROPAGAR LA EXCEPCIÓN HACIA UNA CAPA SUPERIOR
-        String sql = "UPDATE userS SET username = ? WHERE username = ?";
+        String sql = "UPDATE users SET username = ? WHERE username = ?";
 
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, user.getUsername());
@@ -69,7 +70,7 @@ public class UserDao {
         ResultSet resultSet = statement.executeQuery();
         if (resultSet.next()) {
             user = new User();
-            user.setId(resultSet.getInt("id"));
+            user.setIdUser(resultSet.getInt("id"));
             user.setFirstName(resultSet.getString("firstname"));
             user.setLastName(resultSet.getString("lastname"));
             user.setEmail(resultSet.getString("Email"));
@@ -127,6 +128,25 @@ public class UserDao {
     private boolean existUsername(String username) throws SQLException{
         User user = findByUsername(username);
         return user != null;
+    }
+
+    public Optional<User> findById(int id) throws SQLException {
+        String sql = "SELECT * FROM users WHERE id_user = ?";
+        User user = null;
+
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setInt(1, id);
+        ResultSet resultSet = statement.executeQuery();
+        if (resultSet.next()) {
+            user = new User();
+            user.setFirstName(resultSet.getString("FirstName"));
+            user.setLastName(resultSet.getString("LastName"));
+            user.setEmail(resultSet.getString("Email"));
+            user.setDni(resultSet.getString("Dni"));
+            user.setUsername(resultSet.getString("Username"));
+            user.setIdUser(resultSet.getInt("Id"));
+        }
+        return Optional.ofNullable(user);
     }
 
 }

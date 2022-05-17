@@ -23,7 +23,7 @@ public class AddTeamServlet extends HttpServlet {
         response.setContentType("text/html"); //PONERLO SIEMPRE PARA QUE NOS DEVUELVA COMO HTML Y NO TEXTO SIMPLE
         PrintWriter out = response.getWriter(); //DE ESTA FORMA ES MÁS CÓMODO PINTAR POR PANTALLA SOLO USANDO out.
 
-        String name = request.getParameter("name"); //REQUEST PARA RECOGER LO QUE PROVIENE DEL USUARIO
+        String name = request.getParameter("name"); //REQUEST PARA RECOGER LO QUE PROVIENE DEL USUARIO --> input name del formulario
         String category = request.getParameter("category");
         Team team = new Team(name, category);
 
@@ -31,12 +31,12 @@ public class AddTeamServlet extends HttpServlet {
         TeamDao teamDao = new TeamDao(database.getConnection()); //CREAMOS EL OBJETO DAO CORRESPONDIENTE Y LE PASAMOS LA CONEXIÓN A LA BBDD
         try {
             teamDao.add(team);
-            out.println("<p style='color:verde'>Equipo registrado en la BBDD</p>");
+            out.println("<div class='alert alert-success' role='alert'>Equipo Registrado en la BBDD correctamente</div>");
         } catch (TeamAlreadyExistException taee) {
-            out.println("<p style='color:red'>El equipo ya existe en la BBDD</p>");
+            out.println("<div class='alert alert-danger' role='alert'>El equipo ya existe en la BBDD</div>");
             taee.printStackTrace(); //PINTAMOS LAS TRAZAS DEL ERROR
         } catch (SQLException sqle) {
-            out.println("<p style='color=red'>Se ha producido un error al conectar con la BBDd</p>");
+            out.println("<div class='alert alert-danger' role='alert'>Se ha producido un error al conectar con la BBDd</div>");
             sqle.printStackTrace(); //PINTAMOS LAS TRAZAS DEL ERROR
         }
     }

@@ -2,6 +2,7 @@ package com.svalero.sportsclubapp.dao;
 
 import com.svalero.sportsclubapp.domain.Team;
 import com.svalero.sportsclubapp.exception.TeamAlreadyExistException;
+import oracle.jdbc.proxy.annotation.Pre;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -65,7 +66,7 @@ public class TeamDao {
 
     public ArrayList<Team> findAll() throws SQLException { //throws PARA PROPAGAR LA EXCEPCIÓN HACIA UNA CAPA SUPERIOR
         //PRIMERO EL Sql, ASÍ EVITAMOS LAS INYECCIONES SQL
-        String sql = "SELECT * FROM team";
+        String sql = "SELECT * FROM team ORDER BY category";
         ArrayList<Team> teams = new ArrayList<>();
 
         //COMPONER EL SQL CON PreparedStatement EN BASE A LA SENTENCIA sql
@@ -74,12 +75,7 @@ public class TeamDao {
         ResultSet resultSet = statement.executeQuery();
         //RECORREMOS EL resultSet
         while (resultSet.next()) {
-            Team team = new Team();
-            team.setName(resultSet.getString("Name"));
-            team.setCategory(resultSet.getString("Category"));
-            team.setIdTeam(resultSet.getInt("id_team"));
-            team.setIdUser(resultSet.getInt("id_user"));
-            //TODO REVISAR QUOTA
+            Team team = fromResultSet(resultSet);
             teams.add(team);
         }
         return teams;
@@ -97,11 +93,7 @@ public class TeamDao {
         //ResultSet ESPECIE DE ARRAYLIST CURSOR QUE APUNTE AL CONTENIDO CARGADO EN LA MEMORIA JAVA DONDE METEMOS EL RESULTADO DE statement.executeQuery
         ResultSet resultSet = statement.executeQuery();
         if (resultSet.next()) {
-            team = new Team();
-            team.setName(resultSet.getString("Name"));
-            team.setCategory(resultSet.getString("Category"));
-            team.setIdTeam(resultSet.getInt("id_team"));
-            //TODO REVISAR COMO IMPRIMIR LA QUOTA
+            team = fromResultSet(resultSet);
         }
 
         return Optional.ofNullable(team);
@@ -118,10 +110,7 @@ public class TeamDao {
         //ResultSet ESPECIE DE ARRAYLIST CURSOR QUE APUNTE AL CONTENIDO CARGADO EN LA MEMORIA JAVA DONDE METEMOS EL RESULTADO DE statement.executeQuery
         ResultSet resultSet = statement.executeQuery();
         if (resultSet.next()) {
-            team = new Team();
-            team.setName(resultSet.getString("Name"));
-            team.setCategory(resultSet.getString("Category"));
-            //TODO REVISAR COMO IMPRIMIR LA QUOTA
+            team = fromResultSet(resultSet);
         }
 
         return team;
@@ -138,13 +127,26 @@ public class TeamDao {
         //ResultSet ESPECIE DE ARRAYLIST CURSOR QUE APUNTE AL CONTENIDO CARGADO EN LA MEMORIA JAVA DONDE METEMOS EL RESULTADO DE statement.executeQuery
         ResultSet resultSet = statement.executeQuery();
         if (resultSet.next()) {
-            team = new Team();
-            team.setName(resultSet.getString("Name"));
-            team.setCategory(resultSet.getString("Category"));
+            team = fromResultSet(resultSet);
         }
 
         return team;
     }
+
+    public Optional<Team> findById(int id) throws SQLException {
+        String sql = "SELECT * FROM team WHERE id_team = ?";
+        Team team = null;
+
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setInt(1, id);
+        ResultSet resultSet = statement.executeQuery();
+        if (resultSet.next()) {
+            team = fromResultSet(resultSet);
+        }
+
+        return Optional.ofNullable(team);
+    }
+
 
     //TODO modificar para que busque si existe por ejemplo el DNI, LO HACEMOS PRIVATE PORQUE SOLO USAREMOS INTERNAMENTE
     private boolean existTeamAndCategory(String name, String category) throws SQLException{
@@ -158,4 +160,14 @@ public class TeamDao {
         return team.isPresent();
     }
 
+    //PARA USARLO EN LOS LISTADO QUE DEVUELVE ResultSet
+    private Team fromResultSet(ResultSet resultSet) throws SQLException {
+        Team team = new Team();
+        team.setName(resultSet.getString("name"));
+        team.setCategory(resultSet.getString("category"));
+        team.setIdTeam(resultSet.getInt("id_Team"));
+        team.setIdUser(resultSet.getInt("id_User"));
+        team.setQuota(resultSet.getFloat("QUOTA"));
+        return team;
+    }
 }

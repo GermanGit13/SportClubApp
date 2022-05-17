@@ -30,7 +30,7 @@ public class OrderDao {
                 PreparedStatement.RETURN_GENERATED_KEYS);// PARA PEDIR LA CLAVE GENERADA Y ASI PODER O NO RECOGERLA, EN ESTE CASO EN EL ORDERID
         orderStatement.setString(1, UUID.randomUUID().toString()); //GENERA UN NUMERO ALEATORIO PARA ASIGNÁRSELO A LA ORDEN DE PEDIDO
         orderStatement.setDate(2, new Date(System.currentTimeMillis())); //ASIGNA LA FECHA DEL SISTEMA EN ELP MOMENTO DE REALIZAR EL PEDIDO
-        orderStatement.setInt(3, user.getId()); //ASIGNA EL ID DEL USUARIO A LA ORDEN DE PEDIDO
+        orderStatement.setInt(3, user.getIdUser()); //ASIGNA EL ID DEL USUARIO A LA ORDEN DE PEDIDO
         orderStatement.executeUpdate();
 
         //OBTENER EL ORDERID GENERADO EN LA SENTENCIA ANTERIOR - ÚLTIMO AUTO_INCREMENT GENERADO

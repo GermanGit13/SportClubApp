@@ -31,7 +31,7 @@ public class User {
         this.coach = coach;
     }
 
-    public int getId() {
+    public int getIdUser() {
         return id;
     }
 
@@ -63,7 +63,7 @@ public class User {
         return coach;
     }
 
-    public void setId(int id) {
+    public void setIdUser(int id) {
         this.id = id;
     }
 

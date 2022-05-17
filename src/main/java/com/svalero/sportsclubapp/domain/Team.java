@@ -72,4 +72,7 @@ public class Team {
     public void setCategory(String category) {
         this.category = category;
     }
+
+    public void setQuota(float quota) {
+    }
 }
