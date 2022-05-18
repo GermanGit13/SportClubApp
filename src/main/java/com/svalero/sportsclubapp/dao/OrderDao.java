@@ -21,16 +21,16 @@ public class OrderDao {
     }
 
     public void add(User user, List<Clothing> clothings) throws SQLException {
-        String orderSql = "INSERT INTO order (date, code, id_users) VALUES (?, ?, ?)";
+        String orderSql = "INSERT INTO orders (code, date, id_users) VALUES (?, ?, ?)";
 
         //DEJAMOS EN FALSO QUE MARCA LA TRANSACCIÓN COMO OK
         connection.setAutoCommit(false);
 
         PreparedStatement orderStatement = connection.prepareStatement(orderSql,
                 PreparedStatement.RETURN_GENERATED_KEYS);// PARA PEDIR LA CLAVE GENERADA Y ASI PODER O NO RECOGERLA, EN ESTE CASO EN EL ORDERID
-        orderStatement.setDate(1, new Date(System.currentTimeMillis())); //ASIGNA LA FECHA DEL SISTEMA EN ELP MOMENTO DE REALIZAR EL PEDIDO
-        orderStatement.setString(2, UUID.randomUUID().toString()); //GENERA UN NUMERO ALEATORIO PARA ASIGNÁRSELO A LA ORDEN DE PEDIDO
-        orderStatement.setInt(3, user.getId()); //ASIGNA EL ID DEL USUARIO A LA ORDEN DE PEDIDO
+        orderStatement.setString(1, UUID.randomUUID().toString()); //GENERA UN NUMERO ALEATORIO PARA ASIGNÁRSELO A LA ORDEN DE PEDIDO
+        orderStatement.setDate(2, new Date(System.currentTimeMillis())); //ASIGNA LA FECHA DEL SISTEMA EN ELP MOMENTO DE REALIZAR EL PEDIDO
+        orderStatement.setInt(3, user.getIdUser()); //ASIGNA EL ID DEL USUARIO A LA ORDEN DE PEDIDO
         orderStatement.executeUpdate();
 
         //OBTENER EL ORDERID GENERADO EN LA SENTENCIA ANTERIOR - ÚLTIMO AUTO_INCREMENT GENERADO
@@ -40,7 +40,7 @@ public class OrderDao {
         orderKeys.close();
 
         for (Clothing clothing : clothings) { //BUCLE POR CADA LINEA DE PEDIDO POR SI TIENEN VARIOS HIJOS Y PIDEN VARIAS EQUIPACIONES
-            String clothingSql = "INSERT INTO order_clothing (order_id, clothing_id) VALUES (?, ?,)";
+            String clothingSql = "INSERT INTO orders_clothings (order_id, clothing_id) VALUES (?, ?,)";
 
             PreparedStatement clothingStatement = connection. prepareStatement(clothingSql);
             clothingStatement.setInt(1, orderId);

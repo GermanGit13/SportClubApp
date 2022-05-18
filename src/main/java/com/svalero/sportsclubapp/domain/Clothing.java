@@ -50,7 +50,7 @@ public class Clothing {
         return size;
     }
 
-    public float getPrice(float precio) {
+    public float getPrice() {
         return PRICE;
     }
 

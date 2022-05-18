@@ -28,18 +28,20 @@ public class ClothingDao {
     //Añadimos un objeto de la clase Clothing
     public void add(Clothing clothing) throws SQLException {
         //PRIMERO EL Sql, ASÍ EVITAMOS LAS INYECCIONES SQL
-        String sql = "INSERT INTO clothing (serigraphy, number, size) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO clothing (dni, serigraphy, numbers, sizes, PRICE) VALUES (?, ?, ?, ?, ?)";
 
         PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setString(1, clothing.getSerigraphy());
-        statement.setInt(2, clothing.getNumber());
-        statement.setString(3, clothing.getSize());
+        statement.setString(1, clothing.getDni());
+        statement.setString(2, clothing.getSerigraphy());
+        statement.setInt(3, clothing.getNumber());
+        statement.setString(4, clothing.getSize());
+        statement.setFloat(5, clothing.getPrice());
         //CUALQUIER CONSULTA QUE NO SEA UN SELECT SE LANZA CON executeUpdate. PARA SELECT USAMOS executeQuery
         statement.executeUpdate();
     }
 
     public boolean modify(String serigraphy, int number, Clothing clothing) throws SQLException{
-        String sql = "UPDATE clothing SET serigraphy = ?, number = ?, size = ? WHERE serigrafhy = ? AND number =?";
+        String sql = "UPDATE clothing SET serigraphy = ?, numbers = ?, size = ? WHERE serigraphy = ? AND numbers =?";
 
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, clothing.getSerigraphy());
@@ -52,7 +54,7 @@ public class ClothingDao {
     }
 
     public boolean delete(String serigraphy, int number, Clothing clothing) throws SQLException {
-        String sql = "DELETE FROM clothing WHERE serigraphy = ? AND number = ?";
+        String sql = "DELETE FROM clothing WHERE serigraphy = ? AND numbers = ?";
 
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, serigraphy);
@@ -70,8 +72,8 @@ public class ClothingDao {
         while (resultSet.next()) {
             Clothing clothing = new Clothing();
             clothing.setSerigraphy(resultSet.getString("serigraphy"));
-            clothing.setNumber(resultSet.getInt("number"));
-            clothing.setSize(resultSet.getString("talla"));
+            clothing.setNumber(resultSet.getInt("numbers"));
+            clothing.setSize(resultSet.getString("sizes"));
             clothings.add(clothing);
         }
 
@@ -91,12 +93,10 @@ public class ClothingDao {
         ResultSet resultSet = statement.executeQuery();
         if (resultSet.next()) {
             clothing = new Clothing();
-            clothing.setSerigraphy(resultSet.getString("Serigrafia"));
-            clothing.setNumber(resultSet.getInt("Dorsal"));
-            clothing.setSize(resultSet.getString("Talla"));
-            clothing.getPrice(resultSet.getFloat("Precio"));
-
-            //TODO REVISAR COMO IMPRIMIR LA QUOTA
+            clothing.setSerigraphy(resultSet.getString("serigraphy"));
+            clothing.setNumber(resultSet.getInt("numbers"));
+            clothing.setSize(resultSet.getString("sizes"));
+            clothing.getPrice(); //TODO REVISAR COMO IMPRIMIR LA QUOTA
         }
 
         return Optional.ofNullable(clothing);

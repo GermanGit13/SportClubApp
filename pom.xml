@@ -4,30 +4,40 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.svalero.SportsClubApp</groupId>
+  <groupId>com.svalero</groupId>
   <artifactId>SportsClubApp</artifactId>
   <version>1.0</version>
   <packaging>war</packaging>
 
-  <name>SportsClubApp Maven Webapp</name>
-  <!-- FIXME change it to the project's website -->
-  <url>http://www.example.com</url>
+  <name>SportsClubApp Webapp</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.7</maven.compiler.source>
-    <maven.compiler.target>1.7</maven.compiler.target>
+    <maven.compiler.source>11</maven.compiler.source>  <!-- Ponemos la versión de Java que usamos -->
+    <maven.compiler.target>11</maven.compiler.target>
   </properties>
 
   <dependencies>
 
+    <!-- Ensamblado -->
+    <dependency>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-assembly-plugin</artifactId>
+      <version>3.3.0</version>
+      <type>maven-plugin</type>
+    </dependency>
+    <!-- FIN Ensamblado -->
+
+    <!-- Librería de Servlet para poder trabajar con Java y Html a la vez -->
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>
       <version>4.0.1</version>
       <scope>provided</scope>
     </dependency>
+    <!-- FIN Librería de Servlet -->
 
+    <!-- Librería para las BBDD -->
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
@@ -39,19 +49,65 @@
       <artifactId>ojdbc8</artifactId>
       <version>21.5.0.0</version>
     </dependency>
+    <!-- FIN Librería BBDD -->
 
+    <!-- JUnit -->
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.11</version>
+      <groupId>org.junit.platform</groupId>
+      <artifactId>junit-platform-launcher</artifactId>
+      <version>1.6.0</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>5.6.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>5.6.0</version>
+      <scope>test</scope>
+    </dependency>
+    <!-- FIN JUnit -->
+
+    <!-- JavaDoc -->
+    <dependency>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-javadoc-plugin</artifactId>
+      <version>3.3.1</version>
+    </dependency>
   </dependencies>
+  <!-- FIN JavaDoc -->
 
   <build>
     <finalName>SportsClubApp</finalName>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
       <plugins>
+
+        <!-- Plugin para Tomcat -->
+        <plugin>
+          <!--
+          Descargar e iniciar Tomcat
+          mvn tomcat7:deploy
+          mvn tomcat7:undeploy
+          mvn tomcat7:redeploy
+          -->
+          <groupId>org.apache.tomcat.maven</groupId>
+          <artifactId>tomcat7-maven-plugin</artifactId>
+          <version>2.2</version>
+          <configuration>
+            <url>http://localhost:8081/manager/text</url>
+            <username>german</username>
+            <password>german</password>
+            <server>tomcat8</server>
+            <update>true</update>
+            <path>/SportsClubApp</path> <!-- Mismo nombre que en el path que pusimos en context.xml -->
+          </configuration>
+        </plugin>
+        <!-- FIN Plugin para Tomcat -->
+
         <plugin>
           <artifactId>maven-clean-plugin</artifactId>
           <version>3.1.0</version>
@@ -80,6 +136,11 @@
         <plugin>
           <artifactId>maven-deploy-plugin</artifactId>
           <version>2.8.2</version>
+        </plugin>
+        <plugin>
+          <groupId>org.sonarsource.scanner.maven</groupId>
+          <artifactId>sonar-maven-plugin</artifactId>
+          <version>3.7.0.1746</version>
         </plugin>
       </plugins>
     </pluginManagement>

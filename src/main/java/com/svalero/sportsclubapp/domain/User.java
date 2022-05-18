@@ -1,7 +1,5 @@
 package com.svalero.sportsclubapp.domain;
 
-import java.time.LocalDate;
-
 public class User {
 
     private int id;
@@ -10,7 +8,7 @@ public class User {
     private String email;
     private String dni;
     private String username;
-    private String password;
+    private String pass;
     private boolean coach;
 
     public User() {
@@ -23,17 +21,17 @@ public class User {
     }
 
     //TODO REVISAR COMO HACER COACH A LOS USUARIOS
-    public User(String firstName, String lastName, String email, String dni, String username, String password) {
+    public User(String firstName, String lastName, String email, String dni, String username, String pass) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.dni = dni;
         this.username = username;
-        this.password = password;
+        this.pass = pass;
         this.coach = coach;
     }
 
-    public int getId() {
+    public int getIdUser() {
         return id;
     }
 
@@ -57,15 +55,15 @@ public class User {
         return username;
     }
 
-    public String getPassword() {
-        return password;
+    public String getPass() {
+        return pass;
     }
 
     public boolean isCoach() {
         return coach;
     }
 
-    public void setId(int id) {
+    public void setIdUser(int id) {
         this.id = id;
     }
 
@@ -89,8 +87,8 @@ public class User {
         this.username = username;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPass(String pass) {
+        this.pass = pass;
     }
 
     public void setCoach(boolean coach) {
