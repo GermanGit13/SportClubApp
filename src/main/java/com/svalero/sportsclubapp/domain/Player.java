@@ -2,7 +2,9 @@ package com.svalero.sportsclubapp.domain;
 
 public class Player {
 
-    private int id;
+    private int idPlayer;
+    private int idTeam;
+    private int idUser;
     private String firstName;
     private String lastName;
     private int number;
@@ -10,18 +12,20 @@ public class Player {
     private String dni;
 
     private Team team; //PARA RELACIONAR LOS EQUIPOS CON LOS JUGADORES
+    private User user; //PARA RELACIONAR LOS JUGADORES CON LOS PADRES
 
     public Player() {
 
     }
 
-    public Player(String firstName, String lastName, int number, int yearOfBirth, String dni, Team team) {
+    public Player(String firstName, String lastName, int number, int yearOfBirth, String dni, Team team, User user) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.number = number;
         this.yearOfBirth = yearOfBirth;
         this.dni = dni;
         this.team = team;
+        this.user = user;
     }
 
     public Player(String firstName, String lastName, int number, int yearOfBirth, String dni) {
@@ -32,8 +36,8 @@ public class Player {
         this.dni = dni;
     }
 
-    public int getId() {
-        return id;
+    public int getIdPlayer() {
+        return idPlayer;
     }
 
     public String getFirstName() {
@@ -60,8 +64,20 @@ public class Player {
         return team;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public int getIdTeam() {
+        return idTeam;
+    }
+
+    public int getIdUser() {
+        return idUser;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setIdPlayer(int id) {
+        this.idPlayer = id;
     }
 
     public void setFirstName(String firstName) {
@@ -87,4 +103,18 @@ public class Player {
     public void setTeam(Team team) {
         this.team = team;
     }
+
+    public void setIdTeam(int idTeam) {
+        this.idTeam = idTeam;
+    }
+
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }
+
+

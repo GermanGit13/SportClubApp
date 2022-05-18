@@ -10,6 +10,8 @@
         <h2>WebApp Para clubs deportivos</h2>
         <p><a href="addTeam.jsp">Añadir un Equipo</a></p> <!-- Referencia a JSP -->
         <p><a href="showTeams.jsp">Listado de Equipos</a></p> <!-- Referencia a JSP -->
+        <p><a href="showUsers.jsp">Listado de Usuarios</a></p> <!-- Referencia a JSP -->
+        <p><a href="showPlayers.jsp">Listado de Jugadores</a></p> <!-- Referencia a JSP -->
 
         <div class="alert alert-success" role="alert">
           <h4 class="alert-heading">!!!!BIENVENIDO!!!!</h4>

@@ -25,7 +25,6 @@
         try {
             Optional<Team> optionalTeam = teamDao.findById(Integer.parseInt(teamId));
             team = optionalTeam.get();
-
     %>
         <div class="container">
             <div class="card text-center">
@@ -37,9 +36,10 @@
                 <p class="card-text">Categoria: <strong><%= team.getCategory() %></strong></p>
                 <p class="card-text">Cuota: <strong><%= team.getQuota() %></strong></p>
                 <a href="buy?id=<%= team.getIdTeam() %>" class="btn btn-primary">Modificar</a>
+                <a href="coach.jsp?id_user=<%= team.getIdUser() %>" class="btn btn-primary">Entrenador</a>
               </div>
               <div class="card-footer text-muted">
-                Entrenado por usuario:  <strong><%= team.getIdUser() %></strong>
+                Jugadores del Equipo:  <strong><%= team.getIdUser() %></strong>
               </div>
             </div>
         </div>

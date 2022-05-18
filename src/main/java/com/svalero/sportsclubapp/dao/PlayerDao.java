@@ -2,6 +2,7 @@ package com.svalero.sportsclubapp.dao;
 
 import com.svalero.sportsclubapp.domain.Player;
 import com.svalero.sportsclubapp.domain.Team;
+import com.svalero.sportsclubapp.domain.User;
 import com.svalero.sportsclubapp.exception.DniAlredyExistException;
 
 import java.sql.Connection;
@@ -85,7 +86,7 @@ public class PlayerDao {
 
     public ArrayList<Player> findAll() throws SQLException {
         //PRIMERO EL Sql, ASÍ EVITAMOS LAS INYECCIONES SQL
-        String sql = "SELECT * FROM player ORDEN BY name";
+        String sql = "SELECT * FROM player ORDER BY FirstName";
         ArrayList<Player> players = new ArrayList<>();
 
         //COMPONER EL SQL CON PreparedStatement EN BASE A LA SENTENCIA sql
@@ -94,13 +95,7 @@ public class PlayerDao {
         ResultSet resultSet = statement.executeQuery();
         //RECORREMOS EL resultSet
         while (resultSet.next()) {
-            Player player = new Player();
-            player.setFirstName(resultSet.getString("Name"));
-            player.setLastName(resultSet.getString("Apellidos"));
-            player.setNumber(resultSet.getInt("Dorsal"));
-            player.setYearOfBirth(resultSet.getInt("Año de nacimiento"));
-            player.setDni(resultSet.getString("Dni"));
-            players.add(player);
+            Player player = fromResultSet(resultSet);
         }
         return players;
     }
@@ -115,14 +110,7 @@ public class PlayerDao {
         //ResultSet ESPECIE DE ARRAYLIST CURSOR QUE APUNTE AL CONTENIDO CARGADO EN LA MEMORIA JAVA DONDE METEMOS EL RESULTADO DE statement.executeQuery
         ResultSet resultSet = statement.executeQuery();
         if (resultSet.next()) {
-            player = new Player();
-            player.setFirstName(resultSet.getString("FirstName"));
-            player.setLastName(resultSet.getString("LastName"));
-            player.setNumber(resultSet.getInt("Number"));
-            player.setDni(resultSet.getString("DNI"));
-            player.setYearOfBirth(resultSet.getInt("Año Nacimiento"));
-            player.setId(resultSet.getInt("id"));
-            //TODO ver como devolver el id_equipo y el id_user
+            player = fromResultSet(resultSet);
         }
 
         return player;
@@ -131,5 +119,20 @@ public class PlayerDao {
     private boolean existDni(String dni) throws SQLException{
         Player player = findByDni(dni);
         return player != null;
+    }
+
+    //PARA USARLO EN LOS LISTADO QUE DEVUELVE ResultSet
+    private Player fromResultSet(ResultSet resultSet) throws SQLException {
+        Player player = new Player();
+
+        player.setIdPlayer(resultSet.getInt("id_player"));
+        player.setFirstName(resultSet.getString("firstname"));
+        player.setLastName(resultSet.getString("lastname"));
+        player.setDni(resultSet.getString("dni"));
+        player.setYearOfBirth(resultSet.getInt("YearOfBirth"));
+        player.setNumber(resultSet.getInt("Numbers"));
+        player.setIdTeam(resultSet.getInt("id_team"));
+        player.setIdUser(resultSet.getInt("id_user"));
+        return player;
     }
 }

@@ -9,7 +9,7 @@ public class User {
     private String dni;
     private String username;
     private String pass;
-    private boolean coach;
+    private String coach;
 
     public User() {
 
@@ -59,7 +59,7 @@ public class User {
         return pass;
     }
 
-    public boolean isCoach() {
+    public String getCoach() {
         return coach;
     }
 
@@ -91,7 +91,7 @@ public class User {
         this.pass = pass;
     }
 
-    public void setCoach(boolean coach) {
+    public void setCoach(String coach) {
         this.coach = coach;
     }
 }
