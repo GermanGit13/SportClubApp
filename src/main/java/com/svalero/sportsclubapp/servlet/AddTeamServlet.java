@@ -24,7 +24,9 @@ public class AddTeamServlet extends HttpServlet {
         PrintWriter out = response.getWriter(); //DE ESTA FORMA ES MÁS CÓMODO PINTAR POR PANTALLA SOLO USANDO out.
 
         String name = request.getParameter("name"); //REQUEST PARA RECOGER LO QUE PROVIENE DEL USUARIO --> input name del formulario
+        name = name.toUpperCase();
         String category = request.getParameter("category");
+        category = category.toUpperCase();
         Team team = new Team(name, category);
 
         Database database = new Database(); //CREAMOS UN OBJETO Database PARA CONECTARNOS A LA BBDD

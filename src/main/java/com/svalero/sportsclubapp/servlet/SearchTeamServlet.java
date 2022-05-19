@@ -25,6 +25,7 @@ public class SearchTeamServlet extends HttpServlet {
         PrintWriter out = response.getWriter(); //DE ESTA FORMA ES MÁS CÓMODO PINTAR POR PANTALLA SOLO USANDO out.
 
         String searchText = request.getParameter("searchtext"); //REQUEST PARA RECOGER LO QUE PROVIENE DEL USUARIO --> input searchtext del formulario
+        searchText = searchText.toUpperCase();
 
         Database database = new Database(); //CREAMOS UN OBJETO Database PARA CONECTARNOS A LA BBDD
         TeamDao teamDao = new TeamDao(database.getConnection()); //CREAMOS EL OBJETO DAO CORRESPONDIENTE Y LE PASAMOS LA CONEXIÓN A LA BBDD

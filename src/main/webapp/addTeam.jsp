@@ -29,7 +29,7 @@
               <input name="name" type="text"  class="form-control w-25" id="name" placeholder="Ej: Cb Smv"> <!-- input name: vital para poder acceder desde java como variables. w-25 anchura de la caja -->
             </div>
             <div class="mb-3">
-              <label for="category" class="form-label">Nombre del Equipo</label>
+              <label for="category" class="form-label">Categoria del Equipo</label>
               <input name="category" type="text" class="form-control w-25" id="category" placeholder="Ej: INFANTIL">
             </div>
             <button type="submit" class="btn btn-primary">REGISTRAR</button>

@@ -98,6 +98,7 @@ public class PlayerDao {
         while (resultSet.next()) {
             Player player = fromResultSet(resultSet);
         }
+        statement.close();
         return players;
     }
 
@@ -130,7 +131,7 @@ public class PlayerDao {
         if (resultSet.next()) {
             player = fromResultSet(resultSet);
         }
-
+        statement.close();
         return player;
     }
 
