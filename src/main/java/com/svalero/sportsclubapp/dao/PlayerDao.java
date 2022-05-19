@@ -4,6 +4,7 @@ import com.svalero.sportsclubapp.domain.Player;
 import com.svalero.sportsclubapp.domain.Team;
 import com.svalero.sportsclubapp.domain.User;
 import com.svalero.sportsclubapp.exception.DniAlredyExistException;
+import oracle.jdbc.proxy.annotation.Pre;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -97,6 +98,23 @@ public class PlayerDao {
         while (resultSet.next()) {
             Player player = fromResultSet(resultSet);
         }
+        return players;
+    }
+
+    //METODO PARA REALIZAR BUSQUEDAS POR CADENAS DE TEXTO EN LAS COLUMNAS QUE QUERAMOS
+    public ArrayList<Player> findAll(String searchText) throws SQLException {
+        String sql = "SELECT * FROM player WHERE INSTR(firstName, ?) != 0 OR INSTR(lastName, ?) !=0 ORDER BY firstName";
+        ArrayList<Player> players = new ArrayList<>();
+
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, searchText);
+        statement.setString(2, searchText);
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            Player player = fromResultSet(resultSet);
+            players.add(player);
+        }
+        statement.close();//PARA CERRAR LA CONEXION CON BBDD
         return players;
     }
 

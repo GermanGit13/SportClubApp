@@ -36,7 +36,7 @@ public class AddTeamServlet extends HttpServlet {
             out.println("<div class='alert alert-danger' role='alert'>El equipo ya existe en la BBDD</div>");
             taee.printStackTrace(); //PINTAMOS LAS TRAZAS DEL ERROR
         } catch (SQLException sqle) {
-            out.println("<div class='alert alert-danger' role='alert'>Se ha producido un error al conectar con la BBDd</div>");
+            out.println("<div class='alert alert-danger' role='alert'>Se ha producido un error al conectar con la BBDD</div>");
             sqle.printStackTrace(); //PINTAMOS LAS TRAZAS DEL ERROR
         }
     }

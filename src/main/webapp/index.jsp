@@ -12,6 +12,8 @@
         <p><a href="showTeams.jsp">Listado de Equipos</a></p> <!-- Referencia a JSP -->
         <p><a href="showUsers.jsp">Listado de Usuarios</a></p> <!-- Referencia a JSP -->
         <p><a href="showPlayers.jsp">Listado de Jugadores</a></p> <!-- Referencia a JSP -->
+        <p><a href="searchPlayer.jsp">Buscador de Jugadores</a></p> <!-- Referencia a JSP -->
+        <p><a href="searchTeam.jsp">Buscador de Equipos</a></p> <!-- Referencia a JSP -->
 
         <div class="alert alert-success" role="alert">
           <h4 class="alert-heading">!!!!BIENVENIDO!!!!</h4>

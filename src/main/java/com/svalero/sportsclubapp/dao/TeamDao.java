@@ -78,6 +78,23 @@ public class TeamDao {
             Team team = fromResultSet(resultSet);
             teams.add(team);
         }
+
+        return teams;
+    }
+
+    public ArrayList<Team> findAll(String searchText) throws SQLException {
+        String sql = "SELECT * FROM team WHERE INSTR(name, ?) !=0 OR INSTR(category, ?= !=0 ORDER BY category";
+        ArrayList<Team> teams = new ArrayList<>();
+
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, searchText);
+        statement.setString(2, searchText);
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            Team team = fromResultSet(resultSet);
+            teams.add(team);
+        }
+
         return teams;
     }
 

@@ -402,7 +402,7 @@ public class Menu {
         PlayerDao playerDao = new PlayerDao(connection);
 
         try {
-            ArrayList<Player> players = playerDao.findAll();
+            ArrayList<Player> players = playerDao.findAll("A");
             for ( Player player : players) {
                 System.out.println(player.getFirstName() + player.getLastName() + player.getDni() + player.getYearOfBirth());
             }
