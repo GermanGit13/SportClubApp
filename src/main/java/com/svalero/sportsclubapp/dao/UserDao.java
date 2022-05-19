@@ -95,7 +95,7 @@ public class UserDao {
     }
 
     public ArrayList<User> findAll(String searchText) throws SQLException {
-        String sql = "SELECT * FROM users WHERE WHERE INSTR(firstName, ?) != 0 OR INSTR(lastName, ?) !=0 OR INSTR(DNI, ?) !=0 ORDEN BY firstName";
+        String sql = "SELECT * FROM users WHERE INSTR(firstName, ?) !=0 OR INSTR(lastName, ?) !=0 OR INSTR(DNI, ?) !=0 ORDEN BY firstName";
         ArrayList<User> users = new ArrayList<>();
 
         PreparedStatement statement = connection.prepareStatement(sql);
@@ -107,8 +107,11 @@ public class UserDao {
             User user = fromResultSet(resultSet);
             users.add(user);
         }
+        statement.close();
         return users;
     }
+
+
 
     public User findByDni(String dni) throws SQLException {
         String sql ="SELECT * FROM users WHERE dni = ?";
