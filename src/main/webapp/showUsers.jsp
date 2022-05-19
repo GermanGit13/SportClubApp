@@ -27,7 +27,7 @@
           %>
                     <li class="list-group-item d-flex justify-content-between align-items-start w-50">
                         <div class="ms-2 me-auto">
-                          <div class="fw-bold"><a href="user.jsp?id_user=<%= user.getIdUser() %>">Nombre: <%= user.getFirstName() %></a></div>
+                          <div class="fw-bold"><a target="_blank" href="user.jsp?id_user=<%= user.getIdUser() %>">Nombre: <%= user.getFirstName() %></a></div> <!-- target="_blank" para abrir una pestaña nueva en el enlace -->
                           <div class="fw-bold">Apellidos:</div><%= user.getLastName() %>
                           <div class=>Correo: <%= user.getEmail() %></div>
                           <div class=>Dni: <%= user.getDni() %></div>

@@ -27,7 +27,7 @@
           %>
               <li class="list-group-item d-flex justify-content-between align-items-start w-50">
                   <div class="ms-2 me-auto">
-                    <div class="fw-bold"><a href="player.jsp?id_player=<%= player.getIdPlayer() %>">Nombre: <%= player.getFirstName() %></a></div>
+                    <div class="fw-bold"><a target="_blank" href="player.jsp?id_player=<%= player.getIdPlayer() %>">Nombre: <%= player.getFirstName() %></a></div> <!-- target="_blank" para abrir una pestaña nueva en el enlace -->
                     <div class="fw-bold">Apellidos:</div><%= player.getLastName() %>
                     <div class=>Año Nacimiento: <%= player.getYearOfBirth() %></div>
                     <div class=>Dni: <%= player.getDni() %></div>

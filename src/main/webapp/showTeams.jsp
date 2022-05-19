@@ -29,7 +29,7 @@
           %>
                     <li class="list-group-item d-flex justify-content-between align-items-start w-50">
                         <div class="ms-2 me-auto">
-                          <div class="fw-bold"><a href="team.jsp?id_team=<%= team.getIdTeam() %>"><%= team.getName() %></a></div>
+                          <div class="fw-bold"><a target="_blank" href="team.jsp?id_team=<%= team.getIdTeam() %>"><%= team.getName() %></a></div> <!-- target="_blank" para abrir una pestaña nueva en el enlace -->
                           <%= team.getCategory() %>
                         </div>
                         <span class="list-group-item d-flex justify-content-between align-items-start w-35"><a href="coach.jsp?id_user=<%= team.getIdUser() %>"> Coach </a></span>
