@@ -35,8 +35,10 @@
                 <h5 class="card-title"><%= team.getName() %></h5>
                 <p class="card-text">Categoria: <strong><%= team.getCategory() %></strong></p>
                 <p class="card-text">Cuota: <strong><%= team.getQuota() %></strong></p>
-                <a href="buy?id=<%= team.getIdTeam() %>" class="btn btn-primary">Modificar</a>
-                <a href="coach.jsp?id_user=<%= team.getIdUser() %>" class="btn btn-primary">Entrenador</a>
+                <a href="buy?id=<%= team.getIdTeam() %>" class="btn btn-outline-warning">Modificar</a>
+                <a href="coach.jsp?id_user=<%= team.getIdUser() %>" class="btn btn-outline-danger">Eliminar</a>
+                <a href="coach.jsp?id_user=<%= team.getIdUser() %>" class="btn btn-outline-success">Asignar Jugadores</a>
+                <a href="coach.jsp?id_user=<%= team.getIdUser() %>" class="btn btn-outline-info">Entrenador</a>
               </div>
               <div class="card-footer text-muted">
                 Jugadores del Equipo:  <strong><%= team.getIdUser() %></strong>

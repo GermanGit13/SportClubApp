@@ -37,7 +37,9 @@
                 <p class="card-text">Email: <strong><%= user.getEmail() %></strong></p>
                 <p class="card-text">Dni: <strong><%= user.getDni() %></strong></p>
                 <p class="card-text">Username: <strong><%= user.getUsername() %></strong></p>
-                <a href="buy?id=<%= user.getIdUser() %>" class="btn btn-primary">Modificar</a>
+                <a href="buy?id=<%= user.getIdUser() %>" class="btn btn-outline-warning">Modificar</a>
+                <a href="coach.jsp?id_user=<%= user.getIdUser() %>" class="btn btn-outline-danger">Eliminar</a>
+                <a href="coach.jsp?id_user=<%= user.getIdUser() %>" class="btn btn-outline-info">Hacer Entrenador</a>
               </div>
               <div class="card-footer text-muted">
                 Entrenador:  <strong><%= user.getCoach() %></strong>
