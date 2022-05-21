@@ -21,12 +21,7 @@
 <%@ page import="java.util.List" %>
 <!-- FIN importar las clases que nos van a  hacer falta -->
 
-<html>
-<head>
-    <!-- Para usar la hoja de estilos de  Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <!-- FIN Bootstrap -->
-</head>
+<jsp:include page="headerAjax.jsp" />
 
 <body>
     <div class="container"> <!-- Para que quede centrada la web gracias a la hoja de estilo de Bootstrap -->
@@ -44,7 +39,8 @@
                           <div class="fw-bold"><a target="_blank" href="team.jsp?id_team=<%= team.getIdTeam() %>"><%= team.getName() %></a></div> <!-- target="_blank" para abrir una pestaña nueva en el enlace -->
                           <%= team.getCategory() %>
                         </div>
-                        <span class="list-group-item d-flex justify-content-between align-items-start w-35"><a href="coach.jsp?id_user=<%= team.getIdUser() %>"> Coach </a></span>
+                        <span class="list-group-item d-flex justify-content-between align-items-start w-35"><a href="user.jsp?id_user=<%= team.getIdUser() %>"> Coach </a></span>
+                        "user.jsp?id_user=<%= user.getIdUser() %>"
                     </li>
           <%
                 }

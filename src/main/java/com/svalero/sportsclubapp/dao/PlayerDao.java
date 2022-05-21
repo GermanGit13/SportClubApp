@@ -29,7 +29,7 @@ public class PlayerDao {
             throw new DniAlredyExistException();
 
         //PRIMERO EL Sql, ASÍ EVITAMOS LAS INYECCIONES SQL
-        String sql = "INSERT INTO player (firstname, lastname, numbers, yearOfBirth, dni) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO player (firstname, lastname, numbers, yearOfBirth, dni, iduser) VALUES (?, ?, ?, ?, ?, ?)";
 
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, player.getFirstName());
@@ -37,6 +37,7 @@ public class PlayerDao {
         statement.setInt(3, player.getNumber());
         statement.setInt(4, player.getYearOfBirth());
         statement.setString(5, player.getDni());
+        statement.setInt(6, player.getIdUser());
         //CUALQUIER CONSULTA QUE NO SEA UN SELECT SE LANZA CON executeUpdate. PARA SELECT USAMOS executeQuery
         statement.executeUpdate();
     }

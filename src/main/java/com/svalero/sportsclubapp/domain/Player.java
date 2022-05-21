@@ -36,6 +36,15 @@ public class Player {
         this.dni = dni;
     }
 
+    public Player(String firstName, String lastName, int number, int yearOfBirth, String dni, int idUser) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.number = number;
+        this.yearOfBirth = yearOfBirth;
+        this.dni = dni;
+        this.idUser = idUser;
+    }
+
     public int getIdPlayer() {
         return idPlayer;
     }
