@@ -29,7 +29,7 @@ public class PlayerDao {
             throw new DniAlredyExistException();
 
         //PRIMERO EL Sql, ASÍ EVITAMOS LAS INYECCIONES SQL
-        String sql = "INSERT INTO player (firstname, lastname, numbers, yearOfBirth, dni, iduser) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO player (firstname, lastname, numbers, yearOfBirth, dni, id_user) VALUES (?, ?, ?, ?, ?, ?)";
 
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, player.getFirstName());

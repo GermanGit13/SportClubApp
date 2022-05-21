@@ -2,13 +2,10 @@ package com.svalero.sportsclubapp.servlet;
 
 import com.svalero.sportsclubapp.dao.Database;
 import com.svalero.sportsclubapp.dao.PlayerDao;
-import com.svalero.sportsclubapp.dao.TeamDao;
 import com.svalero.sportsclubapp.domain.Player;
-import com.svalero.sportsclubapp.domain.Team;
 import com.svalero.sportsclubapp.domain.User;
 import com.svalero.sportsclubapp.exception.DniAlredyExistException;
-import com.svalero.sportsclubapp.exception.TeamAlreadyExistException;
-import com.svalero.sportsclubapp.exception.UserAlredyExistException;
+
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
