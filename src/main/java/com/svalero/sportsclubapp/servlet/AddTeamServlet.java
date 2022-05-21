@@ -18,7 +18,7 @@ import java.sql.SQLException;
 public class AddTeamServlet extends HttpServlet {
 
     //doPost PORQUE ESTOY DANDO DE ALTA DESDE UN FOMULARIO DESDE ADDTEAM.JSP
-    @Override
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html"); //PONERLO SIEMPRE PARA QUE NOS DEVUELVA COMO HTML Y NO TEXTO SIMPLE
         PrintWriter out = response.getWriter(); //DE ESTA FORMA ES MÁS CÓMODO PINTAR POR PANTALLA SOLO USANDO out.

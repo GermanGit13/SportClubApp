@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Optional;
 
 public class UserDao {
@@ -63,8 +64,8 @@ public class UserDao {
     }
 
     //PARA PODER OBTENER UN USUARIO EN CONCRETO
-    public Optional<User> getUser(String username, String password) throws SQLException {
-        String sql ="SELECT * FROM users WHERE username = ? AND password = ?"; //ENCRIPTAR LA PASS CON SHA1(?)
+    public Optional<User> login(String username, String password) throws SQLException {
+        String sql ="SELECT * FROM users WHERE username = ? AND pass = ?"; //ENCRIPTAR LA PASS CON SHA1(?)
         User user = null;
 
         PreparedStatement statement = connection.prepareStatement(sql);
@@ -72,7 +73,10 @@ public class UserDao {
         statement.setString(2, password);
         ResultSet resultSet = statement.executeQuery();
         if (resultSet.next()) {
-            user = fromResultSet(resultSet);
+            user = new User();
+            user.setIdUser(resultSet.getInt("id_user"));
+            user.setFirstName(resultSet.getString("firstname"));
+            user.setUsername(resultSet.getString("username"));
         }
         return Optional.ofNullable(user);
     }
@@ -110,8 +114,6 @@ public class UserDao {
         statement.close();
         return users;
     }
-
-
 
     public User findByDni(String dni) throws SQLException {
         String sql ="SELECT * FROM users WHERE dni = ?";

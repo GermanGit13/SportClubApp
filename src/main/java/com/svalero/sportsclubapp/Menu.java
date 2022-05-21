@@ -105,7 +105,7 @@ public class Menu {
                     modifyPlayer();
                     break;
                 case "9":
-                    //modifyClothing(); //MODIFICAR PEDIDO
+                    login(); //MODIFICAR PEDIDO
                     break;
                 case "10":
                     //showUser();
@@ -159,13 +159,14 @@ public class Menu {
 
         UserDao userDao = new UserDao(connection);
         try {
-            User user = userDao.getUser(username, password) //REVISAMOS SI EXISTE EL USUARIO CON LOS DATOS INTRODUCIDOS
+            User user = userDao.login(username, password) //REVISAMOS SI EXISTE EL USUARIO CON LOS DATOS INTRODUCIDOS
                     .orElseThrow(UserNotFoundException::new); //SINO LANZAMOS LA EXCEPCIÓN QUE NO EXISTE
         } catch (UserNotFoundException unfe) {
             System.out.println(unfe.getMessage());
             System.exit(0); //SI EL USUARIO NO EXISTE LE ECHAMOS DE LA APP
         } catch (SQLException sqle) {
             System.out.println("No se ha podido comunicar con la base de datos. Inténtelo de nuevo");
+            sqle.printStackTrace();  //PARA OBTENER LAS TRAZAS DE LA EXCEPCIÓN Y ASI LUEGO SEGUIR CON PRECISION EL ERROR
             System.exit(0); //SI NO SE PUEDE CONECTAR LE ECHAMOS DE LA APP
         }
     }

@@ -97,6 +97,7 @@ public class PlayerDao {
         //RECORREMOS EL resultSet
         while (resultSet.next()) {
             Player player = fromResultSet(resultSet);
+            players.add(player);
         }
         statement.close();
         return players;
