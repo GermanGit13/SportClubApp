@@ -77,6 +77,7 @@ public class UserDao {
             user.setIdUser(resultSet.getInt("id_user"));
             user.setFirstName(resultSet.getString("firstname"));
             user.setUsername(resultSet.getString("username"));
+            user.setCoach(resultSet.getString("coach")); // USADO COMO ROL PARA ADMINISTRAR LA WEB
         }
         return Optional.ofNullable(user);
     }

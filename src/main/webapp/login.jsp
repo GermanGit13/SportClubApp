@@ -48,7 +48,7 @@
                   $("form").on("submit", function(event) {
                       event.preventDefault();
                       var formValue = $(this).serialize();
-                      $.post("addteam", formValue, function(data) { <!-- servlet que recibe todos los datos del formulario -->
+                      $.post("login", formValue, function(data) { <!-- servlet que recibe todos los datos del formulario -->
                           $("#result").html(data); <!-- Lo usamos para enviar la respuesta al div en la misma página -->
                       });
                   });

@@ -3,6 +3,7 @@ package com.svalero.sportsclubapp.servlet;
 import com.svalero.sportsclubapp.dao.Database;
 import com.svalero.sportsclubapp.dao.TeamDao;
 import com.svalero.sportsclubapp.domain.Team;
+import com.svalero.sportsclubapp.domain.User;
 import com.svalero.sportsclubapp.exception.TeamAlreadyExistException;
 
 import javax.servlet.ServletException;
@@ -22,6 +23,12 @@ public class AddTeamServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html"); //PONERLO SIEMPRE PARA QUE NOS DEVUELVA COMO HTML Y NO TEXTO SIMPLE
         PrintWriter out = response.getWriter(); //DE ESTA FORMA ES MÁS CÓMODO PINTAR POR PANTALLA SOLO USANDO out.
+
+        //SINO ESTA LOGEADO LO MANDO DE NUEVO AL INICIO DE SESIÓN
+        User currentUser = (User) request.getSession().getAttribute("currentUser");
+        if (currentUser == null) {
+            response.sendRedirect("login.jsp");
+        }
 
         String name = request.getParameter("name"); //REQUEST PARA RECOGER LO QUE PROVIENE DEL USUARIO --> input name del formulario
         name = name.toUpperCase();

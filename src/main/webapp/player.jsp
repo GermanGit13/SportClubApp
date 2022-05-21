@@ -1,11 +1,24 @@
+<%@ page language="java"
+    contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"
+%>
+
+<%
+    User currentUser = (User) session.getAttribute("currentUser");
+    if (currentUser == null) {
+        response.sendRedirect("login.jsp");
+    }
+%>
 <!-- Para importar las clases que nos van a  hacer falta -->
 <%@ page import="com.svalero.sportsclubapp.dao.Database" %>
 <%@ page import="com.svalero.sportsclubapp.dao.PlayerDao" %>
 <%@ page import="com.svalero.sportsclubapp.domain.Player" %>
+<%@ page import="com.svalero.sportsclubapp.domain.User" %>
 <%@ page import="java.util.Optional" %>
 <%@ page import="java.sql.SQLException" %>
 <%@ page import="java.util.List" %>
 <!-- FIN importar las clases que nos van a  hacer falta -->
+
 <html>
 <head>
     <!-- Para usar la hoja de estilos de  Bootstrap -->
