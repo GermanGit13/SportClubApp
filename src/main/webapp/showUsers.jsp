@@ -12,9 +12,7 @@
 
 <!-- Para importar las clases que nos van a  hacer falta -->
 <%@ page import="com.svalero.sportsclubapp.dao.Database" %>
-<%@ page import="com.svalero.sportsclubapp.dao.TeamDao" %>
 <%@ page import="com.svalero.sportsclubapp.dao.UserDao" %>
-<%@ page import="com.svalero.sportsclubapp.domain.Team" %>
 <%@ page import="com.svalero.sportsclubapp.domain.User" %>
 <%@ page import="java.util.Optional" %>
 <%@ page import="java.sql.SQLException" %>
@@ -25,21 +23,24 @@
 
 <body>
     <div class="container"> <!-- Para que quede centrada la web gracias a la hoja de estilo de Bootstrap -->
-        <h2>Listado Completo de Equipos</h2>
+        <h2>Listado Completo de Usuarios</h2>
         <ul class="list-group">
           <%
             Database database = new Database(); //creamos la conexión con la BBDD
-            TeamDao teamDao = new TeamDao(database.getConnection()); //Creamos un teamdao y le pasamos la conexion
+            UserDao userDao = new UserDao(database.getConnection()); //Creamos un userDao y le pasamos la conexion
             try {
-                List<Team> teams = teamDao.findAll();
-                for (Team team: teams) {
+                List<User> users = userDao.findAll();
+                for (User user: users) {
           %>
                     <li class="list-group-item d-flex justify-content-between align-items-start w-50">
                         <div class="ms-2 me-auto">
-                          <div class="fw-bold"><a target="_blank" href="team.jsp?id_team=<%= team.getIdTeam() %>"><%= team.getName() %></a></div> <!-- target="_blank" para abrir una pestaña nueva en el enlace -->
-                          <%= team.getCategory() %>
+                          <div class="fw-bold"><a target="_blank" href="user.jsp?id_user=<%= user.getIdUser() %>">Nombre: <%= user.getFirstName() %></a></div> <!-- target="_blank" para abrir una pestaña nueva en el enlace -->
+                          <div class="fw-bold">Apellidos:</div><%= user.getLastName() %>
+                          <div class=>Correo: <%= user.getEmail() %></div>
+                          <div class=>Dni: <%= user.getDni() %></div>
+                          <div class=>Username: <%= user.getUsername() %></div>
                         </div>
-                        <span class="list-group-item d-flex justify-content-between align-items-start w-35"><a href="user.jsp?id_user=<%= team.getIdUser() %>"> Coach </a></span>
+
                     </li>
           <%
                 }

@@ -53,6 +53,19 @@ public class TeamDao {
         return rows ==1;
     }
 
+    //LE PASAMOS idTeam QUE QUEREMOS MODIFICAR Y EL OBJETO PARA A MODIFICAR
+    public boolean modifyById(int idTeam, Team team) throws SQLException{ //throws PARA PROPAGAR LA EXCEPCIÓN HACIA UNA CAPA SUPERIOR
+        String sql = "UPDATE team SET name = ?, category = ? WHERE id_team = ?";
+
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, team.getName());
+        statement.setString(2, team.getCategory());
+        statement.setInt(3, idTeam);
+        //PARA DECIRNOS EL NÚMERO DE FILAS QUE HA MODIFICADO
+        int rows = statement.executeUpdate();
+        return rows ==1;
+    }
+
     public boolean delete(String name, String category) throws SQLException { //throws PARA PROPAGAR LA EXCEPCIÓN HACIA UNA CAPA SUPERIOR
         String sql = "DELETE FROM team WHERE name = ? AND category = ?";
 
@@ -78,6 +91,23 @@ public class TeamDao {
             Team team = fromResultSet(resultSet);
             teams.add(team);
         }
+
+        return teams;
+    }
+
+    public ArrayList<Team> findAll(String searchText) throws SQLException {
+        String sql = "SELECT * FROM team WHERE INSTR(name, ?) !=0 OR INSTR(category, ?) !=0 ORDER BY category";
+        ArrayList<Team> teams = new ArrayList<>();
+
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, searchText);
+        statement.setString(2, searchText);
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            Team team = fromResultSet(resultSet);
+            teams.add(team);
+        }
+
         return teams;
     }
 
@@ -133,12 +163,12 @@ public class TeamDao {
         return team;
     }
 
-    public Optional<Team> findById(int id) throws SQLException {
+    public Optional<Team> findById(int idTeam) throws SQLException {
         String sql = "SELECT * FROM team WHERE id_team = ?";
         Team team = null;
 
         PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setInt(1, id);
+        statement.setInt(1, idTeam);
         ResultSet resultSet = statement.executeQuery();
         if (resultSet.next()) {
             team = fromResultSet(resultSet);

@@ -105,7 +105,7 @@ public class Menu {
                     modifyPlayer();
                     break;
                 case "9":
-                    //modifyClothing(); //MODIFICAR PEDIDO
+                    login(); //MODIFICAR PEDIDO
                     break;
                 case "10":
                     //showUser();
@@ -114,7 +114,7 @@ public class Menu {
                     showTeam(); //OK
                     break;
                 case "12":
-                    //showTeamPlayer();
+                    showUser();
                     break;
                 case "13":
                     //showTeamCategory();
@@ -159,13 +159,14 @@ public class Menu {
 
         UserDao userDao = new UserDao(connection);
         try {
-            User user = userDao.getUser(username, password) //REVISAMOS SI EXISTE EL USUARIO CON LOS DATOS INTRODUCIDOS
+            User user = userDao.login(username, password) //REVISAMOS SI EXISTE EL USUARIO CON LOS DATOS INTRODUCIDOS
                     .orElseThrow(UserNotFoundException::new); //SINO LANZAMOS LA EXCEPCIÓN QUE NO EXISTE
         } catch (UserNotFoundException unfe) {
             System.out.println(unfe.getMessage());
             System.exit(0); //SI EL USUARIO NO EXISTE LE ECHAMOS DE LA APP
         } catch (SQLException sqle) {
             System.out.println("No se ha podido comunicar con la base de datos. Inténtelo de nuevo");
+            sqle.printStackTrace();  //PARA OBTENER LAS TRAZAS DE LA EXCEPCIÓN Y ASI LUEGO SEGUIR CON PRECISION EL ERROR
             System.exit(0); //SI NO SE PUEDE CONECTAR LE ECHAMOS DE LA APP
         }
     }
@@ -384,11 +385,25 @@ public class Menu {
         }
     }
 
+    private void showUser() {
+        UserDao userDao = new UserDao(connection);
+
+        try {
+            ArrayList<User> users = userDao.findAll();
+            for (User user : users) {
+                System.out.println(user.getFirstName() + user.getLastName() + user.getEmail() + user.getDni() + user.getUsername() + user.getIdUser() + user.getCoach());
+            }
+        } catch (SQLException sqle) {
+            System.out.println("No se ha podido conectar con el servidor de base de datos. Comprueba que los datos son correctos y que el servidor se ha iniciado");
+            sqle.printStackTrace();  //PARA OBTENER LAS TRAZAS DE LA EXCEPCIÓN Y ASI LUEGO SEGUIR CON PRECISION EL ERROR
+        }
+    }
+
     private void showPlayer() {
         PlayerDao playerDao = new PlayerDao(connection);
 
         try {
-            ArrayList<Player> players = playerDao.findAll();
+            ArrayList<Player> players = playerDao.findAll("A");
             for ( Player player : players) {
                 System.out.println(player.getFirstName() + player.getLastName() + player.getDni() + player.getYearOfBirth());
             }

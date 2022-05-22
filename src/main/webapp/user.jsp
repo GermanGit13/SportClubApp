@@ -21,7 +21,7 @@
 <%@ page import="java.util.List" %>
 <!-- FIN importar las clases que nos van a  hacer falta -->
 
-<jsp:include page="header.jsp" />
+<jsp:include page="headerAjax.jsp" />
 
 <body>
     <div class="container"> <!-- Para que quede centrada la web gracias a la hoja de estilo de Bootstrap -->
@@ -37,24 +37,27 @@
         <div class="container">
             <div class="card text-center">
               <div class="card-header">
-                Detalles del Entrenador
+                Detalles del Usuario
               </div>
               <div class="card-body">
                 <h5 class="card-title"><%= user.getFirstName() %></h5>
-                <p class="card-text">Correo: <strong><%= user.getEmail() %></strong></p>
+                <p class="card-text">Apellidos: <strong><%= user.getLastName() %></strong></p>
+                <p class="card-text">Email: <strong><%= user.getEmail() %></strong></p>
                 <p class="card-text">Dni: <strong><%= user.getDni() %></strong></p>
-                <a href="buy?id=<%= user.getIdUser() %>" class="btn btn-primary">Modificar</a>
+                <p class="card-text">Username: <strong><%= user.getUsername() %></strong></p>
+                <a href="buy?id=<%= user.getIdUser() %>" class="btn btn-outline-warning">Modificar</a>
+                <a href="coach.jsp?id_user=<%= user.getIdUser() %>" class="btn btn-outline-danger">Eliminar</a>
+                <a href="coach.jsp?id_user=<%= user.getIdUser() %>" class="btn btn-outline-info">Hacer Entrenador</a>
               </div>
               <div class="card-footer text-muted">
-                Código Coach:  <strong><%= user.getIdUser() %></strong>
+                Entrenador:  <strong><%= user.getCoach() %></strong>
               </div>
-            </div>
+             </div>
         </div>
-
         <%
             } catch (SQLException sqle) {
         %>
-            <div class='alert alert-danger' role='alert'>Se ha producido al cargar los datos del entrenador</div>
+            <div class='alert alert-danger' role='alert'>Se ha producido al cargar los datos del equipo</div>
         <%
             }
         %>

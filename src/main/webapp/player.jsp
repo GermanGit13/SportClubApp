@@ -9,12 +9,10 @@
         response.sendRedirect("login.jsp");
     }
 %>
-
 <!-- Para importar las clases que nos van a  hacer falta -->
 <%@ page import="com.svalero.sportsclubapp.dao.Database" %>
-<%@ page import="com.svalero.sportsclubapp.dao.TeamDao" %>
-<%@ page import="com.svalero.sportsclubapp.dao.UserDao" %>
-<%@ page import="com.svalero.sportsclubapp.domain.Team" %>
+<%@ page import="com.svalero.sportsclubapp.dao.PlayerDao" %>
+<%@ page import="com.svalero.sportsclubapp.domain.Player" %>
 <%@ page import="com.svalero.sportsclubapp.domain.User" %>
 <%@ page import="java.util.Optional" %>
 <%@ page import="java.sql.SQLException" %>
@@ -26,35 +24,36 @@
 <body>
     <div class="container"> <!-- Para que quede centrada la web gracias a la hoja de estilo de Bootstrap -->
     <%
-        String userId = request.getParameter("id_user");
+        String playerId = request.getParameter("id_player");
         Database database = new Database();
-        UserDao userDao = new UserDao(database.getConnection());
-        User user = null;
+        PlayerDao playerDao = new PlayerDao(database.getConnection());
+        Player player = null;
         try {
-            Optional<User> optionalUser = userDao.findById(Integer.parseInt(userId));
-            user = optionalUser.get();
+            Optional<Player> optionalPlayer = playerDao.findById(Integer.parseInt(playerId));
+            player = optionalPlayer.get();
     %>
         <div class="container">
             <div class="card text-center">
               <div class="card-header">
-                Detalles del Entrenador
+                Detalles del Jugador
               </div>
               <div class="card-body">
-                <h5 class="card-title"><%= user.getFirstName() %></h5>
-                <p class="card-text">Correo: <strong><%= user.getEmail() %></strong></p>
-                <p class="card-text">Dni: <strong><%= user.getDni() %></strong></p>
-                <a href="buy?id=<%= user.getIdUser() %>" class="btn btn-primary">Modificar</a>
+                <h5 class="card-title"><%= player.getFirstName() %></h5>
+                <p class="card-text">Apellidos: <strong><%= player.getLastName() %></strong></p>
+                <p class="card-text">Año Nacimiento: <strong><%= player.getYearOfBirth() %></strong></p>
+                <p class="card-text">Dni: <strong><%= player.getDni() %></strong></p>
+                <p class="card-text">umero: <strong><%= user.getNumber() %></strong></p>
+                <a href="buy?id=<%= player.getIdPlayer() %>" class="btn btn-primary">Modificar</a>
               </div>
               <div class="card-footer text-muted">
-                Código Coach:  <strong><%= user.getIdUser() %></strong>
+                Equipo:  <strong><%= player.getIdTeam() %></strong>
               </div>
-            </div>
+             </div>
         </div>
-
         <%
             } catch (SQLException sqle) {
         %>
-            <div class='alert alert-danger' role='alert'>Se ha producido al cargar los datos del entrenador</div>
+            <div class='alert alert-danger' role='alert'>Se ha producido al cargar los datos del equipo</div>
         <%
             }
         %>

@@ -2,12 +2,16 @@ package com.svalero.sportsclubapp.dao;
 
 import com.svalero.sportsclubapp.domain.Team;
 import com.svalero.sportsclubapp.domain.User;
+import com.svalero.sportsclubapp.domain.User;
 import com.svalero.sportsclubapp.exception.UserAlredyExistException;
+import com.svalero.sportsclubapp.exception.UserNotFoundException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Optional;
 
 public class UserDao {
@@ -60,8 +64,8 @@ public class UserDao {
     }
 
     //PARA PODER OBTENER UN USUARIO EN CONCRETO
-    public Optional<User> getUser(String username, String password) throws SQLException {
-        String sql ="SELECT * FROM users WHERE username = ? AND password = ?"; //ENCRIPTAR LA PASS CON SHA1(?)
+    public Optional<User> login(String username, String password) throws SQLException {
+        String sql ="SELECT * FROM users WHERE username = ? AND pass = ?"; //ENCRIPTAR LA PASS CON SHA1(?)
         User user = null;
 
         PreparedStatement statement = connection.prepareStatement(sql);
@@ -70,19 +74,47 @@ public class UserDao {
         ResultSet resultSet = statement.executeQuery();
         if (resultSet.next()) {
             user = new User();
-            user.setIdUser(resultSet.getInt("id"));
+            user.setIdUser(resultSet.getInt("id_user"));
             user.setFirstName(resultSet.getString("firstname"));
-            user.setLastName(resultSet.getString("lastname"));
-            user.setEmail(resultSet.getString("Email"));
-            user.setDni(resultSet.getString("Dni"));
             user.setUsername(resultSet.getString("username"));
-            user.setPass(resultSet.getString("password"));
-            user.setCoach(resultSet.getBoolean("coach"));
+            user.setCoach(resultSet.getString("coach")); // USADO COMO ROL PARA ADMINISTRAR LA WEB
         }
         return Optional.ofNullable(user);
     }
 
+    public ArrayList<User> findAll() throws SQLException { //throws PARA PROPAGAR LA EXCEPCIÓN HACIA UNA CAPA SUPERIOR
+        //PRIMERO EL Sql, ASÍ EVITAMOS LAS INYECCIONES SQL
+        String sql = "SELECT * FROM users ORDER BY FirstName";
+        ArrayList<User> users = new ArrayList<>();
 
+        //COMPONER EL SQL CON PreparedStatement EN BASE A LA SENTENCIA sql
+        PreparedStatement statement = connection.prepareStatement(sql);
+        //ResultSet ESPECIE DE ARRAYLIST CURSOR QUE APUNTE AL CONTENIDO CARGADO EN LA MEMORIA JAVA DONDE METEMOS EL RESULTADO DE statement.executeQuery
+        ResultSet resultSet = statement.executeQuery();
+        //RECORREMOS EL resultSet
+        while (resultSet.next()) {
+            User user = fromResultSet(resultSet);
+            users.add(user);
+        }
+        return users;
+    }
+
+    public ArrayList<User> findAll(String searchText) throws SQLException {
+        String sql = "SELECT * FROM users WHERE INSTR(firstName, ?) !=0 OR INSTR(lastName, ?) !=0 OR INSTR(DNI, ?) !=0 ORDEN BY firstName";
+        ArrayList<User> users = new ArrayList<>();
+
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, searchText);
+        statement.setString(2, searchText);
+        statement.setString(3, searchText);
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            User user = fromResultSet(resultSet);
+            users.add(user);
+        }
+        statement.close();
+        return users;
+    }
 
     public User findByDni(String dni) throws SQLException {
         String sql ="SELECT * FROM users WHERE dni = ?";
@@ -94,10 +126,7 @@ public class UserDao {
         //ResultSet ESPECIE DE ARRAYLIST CURSOR QUE APUNTE AL CONTENIDO CARGADO EN LA MEMORIA JAVA DONDE METEMOS EL RESULTADO DE statement.executeQuery
         ResultSet resultSet = statement.executeQuery();
         if (resultSet.next()) {
-            user = new User();
-            user.setFirstName(resultSet.getString("FirstName"));
-            user.setLastName(resultSet.getString("LastName"));
-            user.setDni(resultSet.getString("DNI"));
+            user = fromResultSet(resultSet);
         }
 
         return user;
@@ -118,8 +147,7 @@ public class UserDao {
         //ResultSet ESPECIE DE ARRAYLIST CURSOR QUE APUNTE AL CONTENIDO CARGADO EN LA MEMORIA JAVA DONDE METEMOS EL RESULTADO DE statement.executeQuery
         ResultSet resultSet = statement.executeQuery();
         if (resultSet.next()) {
-            user = new User();
-            user.setUsername(resultSet.getString("username"));
+            user = fromResultSet(resultSet);
         }
 
         return user;
@@ -138,16 +166,23 @@ public class UserDao {
         statement.setInt(1, id);
         ResultSet resultSet = statement.executeQuery();
         if (resultSet.next()) {
-            user = new User();
-            user.setFirstName(resultSet.getString("FirstName"));
-            user.setLastName(resultSet.getString("LastName"));
-            user.setEmail(resultSet.getString("Email"));
-            user.setDni(resultSet.getString("Dni"));
-            user.setUsername(resultSet.getString("Username"));
-            user.setIdUser(resultSet.getInt("Id"));
+            user = fromResultSet(resultSet);
         }
         return Optional.ofNullable(user);
     }
 
+    //PARA USARLO EN LOS LISTADO QUE DEVUELVE ResultSet
+    private User fromResultSet(ResultSet resultSet) throws SQLException {
+        User user = new User();
+        user.setIdUser(resultSet.getInt("id_user"));
+        user.setFirstName(resultSet.getString("firstname"));
+        user.setLastName(resultSet.getString("lastname"));
+        user.setEmail(resultSet.getString("email"));
+        user.setDni(resultSet.getString("dni"));
+        user.setUsername(resultSet.getString("username"));
+        user.setPass(resultSet.getString("pass"));
+        user.setCoach(resultSet.getString("coach"));
+        return user;
+    }
 }
 
