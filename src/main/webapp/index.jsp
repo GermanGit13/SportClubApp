@@ -17,6 +17,7 @@
 <jsp:include page="header.jsp" />
 
 <body>
+
     <div class="container"> <!-- Para que quede centrada la web gracias a la hoja de estilo de Bootstrap -->
         <div class="alert alert-warning" role="alert">
         <h2>WebApp Para clubs deportivos</h2>
@@ -27,25 +28,58 @@
           <a href="logout" class="btn btn-outline-danger">Cerrar Sesión</a>
         </div>
 
+            <div class="container">
+              <div class="row g-2">
         <%
             if ((currentUser !=null && (currentUser.getCoach().equals("TRUE")))) {
         %>
-        <p><a href="addTeam.jsp">Añadir un Equipo</a></p> <!-- Referencia a JSP -->
-        <p><a href="showTeams.jsp">Listado de Equipos</a></p> <!-- Referencia a JSP -->
-        <p><a href="showUsers.jsp">Listado de Usuarios</a></p> <!-- Referencia a JSP -->
-        <p><a href="showPlayers.jsp">Listado de Jugadores</a></p> <!-- Referencia a JSP -->
-        <p><a href="addTeam.jsp">Listar Pedidos PENDIENTE</a></p> <!-- Referencia a JSP -->
-        <p><a href="searchPlayer.jsp">Buscador de Jugadores</a></p> <!-- Referencia a JSP -->
-        <p><a href="searchTeam.jsp">Buscador de Equipos</a></p> <!-- Referencia a JSP -->
-        <p><a href="searchUser.jsp">Buscador de Usuarios</a></p> <!-- Referencia a JSP -->
-        <p><a href="addTeam.jsp">Buscar un pedido PENDIENTE</a></p> <!-- Referencia a JSP -->
+                <div class="col-6">
+                  <div class="p-3 border bg-light"><p><a href="addTeam.jsp">Añadir un Equipo</a></div> <!-- Referencia a JSP -->
+                </div>
+                <div class="col-6">
+                  <div class="p-3 border bg-light"><p><a href="showTeams.jsp">Listado de Equipos</a></p></div>
+                </div>
+                <div class="col-6">
+                  <div class="p-3 border bg-light"><p><a href="showUsers.jsp">Listado de Usuarios</a></p></div>
+                </div>
+                <div class="col-6">
+                  <div class="p-3 border bg-light"><p><a href="showPlayers.jsp">Listado de Jugadores</a></p></div>
+                </div>
+                <div class="col-6">
+                  <div class="p-3 border bg-light"><p><a href="addTeam.jsp">Listar Pedidos PENDIENTE</a></p></div>
+                </div>
+                <div class="col-6">
+                  <div class="p-3 border bg-light"><p><a href="searchPlayer.jsp">Buscador de Jugadores</a></p></div>
+                </div>
+                <div class="col-6">
+                  <div class="p-3 border bg-light"><p><a href="searchTeam.jsp">Buscador de Equipos</a></p></div>
+                </div>
+                <div class="col-6">
+                  <div class="p-3 border bg-light"><p><a href="searchTeam.jsp">Buscador de Equipos</a></p></div>
+                </div>
+                <div class="col-6">
+                  <div class="p-3 border bg-light"><p><a href="searchUser.jsp">Buscador de Usuarios</a></p></div>
+                </div>
+                <div class="col-6">
+                  <div class="p-3 border bg-light"><p><a href="addTeam.jsp">Buscar un pedido PENDIENTE</a></p></div>
+                </div
         <%
             }
         %>
-        <p><a href="addPlayer.jsp">Dar de alta jugador PENDIENTE</a></p> <!-- Referencia a JSP -->
-        <p><a href="addTeam.jsp">Dar de alta pedido de Ropa PENDIENTE</a></p> <!-- Referencia a JSP -->
-        <p><a href="addTeam.jsp">Ver fichas de mis hijos PENDIENTE</a></p> <!-- Referencia a JSP -->
-        <p><a href="addTeam.jsp">Ver mis pedidos PENDIENTE</a></p> <!-- Referencia a JSP -->
+                <div class="col-6">
+                  <div class="p-3 border bg-light"><p><a href="addPlayer.jsp">Alta jugador</a></p></div>
+                </div>
+                <div class="col-6">
+                  <div class="p-3 border bg-light"><p><a href="addTeam.jsp">Crear Pedido P</a></p></div>
+                </div>
+                <div class="col-6">
+                  <div class="p-3 border bg-light"><p><a href="addTeam.jsp">Jugadores P</a></p></div>
+                </div>
+                <div class="col-6">
+                  <div class="p-3 border bg-light"><p><a href="addTeam.jsp">Pedidos P</a></p></div>
+                </div>
+              </div>
+            </div>
 
     </div> <!-- Fin del container de Bootstrap -->
 </body>
