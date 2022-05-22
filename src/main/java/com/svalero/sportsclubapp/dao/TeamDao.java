@@ -77,6 +77,15 @@ public class TeamDao {
         return rows ==1;
     }
 
+    public boolean deleteById(int idTeam) throws SQLException { //throws PARA PROPAGAR LA EXCEPCIÓN HACIA UNA CAPA SUPERIOR
+        String sql = "DELETE FROM team WHERE id_team = ?";
+
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setInt(1, idTeam);
+        //PARA DECIRNOS EL NÚMERO DE FILAS QUE HA BORRADO
+        int rows = statement.executeUpdate();
+        return rows ==1;
+    }
     public ArrayList<Team> findAll() throws SQLException { //throws PARA PROPAGAR LA EXCEPCIÓN HACIA UNA CAPA SUPERIOR
         //PRIMERO EL Sql, ASÍ EVITAMOS LAS INYECCIONES SQL
         String sql = "SELECT * FROM team ORDER BY category";
@@ -173,7 +182,6 @@ public class TeamDao {
         if (resultSet.next()) {
             team = fromResultSet(resultSet);
         }
-
         return Optional.ofNullable(team);
     }
 

@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class PlayerDao {
 
@@ -62,7 +63,7 @@ public class PlayerDao {
 
     //LE PASAMOS QUE NOMBRE QUE QUEREMOS MODIFICAR Y EL OBJETO PARA A MODIFICAR
     public boolean modify(String dni, Player player) throws SQLException {
-        String sql = "UPDATE player SET firstname = ?, lastname = ?, numbers = ?, yearOfBirth = ?, dni = ? WHERE DNI = ?";
+        String sql = "UPDATE player SET firstname = ?, lastname = ?, numbers = ?, yearOfBirth = ?, dni = ? WHERE dni = ?";
 
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, player.getFirstName());
@@ -71,6 +72,21 @@ public class PlayerDao {
         statement.setInt(4, player.getYearOfBirth());
         statement.setString(5, player.getDni());
         statement.setString(6, dni);
+        //PARA DECIRNOS EL NÚMERO DE FILAS QUE HA MODIFICADO
+        int rows = statement.executeUpdate();
+        return rows ==1;
+    }
+
+    public boolean modifyById(int idPlayer, Player player) throws SQLException {
+        String sql = "UPDATE player SET firstname = ?, lastname = ?, numbers = ?, yearOfBirth = ?, dni = ? WHERE id_player = ?";
+
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, player.getFirstName());
+        statement.setString(2, player.getLastName());
+        statement.setInt(3, player.getNumber());
+        statement.setInt(4, player.getYearOfBirth());
+        statement.setString(5, player.getDni());
+        statement.setInt(6, idPlayer);
         //PARA DECIRNOS EL NÚMERO DE FILAS QUE HA MODIFICADO
         int rows = statement.executeUpdate();
         return rows ==1;
@@ -119,6 +135,19 @@ public class PlayerDao {
         }
         statement.close();//PARA CERRAR LA CONEXION CON BBDD
         return players;
+    }
+
+    public Optional<Player> findById(int idPlayer) throws SQLException {
+        String sql = "SELECT * FROM player WHERE id_player = ?";
+        Player player = null;
+
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setInt(1, idPlayer);
+        ResultSet resultSet = statement.executeQuery();
+        if (resultSet.next()) {
+            player = fromResultSet(resultSet);
+        }
+        return Optional.ofNullable(player);
     }
 
     public Player findByDni(String dni) throws SQLException {

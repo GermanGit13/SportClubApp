@@ -43,7 +43,7 @@
                 <p class="card-text">Categoria: <strong><%= team.getCategory() %></strong></p>
                 <p class="card-text">Cuota: <strong><%= team.getQuota() %></strong></p>
                 <a href="addTeam.jsp?id_team=<%= team.getIdTeam() %>" class="btn btn-outline-warning">Modificar</a>
-                <a href="coach.jsp?id_user=<%= team.getIdUser() %>" class="btn btn-outline-danger">Eliminar</a>
+                <a href="deleteTeam?id_team=<%= team.getIdTeam() %>" class="btn btn-outline-danger">Eliminar</a>
                 <a href="coach.jsp?id_user=<%= team.getIdUser() %>" class="btn btn-outline-success">Asignar Jugadores</a>
                 <a href="coach.jsp?id_user=<%= team.getIdUser() %>" class="btn btn-outline-info">Entrenador</a>
               </div>

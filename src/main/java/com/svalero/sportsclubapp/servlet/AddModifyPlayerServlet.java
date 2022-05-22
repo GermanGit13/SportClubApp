@@ -16,8 +16,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 
-@WebServlet("/addplayer")
-public class AddPlayerServlet extends HttpServlet {
+@WebServlet("/add-modify-player")
+public class AddModifyPlayerServlet extends HttpServlet {
 
     //doPost PORQUE ESTOY DANDO DE ALTA DESDE UN FOMULARIO DESDE ADDPLAYER.JSP
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -34,18 +34,26 @@ public class AddPlayerServlet extends HttpServlet {
         firstname = firstname.toUpperCase();
         String lastname = request.getParameter("lastname");
         lastname = lastname.toUpperCase();
-        int numbers = Integer.parseInt(request.getParameter("numbers"));
-        int yearOfBirth = Integer.parseInt(request.getParameter("yearOfBirth"));
+        String numbers = request.getParameter("numbers");
+        String yearOfBirth = request.getParameter("yearOfBirth");
         String dni = request.getParameter("dni");
         dni = dni.toUpperCase();
-        int id_user = currentUser.getIdUser();
-        Player player = new Player(firstname, lastname, numbers, yearOfBirth, dni, currentUser.getIdUser());
+        String idUser = request.getParameter("idUser");
+        String idPlayer = request.getParameter("idPlayer");
+        String action = request.getParameter("action");
+        Player player = new Player(firstname, lastname, Integer.parseInt(numbers), Integer.parseInt(yearOfBirth), dni, currentUser.getIdUser());
 
         Database database = new Database(); //CREAMOS UN OBJETO Database PARA CONECTARNOS A LA BBDD
         PlayerDao playerDao = new PlayerDao(database.getConnection()); //CREAMOS EL OBJETO DAO CORRESPONDIENTE Y LE PASAMOS LA CONEXIÓN A LA BBDD
         try {
-            playerDao.add(player);
-            out.println("<div class='alert alert-success' role='alert'>Jugador Registrado en la BBDD correctamente</div>");
+            if (action.equals("register")) {
+                playerDao.add(player);
+                out.println("<div class='alert alert-success' role='alert'>Jugador Registrado en la BBDD correctamente</div>");
+            } else {
+                player = new Player(firstname, lastname, Integer.parseInt(numbers), Integer.parseInt(yearOfBirth), dni);
+                playerDao.modifyById(Integer.parseInt(idPlayer), player);
+                out.println("<div class='alert alert-success' role='alert'>Jugador Modificado en la BBDD correctamente</div>");
+            }
         } catch (DniAlredyExistException taee) {
             out.println("<div class='alert alert-danger' role='alert'>DNI ya registrado en la BBDD</div>");
             taee.printStackTrace(); //PINTAMOS LAS TRAZAS DEL ERROR
