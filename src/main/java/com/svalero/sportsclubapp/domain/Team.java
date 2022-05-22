@@ -37,6 +37,13 @@ public class Team {
         quota = QUOTA;
     }
 
+    public Team(String name, String category, float quota, int idUser) {
+        this.name = name;
+        this.category = category;
+        quota = QUOTA;
+        this.idUser = idUser;
+    }
+
     public int getIdTeam() {
         return idTeam;
     }
