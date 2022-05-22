@@ -62,7 +62,7 @@
                 </div>
                 <div class="col-6">
                   <div class="p-3 border bg-light"><p><a href="addTeam.jsp">Buscar un pedido PENDIENTE</a></p></div>
-                </div
+                </div>
         <%
             }
         %>
@@ -70,13 +70,13 @@
                   <div class="p-3 border bg-light"><p><a href="addPlayer.jsp">Alta jugador</a></p></div>
                 </div>
                 <div class="col-6">
-                  <div class="p-3 border bg-light"><p><a href="addTeam.jsp">Crear Pedido P</a></p></div>
+                  <div class="p-3 border bg-light"><p><a href="addTeam.jsp">Crear Pedido PENDIENTE</a></p></div>
                 </div>
                 <div class="col-6">
-                  <div class="p-3 border bg-light"><p><a href="addTeam.jsp">Jugadores P</a></p></div>
+                  <div class="p-3 border bg-light"><p><a href="addTeam.jsp">Mis Jugadores PENDIENTE</a></p></div>
                 </div>
                 <div class="col-6">
-                  <div class="p-3 border bg-light"><p><a href="addTeam.jsp">Pedidos P</a></p></div>
+                  <div class="p-3 border bg-light"><p><a href="addTeam.jsp">Mis Pedidos PENDIENTE</a></p></div>
                 </div>
               </div>
             </div>
