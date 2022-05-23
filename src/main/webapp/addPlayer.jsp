@@ -10,6 +10,7 @@
 <%@ page import="com.svalero.sportsclubapp.dao.PlayerDao" %>
 <%@ page import="java.util.Optional" %>
 <%@ page import="java.sql.SQLException" %>
+<%@ page import="com.svalero.sportsclubapp.dao.UserDao" %>
 
 <%
     User currentUser = (User) session.getAttribute("currentUser");
@@ -18,15 +19,15 @@
     }
 
     String textButton = "";
-    String idPlayer = request.getParameter("id_player");
-    Player player = null;
-    if (idPlayer !=null) {
+    String idUser = request.getParameter("id_user");
+    User user = null;
+    if (idUser !=null) {
         textButton = "Modificar";
         Database database = new Database();
-        PlayerDao playerDao = new PlayerDao(database.getConnection());
+        UserDao userDao = new UserDao(database.getConnection());
         try {
-            Optional<Player> optionalPlayer = playerDao.findById(Integer.parseInt(idPlayer));
-            player = optionalPlayer.get();
+            Optional<User> optionalUser = userDao.findById(Integer.parseInt(idUser));
+            user = optionalUser.get();
         } catch (SQLException sqle) {
             sqle.printStackTrace();
         }
@@ -53,7 +54,16 @@
     <!-- FIN Código para enviar el formulario de forma asíncrona -->
 
     <div class="container">
-        <h2>Registra un nuevo Jugador</h2>
+        <h2>
+            <%
+                String textHead = "";
+                if (idUser !=null) {
+                textHead = "Modificar";
+            } else {
+                textHead = "Registrar nuevo Usuario";
+            }
+            %>
+        </h2>
         <%-- action es la URL que va a procesar el formulario, post para dar de alta algo a través de un formulario --%>
         <%-- method http que voy a usar para comunicarme con el action   --%>
         <form> <!-- action="addplayer" method="post" -->

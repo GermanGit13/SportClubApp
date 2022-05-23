@@ -1,17 +1,13 @@
 package com.svalero.sportsclubapp.dao;
 
-import com.svalero.sportsclubapp.domain.Team;
-import com.svalero.sportsclubapp.domain.User;
 import com.svalero.sportsclubapp.domain.User;
 import com.svalero.sportsclubapp.exception.UserAlredyExistException;
-import com.svalero.sportsclubapp.exception.UserNotFoundException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.Optional;
 
 public class UserDao {
@@ -47,7 +43,7 @@ public class UserDao {
 
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, user.getUsername());
-        statement.setString(3, username);
+        statement.setString(2, username);
         //PARA DECIRNOS EL NÚMERO DE FILAS QUE HA MODIFICADO
         int rows = statement.executeUpdate();
         return rows ==1;
@@ -130,6 +126,21 @@ public class UserDao {
         }
 
         return user;
+    }
+
+    public ArrayList<User> findAllCoach(String searchCoach) throws SQLException {
+        String sql = "SELECT * FROM users WHERE coach = ? ORDER BY firstname";
+        ArrayList<User> users = new ArrayList<>();
+
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, searchCoach);
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            User user = fromResultSet(resultSet);
+            users.add(user);
+        }
+        statement.close();
+        return users;
     }
 
     private boolean existDni(String dni) throws SQLException{

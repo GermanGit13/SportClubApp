@@ -141,7 +141,7 @@ public class Menu {
                     //deleteOrder();
                     break;
                 case "21":
-                    //deleteUser();
+                    showCoach();
                     break;
                 case "22":
                     showOrdersBetweenDates();
@@ -513,6 +513,23 @@ public class Menu {
         return true;
     }
 
+    private void showCoach() {
+        System.out.print("Búsqueda por yes o no: ");
+        String searchCoach = keyboard.nextLine();
+
+        UserDao userDao = new UserDao(connection);
+
+
+        try {
+            ArrayList<User> users = userDao.findAllCoach(searchCoach);
+            for ( User user : users) {
+                System.out.println(user.getFirstName() + user.getLastName() + user.getDni());
+            }
+        } catch (SQLException sqle) {
+            System.out.println("No se ha podido conectar con el servidor de base de datos. Comprueba que los datos son correctos y que el servidor se ha iniciado");
+            sqle.printStackTrace();  //PARA OBTENER LAS TRAZAS DE LA EXCEPCIÓN Y ASI LUEGO SEGUIR CON PRECISION EL ERROR
+        }
+    }
     private void showOrdersBetweenDates() {
         System.out.println("Desde que fecha (dd.MM.yyyy): ");
         String fromDateString = keyboard.nextLine(); //ES EN EL FORMATO QUE NOS LLEGA DEL USUARIO TENEMOS QUE PARSEARLA

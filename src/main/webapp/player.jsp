@@ -47,9 +47,9 @@
                 <p class="card-text">Dni: <strong><%= player.getDni() %></strong></p>
                 <p class="card-text">Número: <strong><%= player.getNumber() %></strong></p>
                 <a href="addPlayer.jsp?id_player=<%= player.getIdPlayer() %>" class="btn btn-outline-warning">Modificar</a>
-                <a href="coach.jsp?id_user=<%= player.getIdUser() %>" class="btn btn-outline-danger">Eliminar</a>
-                <a href="coach.jsp?id_user=<%= player.getIdUser() %>" class="btn btn-outline-success">Asignar Equipo</a>
-                <a href="coach.jsp?id_user=<%= player.getIdUser() %>" class="btn btn-outline-info">Datos Padres</a>
+                <a href="coach.jsp?id_user=<%= player.getIdUser() %>" class="btn btn-outline-danger">Eliminar Pendiente</a>
+                <a href="coach.jsp?id_user=<%= player.getIdUser() %>" class="btn btn-outline-success">Asignar Equipo Pendiente</a>
+                <a href="user.jsp?id_user=<%= player.getIdUser() %>" class="btn btn-outline-info">Datos Padres</a>
               </div>
               <div class="card-footer text-muted">
         <%

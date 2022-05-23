@@ -171,6 +171,22 @@ public class PlayerDao {
         return player != null;
     }
 
+    public Player countByTeam(int idTeam) throws SQLException {
+        String sql ="SELECT count(*) FROM player WHERE idTeam = ?";
+        Player player = null;
+
+        //PRIMERO EL Sql, ASÍ EVITAMOS LAS INYECCIONES SQL
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setInt(1, idTeam);
+        //ResultSet ESPECIE DE ARRAYLIST CURSOR QUE APUNTE AL CONTENIDO CARGADO EN LA MEMORIA JAVA DONDE METEMOS EL RESULTADO DE statement.executeQuery
+        ResultSet resultSet = statement.executeQuery();
+        if (resultSet.next()) {
+            player = fromResultSet(resultSet);
+        }
+        statement.close();
+        return player;
+    }
+
     //PARA USARLO EN LOS LISTADO QUE DEVUELVE ResultSet
     private Player fromResultSet(ResultSet resultSet) throws SQLException {
         Player player = new Player();

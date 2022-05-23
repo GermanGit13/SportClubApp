@@ -10,6 +10,7 @@
 <%@ page import="com.svalero.sportsclubapp.dao.UserDao" %>
 <%@ page import="java.util.Optional" %>
 <%@ page import="java.sql.SQLException" %>
+<%@ page import="java.util.ArrayList" %>
 
 <%
     User currentUser = (User) session.getAttribute("currentUser");
@@ -64,6 +65,21 @@
             <div class="mb-3">
               <label for="category" class="form-label">Categoría del Equipo</label>
               <input name="category" type="text" class="form-control w-25" id="category" value="<%if (team != null) out.print(team.getCategory()); %>"> <!-- placeholder="Ej: INFANTIL" -->
+            </div>
+
+            <div class="mb-3">
+                <label for="idUser" class="form-label">Entrenador</label>
+                <input name="idUser" type="text" class="form-control w-25" id="idUser" value="<%if (team != null) out.print(team.getIdUser()); %>">
+                <option>Entrenadores</option>
+                    <%--
+                        Database db = new Database();
+                        UserDao userDao = new UserDao(db.getConnection());
+                        ArrayList<User> users = userDao.findAllCoach("TRUE");
+                        for (User user : users) {
+                            out.println("<option value="" + user.getId() + "" >" + user.getFirstName() + " : " + user.getLastName() + " : " user.getDni() + "</option>");
+                        }
+                    --%>
+                </select>
             </div>
             <input type="hidden" name="action" value="<% if (team != null) out.print("modify"); else out.print("register"); %>"> <!-- Para que vaya a modificar o crear nuevo -->
             <input type="hidden" name="idTeam" value="<% if (team != null) out.print(team.getIdTeam()); %>"> <!-- Para que vaya a modificar o crear nuevo -->

@@ -18,6 +18,8 @@
 <%@ page import="java.util.Optional" %>
 <%@ page import="java.sql.SQLException" %>
 <%@ page import="java.util.List" %>
+<%@ page import="com.svalero.sportsclubapp.dao.PlayerDao" %>
+<%@ page import="com.svalero.sportsclubapp.domain.Player" %>
 <!-- FIN importar las clases que nos van a  hacer falta -->
 
 <jsp:include page="headerAjax.jsp" />
@@ -29,6 +31,8 @@
         Database database = new Database();
         TeamDao teamDao = new TeamDao(database.getConnection());
         Team team = null;
+        PlayerDao playerDao = new PlayerDao(database.getConnection());
+        Player player = null;
         try {
             Optional<Team> optionalTeam = teamDao.findById(Integer.parseInt(teamId));
             team = optionalTeam.get();
@@ -44,11 +48,11 @@
                 <p class="card-text">Cuota: <strong><%= team.getQuota() %></strong></p>
                 <a href="addTeam.jsp?id_team=<%= team.getIdTeam() %>" class="btn btn-outline-warning">Modificar</a>
                 <a href="deleteTeam?id_team=<%= team.getIdTeam() %>" class="btn btn-outline-danger">Eliminar</a>
-                <a href="coach.jsp?id_user=<%= team.getIdUser() %>" class="btn btn-outline-success">Asignar Jugadores</a>
+                <a href="coach.jsp?id_user=<%= team.getIdUser() %>" class="btn btn-outline-success">Asignar Jugadores Pendiente</a>
                 <a href="coach.jsp?id_user=<%= team.getIdUser() %>" class="btn btn-outline-info">Entrenador</a>
               </div>
               <div class="card-footer text-muted">
-                Jugadores del Equipo:  <strong><%= team.getIdUser() %></strong>
+                Jugadores del Equipo:  <strong><%-- playerDao.countByTeam(team.getIdTeam()); --%></strong>
               </div>
             </div>
         </div>
