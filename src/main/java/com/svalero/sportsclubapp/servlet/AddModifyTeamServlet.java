@@ -37,7 +37,7 @@ public class AddModifyTeamServlet extends HttpServlet {
         String category = request.getParameter("category");
         category = category.toUpperCase();
         String action = request.getParameter("action"); //PARA INDICARLE SI QUEREMOS REGISTRAR O MODIFICAR
-        String idUser = request.getParameter("idUser");
+        String idUser = request.getParameter("coach");
         String idTeam = request.getParameter("idTeam");
         Team team = new Team(name, category);
 
