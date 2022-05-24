@@ -31,6 +31,13 @@ public class User {
         this.coach = coach;
     }
 
+    public User(String firstName, String lastName, String email, String dni, String pass) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.dni = dni;
+        this.pass = pass;
+    }
     public int getIdUser() {
         return id;
     }

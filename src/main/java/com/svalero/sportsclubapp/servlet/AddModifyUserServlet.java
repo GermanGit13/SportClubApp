@@ -2,9 +2,11 @@ package com.svalero.sportsclubapp.servlet;
 
 import com.svalero.sportsclubapp.dao.Database;
 import com.svalero.sportsclubapp.dao.PlayerDao;
+import com.svalero.sportsclubapp.dao.UserDao;
 import com.svalero.sportsclubapp.domain.Player;
 import com.svalero.sportsclubapp.domain.User;
 import com.svalero.sportsclubapp.exception.DniAlredyExistException;
+import com.svalero.sportsclubapp.exception.UserAlredyExistException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -33,29 +35,29 @@ public class AddModifyUserServlet extends HttpServlet {
         firstname = firstname.toUpperCase();
         String lastname = request.getParameter("lastname");
         lastname = lastname.toUpperCase();
-        String numbers = request.getParameter("numbers");
-        String yearOfBirth = request.getParameter("yearOfBirth");
+        String email = request.getParameter("email");
+        email = email.toUpperCase();
         String dni = request.getParameter("dni");
         dni = dni.toUpperCase();
+        String pass = request.getParameter("pass");
         String idUser = request.getParameter("idUser");
-        String idPlayer = request.getParameter("idPlayer");
         String action = request.getParameter("action");
-        Player player = new Player(firstname, lastname, Integer.parseInt(numbers), Integer.parseInt(yearOfBirth), dni, currentUser.getIdUser());
+        User user = new User(firstname, lastname, email, dni, pass);
 
         Database database = new Database(); //CREAMOS UN OBJETO Database PARA CONECTARNOS A LA BBDD
-        PlayerDao playerDao = new PlayerDao(database.getConnection()); //CREAMOS EL OBJETO DAO CORRESPONDIENTE Y LE PASAMOS LA CONEXIÓN A LA BBDD
+        UserDao userDao = new UserDao(database.getConnection()); //CREAMOS EL OBJETO DAO CORRESPONDIENTE Y LE PASAMOS LA CONEXIÓN A LA BBDD
         try {
             if (action.equals("register")) {
-                playerDao.add(player);
-                out.println("<div class='alert alert-success' role='alert'>Jugador Registrado en la BBDD correctamente</div>");
+                userDao.add(user);
+                out.println("<div class='alert alert-success' role='alert'>Usuario Registrado en la BBDD correctamente</div>");
             } else {
-                player = new Player(firstname, lastname, Integer.parseInt(numbers), Integer.parseInt(yearOfBirth), dni);
-                playerDao.modifyById(Integer.parseInt(idPlayer), player);
-                out.println("<div class='alert alert-success' role='alert'>Jugador Modificado en la BBDD correctamente</div>");
+                user = new User(firstname, lastname, email, dni, pass);
+                userDao.modifyById(Integer.parseInt(idUser), user);
+                out.println("<div class='alert alert-success' role='alert'>Usuario Modificado en la BBDD correctamente</div>");
             }
-        } catch (DniAlredyExistException taee) {
-            out.println("<div class='alert alert-danger' role='alert'>DNI ya registrado en la BBDD</div>");
-            taee.printStackTrace(); //PINTAMOS LAS TRAZAS DEL ERROR
+        } catch (UserAlredyExistException uaee) {
+            out.println("<div class='alert alert-danger' role='alert'>Usuario ya registrado en la BBDD</div>");
+            uaee.printStackTrace(); //PINTAMOS LAS TRAZAS DEL ERROR
         } catch (SQLException sqle) {
             out.println("<div class='alert alert-danger' role='alert'>Se ha producido un error al conectar con la BBDD</div>");
             sqle.printStackTrace(); //PINTAMOS LAS TRAZAS DEL ERROR

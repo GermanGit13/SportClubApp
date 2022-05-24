@@ -17,7 +17,6 @@
 <%@ page import="java.util.Optional" %>
 <%@ page import="java.sql.SQLException" %>
 <%@ page import="java.util.List" %>
-<%@ page import="javax.xml.crypto.Data" %>
 <%@ page import="com.svalero.sportsclubapp.dao.TeamDao" %>
 <%@ page import="com.svalero.sportsclubapp.domain.Team" %>
 <!-- FIN importar las clases que nos van a  hacer falta -->

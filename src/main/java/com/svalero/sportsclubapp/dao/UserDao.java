@@ -1,7 +1,9 @@
 package com.svalero.sportsclubapp.dao;
 
+import com.svalero.sportsclubapp.domain.Player;
 import com.svalero.sportsclubapp.domain.User;
 import com.svalero.sportsclubapp.exception.UserAlredyExistException;
+import com.svalero.sportsclubapp.exception.UserExistTablesException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -49,11 +51,38 @@ public class UserDao {
         return rows ==1;
     }
 
+    public boolean modifyById(int idUser, User user) throws SQLException {
+        String sql = "UPDATE users SET firstname = ?, lastname = ?, email = ?, dni = ?, pass = ? WHERE id_user = ?";
+
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, user.getFirstName());
+        statement.setString(2, user.getLastName());
+        statement.setString(3, user.getEmail());
+        statement.setString(4, user.getDni());
+        statement.setString(5, user.getPass());
+        statement.setInt(6, idUser);
+        //PARA DECIRNOS EL NÚMERO DE FILAS QUE HA MODIFICADO
+        int rows = statement.executeUpdate();
+        return rows ==1;
+    }
+
     public boolean delete(String username, User user) throws SQLException {
         String sql = "DELETE FROM users WHERE username = ?";
 
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, username);
+        //PARA DECIRNOS EL NÚMERO DE FILAS QUE HA BORRADO
+        int rows = statement.executeUpdate();
+        return rows ==1;
+    }
+
+    public boolean deleteById(int idUser) throws SQLException, UserExistTablesException { //throws PARA PROPAGAR LA EXCEPCIÓN HACIA UNA CAPA SUPERIOR
+        String sql = "DELETE FROM users WHERE id_user = ?";
+
+        if (existIdUserTeam(idUser))
+                throw new UserExistTablesException();
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setInt(1, idUser);
         //PARA DECIRNOS EL NÚMERO DE FILAS QUE HA BORRADO
         int rows = statement.executeUpdate();
         return rows ==1;
@@ -163,9 +192,29 @@ public class UserDao {
 
         return user;
     }
+    public User findByIdUserTableTeam(int idUser) throws SQLException {
+        String sql ="SELECT * FROM users INNER JOIN TABLE ( team ) USING id_user = ? Where id_user = ?";
+        User user = null;
 
+        //PRIMERO EL Sql, ASÍ EVITAMOS LAS INYECCIONES SQL
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setInt(1, idUser);
+        statement.setInt(2, idUser);
+        //ResultSet ESPECIE DE ARRAYLIST CURSOR QUE APUNTE AL CONTENIDO CARGADO EN LA MEMORIA JAVA DONDE METEMOS EL RESULTADO DE statement.executeQuery
+        ResultSet resultSet = statement.executeQuery();
+        if (resultSet.next()) {
+            user = fromResultSet(resultSet);
+        }
+
+        return user;
+    }
     private boolean existUsername(String username) throws SQLException{
         User user = findByUsername(username);
+        return user != null;
+    }
+
+    private boolean existIdUserTeam(int idUser) throws SQLException{
+        User user = findByIdUserTableTeam(idUser);
         return user != null;
     }
 

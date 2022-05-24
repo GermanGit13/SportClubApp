@@ -4,13 +4,12 @@
 %>
 
 <%@ page import="com.svalero.sportsclubapp.domain.User" %>
-<%@ page import="com.svalero.sportsclubapp.domain.Player" %>
-<%@ page import="com.svalero.sportsclubapp.domain.Team" %>
 <%@ page import="com.svalero.sportsclubapp.dao.Database" %>
-<%@ page import="com.svalero.sportsclubapp.dao.PlayerDao" %>
 <%@ page import="java.util.Optional" %>
 <%@ page import="java.sql.SQLException" %>
 <%@ page import="com.svalero.sportsclubapp.dao.UserDao" %>
+<%@ page import="com.svalero.sportsclubapp.domain.Player" %>
+<%@ page import="com.svalero.sportsclubapp.dao.PlayerDao" %>
 
 <%
     User currentUser = (User) session.getAttribute("currentUser");
@@ -19,15 +18,15 @@
     }
 
     String textButton = "";
-    String idUser = request.getParameter("id_user");
-    User user = null;
-    if (idUser !=null) {
+    String idPlayer = request.getParameter("id_player");
+    Player player = null;
+    if (idPlayer !=null) {
         textButton = "Modificar";
         Database database = new Database();
-        UserDao userDao = new UserDao(database.getConnection());
+        PlayerDao playerDao = new PlayerDao(database.getConnection());
         try {
-            Optional<User> optionalUser = userDao.findById(Integer.parseInt(idUser));
-            user = optionalUser.get();
+            Optional<Player> optionalPlayer = playerDao.findById(Integer.parseInt(idPlayer));
+            player = optionalPlayer.get();
         } catch (SQLException sqle) {
             sqle.printStackTrace();
         }
@@ -57,7 +56,7 @@
         <h2>
             <%
                 String textHead = "";
-                if (idUser !=null) {
+                if (idPlayer !=null) {
                 textHead = "Modificar";
             } else {
                 textHead = "Registrar nuevo Usuario";
@@ -91,7 +90,8 @@
             <input type="hidden" name="action" value="<% if (player != null) out.print("modify"); else out.print("register"); %>">
             <input type="hidden" name="idPlayer" value="<% if (player != null) out.print(player.getIdPlayer()); %>">
             <input type="hidden" name="idUser" value="<% if (player != null) out.print(player.getIdUser()); %>">
-            <button type="submit" class="btn btn-primary"><%= textButton %></button>
+            <button type="submit" class="btn btn-dark"><%= textButton %></button>
+            <a href="index.jsp" class="btn btn-warning" type="submit">Menu Principal</a>
         </form>
         <div id="result"></div> <!-- Pinta el resultado del envio asincrono con AJAX -->
     </div> <!-- Fin del container de Bootstrap -->

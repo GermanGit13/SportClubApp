@@ -19,10 +19,12 @@
     }
 
     String textButton = "";
+    String textHead = "";
     String idTeam = request.getParameter("id_team"); //RECOGEMOS EL IDTEAM DEL NAME
     Team team = null;
     if (idTeam != null) {
         textButton = "Modificar";
+        textHead = "Modificar Equipo";
         Database database = new Database();
         TeamDao teamDao = new TeamDao(database.getConnection());
         try {
@@ -33,6 +35,7 @@
         }
     } else {
         textButton = "Registrar";
+        textHead = "Registra Equipo";
     }
 %>
 
@@ -54,7 +57,7 @@
     <!-- FIN Código para enviar el formulario de forma asíncrona -->
 
     <div class="container">
-        <h2>Registra o Modificar Equipo</h2>
+        <h2><%= textHead %></h2>
         <%-- action es la URL que va a procesar el formulario, post para dar de alta algo a través de un formulario --%>
         <%-- method http que voy a usar para comunicarme con el action   --%>
         <form>
@@ -80,13 +83,16 @@
                         }
                     %>
                 </select>
+
             </div>
             <div class="form-group">
             </div>
             <input type="hidden" name="action" value="<% if (team != null) out.print("modify"); else out.print("register"); %>"> <!-- Para que vaya a modificar o crear nuevo -->
             <input type="hidden" name="idTeam" value="<% if (team != null) out.print(team.getIdTeam()); %>"> <!-- Para que vaya a modificar o crear nuevo -->
-            <button type="submit" class="btn btn-primary"><%= textButton %></button> <!-- Variable para que en función del if declarado arriba aparezca registrar o modificar -->
+            <button type="submit" class="btn btn-dark"><%= textButton %></button> <!-- Variable para que en función del if declarado arriba aparezca registrar o modificar -->
+            <a href="index.jsp" class="btn btn-warning" type="submit">Menu Principal</a>
         </form>
+
         <div id="result"></div> <!-- Pinta el resultado del envio asincrono con AJAX -->
     </div> <!-- Fin del container de Bootstrap -->
 </body>
