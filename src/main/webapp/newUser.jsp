@@ -52,8 +52,8 @@
                 <input name="pass" type="text" class="form-control w-25" id=pass>
             </div>
 
-            <button type="submit" class="btn btn-primary">REGISTRAR</button>
-            <a href="login.jsp" class="btn btn-primary">INICIAR SESION</a>
+            <button type="submit" class="btn btn-dark">REGISTRAR</button>
+            <a href="login.jsp" class="btn btn-warning">INICIAR SESION</a>
         </form>
         <div id="result"></div> <!-- Pinta el resultado del envio asincrono con AJAX -->
     </div> <!-- Fin del container de Bootstrap -->

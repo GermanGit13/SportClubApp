@@ -87,7 +87,8 @@
 
             <input type="hidden" name="action" value="<% if (user != null) out.print("Actualizar Perfil"); else out.print("register"); %>">
             <input type="hidden" name="idUser" value="<% if (user != null) out.print(user.getIdUser()); %>">
-            <button type="submit" class="btn btn-primary"><%= textButton %></button>
+            <button type="submit" class="btn btn-dark"><%= textButton %></button> <!-- Variable para que en función del if declarado arriba aparezca registrar o modificar -->
+            <a href="index.jsp" class="btn btn-warning" type="submit">Menu Principal</a>
         </form>
         <div id="result"></div> <!-- Pinta el resultado del envio asincrono con AJAX -->
     </div> <!-- Fin del container de Bootstrap -->

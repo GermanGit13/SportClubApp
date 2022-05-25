@@ -70,7 +70,7 @@
     </div>
 
 
-    <button class="btn btn-warning" type="submit">ENTRAR</button>
+    <button class="btn btn-dark" type="submit">ENTRAR</button>
     <a href="newUser.jsp" class="btn btn-warning" type="submit">REGISTRARSE</a>
     <p class="mt-5 mb-3 text-muted">Cb Smv 2022</p>
   </form>

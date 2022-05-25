@@ -73,7 +73,7 @@
                   <div class="p-3 border bg-light"><p><a href="addTeam.jsp">Crear Pedido PENDIENTE</a></p></div>
                 </div>
                 <div class="col-6">
-                  <div class="p-3 border bg-light"><p><a href="addTeam.jsp">Mis Jugadores PENDIENTE</a></p></div>
+                  <div class="p-3 border bg-light"><p><a href="showPlayersByUser.jsp">Mis Jugadores</a></p></div>
                 </div>
                 <div class="col-6">
                   <div class="p-3 border bg-light"><p><a href="addTeam.jsp">Mis Pedidos PENDIENTE</a></p></div>

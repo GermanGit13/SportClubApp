@@ -2,9 +2,7 @@ package com.svalero.sportsclubapp.dao;
 
 import com.svalero.sportsclubapp.domain.Player;
 import com.svalero.sportsclubapp.domain.Team;
-import com.svalero.sportsclubapp.domain.User;
 import com.svalero.sportsclubapp.exception.DniAlredyExistException;
-import oracle.jdbc.proxy.annotation.Pre;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -148,6 +146,21 @@ public class PlayerDao {
             player = fromResultSet(resultSet);
         }
         return Optional.ofNullable(player);
+    }
+
+    public ArrayList<Player> findByIdUSer(int idUser) throws SQLException {
+        String sql = "SELECT * FROM player WHERE id_user = ? ORDER BY firstName";
+        ArrayList<Player> players = new ArrayList<>();
+
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setInt(1, idUser);
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            Player player = fromResultSet(resultSet);
+            players.add(player);
+        }
+        statement.close();//PARA CERRAR LA CONEXION CON BBDD
+        return players;
     }
 
     public Player findByDni(String dni) throws SQLException {
