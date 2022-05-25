@@ -1,6 +1,5 @@
 package com.svalero.sportsclubapp.dao;
 
-import com.svalero.sportsclubapp.domain.Player;
 import com.svalero.sportsclubapp.domain.User;
 import com.svalero.sportsclubapp.exception.UserAlredyExistException;
 import com.svalero.sportsclubapp.exception.UserExistTablesException;
@@ -76,11 +75,9 @@ public class UserDao {
         return rows ==1;
     }
 
-    public boolean deleteById(int idUser) throws SQLException, UserExistTablesException { //throws PARA PROPAGAR LA EXCEPCIÓN HACIA UNA CAPA SUPERIOR
+    public boolean deleteById(int idUser) throws SQLException { //throws PARA PROPAGAR LA EXCEPCIÓN HACIA UNA CAPA SUPERIOR
         String sql = "DELETE FROM users WHERE id_user = ?";
 
-        if (existIdUserTeam(idUser))
-                throw new UserExistTablesException();
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setInt(1, idUser);
         //PARA DECIRNOS EL NÚMERO DE FILAS QUE HA BORRADO
@@ -192,21 +189,21 @@ public class UserDao {
         statement.close();
         return user;
     }
-    public User findByIdUserTableTeam(int idUser) throws SQLException {
-        String sql ="SELECT * FROM users INNER JOIN TABLE ( team ) USING id_user = ? Where id_user = ?";
-        User user = null;
+    public ArrayList<User> findByIdUserTableTeam(int idUser) throws SQLException {
+        String sql ="SELECT * FROM team Where id_user = ?";
+        ArrayList<User> users = new ArrayList<>();
 
         //PRIMERO EL Sql, ASÍ EVITAMOS LAS INYECCIONES SQL
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setInt(1, idUser);
-        statement.setInt(2, idUser);
         //ResultSet ESPECIE DE ARRAYLIST CURSOR QUE APUNTE AL CONTENIDO CARGADO EN LA MEMORIA JAVA DONDE METEMOS EL RESULTADO DE statement.executeQuery
         ResultSet resultSet = statement.executeQuery();
         if (resultSet.next()) {
-            user = fromResultSet(resultSet);
+            User user = fromResultSet(resultSet);
+            users.add(user);
         }
         statement.close();
-        return user;
+        return users;
     }
     private boolean existUsername(String username) throws SQLException{
         User user = findByUsername(username);
@@ -214,8 +211,8 @@ public class UserDao {
     }
 
     private boolean existIdUserTeam(int idUser) throws SQLException{
-        User user = findByIdUserTableTeam(idUser);
-        return user != null;
+        ArrayList<User> users = findByIdUserTableTeam(idUser);
+        return users != null;
     }
 
     public Optional<User> findById(int id) throws SQLException {

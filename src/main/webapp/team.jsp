@@ -28,6 +28,7 @@
     <div class="container"> <!-- Para que quede centrada la web gracias a la hoja de estilo de Bootstrap -->
     <%
         String pagina = "";
+        String variable ="";
         String teamId = request.getParameter("id_team");
         Database database = new Database();
         TeamDao teamDao = new TeamDao(database.getConnection());
@@ -48,13 +49,17 @@
                 <p class="card-text">Categoria: <strong><%= team.getCategory() %></strong></p>
                 <p class="card-text">Cuota: <strong><%= team.getQuota() %></strong></p>
                 <a href="addTeam.jsp?id_team=<%= team.getIdTeam() %>" class="btn btn-outline-warning">Modificar</a>
-                <a href="deleteTeam?id_team=<%= team.getIdTeam() %>" class="btn btn-outline-danger">Eliminar</a>
+                <a href="confirmDelete.jsp?id_team=<%= team.getIdTeam() %>" class="btn btn-outline-danger">Eliminar</a>
                 <a href="coach.jsp?id_user=<%= team.getIdUser() %>" class="btn btn-outline-success">Asignar Jugadores Pendiente</a>
                 <%
-                    if (team.getIdUser() != 0) {
+                if (team.getIdUser() != 0) {
                     pagina = "coach.jsp";
-                } else pagina = ""; %>
-                <a href="<%= pagina %>?id_user=<%= team.getIdUser() %>" class="btn btn-outline-info"><% if (team.getIdUser() != 0) out.print("Entrenador"); else out.print ("Asignar Entrenador"); %></a>
+                    variable = "team.getIdUser()";
+                } else
+                    pagina = "addTeam.jsp";
+                    variable = "team.getIdTeam()";
+                %>
+                <a href="<%= pagina %>?id_user=<%= variable %>" class="btn btn-outline-info"><% if (team.getIdUser() != 0) out.print("Entrenador"); else out.print ("Asignar Entrenador"); %></a>
                 </div>
                 <div class="card-footer text-muted">
                     Jugadores del Equipo:  <strong><%-- playerDao.countByTeam(team.getIdTeam()); --%></strong>

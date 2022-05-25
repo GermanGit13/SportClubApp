@@ -32,7 +32,7 @@ public class DeleteTeam extends HttpServlet {
         TeamDao teamDao = new TeamDao(database.getConnection());
         try {
             teamDao.deleteById(Integer.parseInt(idTeam));
-            out.println("<div class='alert alert-success' role='alert'>Equipo Borrado de la BBDD correctamente</div>");
+            out.println("<a href=\"index.jsp\" class=\"btn btn-warning\" type=\"submit\">Borrado Correctamente</a>");
         } catch (SQLException sqle) {
             out.println("<div class='alert alert-danger' role='alert'>Se ha producido un error al conectar con la BBDD</div>");
             sqle.printStackTrace(); //PINTAMOS LAS TRAZAS DEL ERROR

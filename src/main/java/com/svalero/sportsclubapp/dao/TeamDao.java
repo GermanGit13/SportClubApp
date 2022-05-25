@@ -2,7 +2,6 @@ package com.svalero.sportsclubapp.dao;
 
 import com.svalero.sportsclubapp.domain.Team;
 import com.svalero.sportsclubapp.exception.TeamAlreadyExistException;
-import oracle.jdbc.proxy.annotation.Pre;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -50,6 +49,7 @@ public class TeamDao {
         statement.setString(4, category);
         //PARA DECIRNOS EL NÚMERO DE FILAS QUE HA MODIFICADO
         int rows = statement.executeUpdate();
+        statement.close();
         return rows ==1;
     }
 
@@ -63,9 +63,21 @@ public class TeamDao {
         statement.setInt(3, idTeam);
         //PARA DECIRNOS EL NÚMERO DE FILAS QUE HA MODIFICADO
         int rows = statement.executeUpdate();
+        statement.close();
         return rows ==1;
     }
 
+    public boolean modifyByIdUser(int idUser, Team team) throws SQLException{ //throws PARA PROPAGAR LA EXCEPCIÓN HACIA UNA CAPA SUPERIOR
+        String sql = "UPDATE team SET id_user = ? WHERE id_user = ?";
+
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setInt(1, team.getIdUser());
+          statement.setInt(2, idUser);
+        //PARA DECIRNOS EL NÚMERO DE FILAS QUE HA MODIFICADO
+        int rows = statement.executeUpdate();
+        statement.close();
+        return rows ==1;
+    }
     public boolean delete(String name, String category) throws SQLException { //throws PARA PROPAGAR LA EXCEPCIÓN HACIA UNA CAPA SUPERIOR
         String sql = "DELETE FROM team WHERE name = ? AND category = ?";
 
@@ -74,6 +86,7 @@ public class TeamDao {
         statement.setString(2, category);
         //PARA DECIRNOS EL NÚMERO DE FILAS QUE HA BORRADO
         int rows = statement.executeUpdate();
+        statement.close();
         return rows ==1;
     }
 
@@ -84,6 +97,7 @@ public class TeamDao {
         statement.setInt(1, idTeam);
         //PARA DECIRNOS EL NÚMERO DE FILAS QUE HA BORRADO
         int rows = statement.executeUpdate();
+        statement.close();
         return rows ==1;
     }
     public ArrayList<Team> findAll() throws SQLException { //throws PARA PROPAGAR LA EXCEPCIÓN HACIA UNA CAPA SUPERIOR
@@ -178,6 +192,34 @@ public class TeamDao {
 
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setInt(1, idTeam);
+        ResultSet resultSet = statement.executeQuery();
+        if (resultSet.next()) {
+            team = fromResultSet(resultSet);
+        }
+        statement.close();
+        return Optional.ofNullable(team);
+    }
+
+    public Optional<Team> findByIdUser(int idUser) throws SQLException {
+        String sql = "SELECT * FROM team WHERE id_user = ?";
+        Team team = null;
+
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setInt(1, idUser);
+        ResultSet resultSet = statement.executeQuery();
+        if (resultSet.next()) {
+            team = fromResultSet(resultSet);
+        }
+        statement.close();
+        return Optional.ofNullable(team);
+    }
+
+    public Optional<Team> findByIdUser(int idUser) throws SQLException {
+        String sql = "SELECT * FROM team WHERE id_user = ?";
+        Team team = null;
+
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setInt(1, idUser);
         ResultSet resultSet = statement.executeQuery();
         if (resultSet.next()) {
             team = fromResultSet(resultSet);

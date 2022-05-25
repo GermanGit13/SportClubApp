@@ -185,9 +185,10 @@ public class PlayerDao {
         return player != null;
     }
 
-    public Player countByTeam(int idTeam) throws SQLException {
+    public int countByTeam(int idTeam) throws SQLException {
         String sql ="SELECT count(*) FROM player WHERE idTeam = ?";
         Player player = null;
+        int countPlayer = 0;
 
         //PRIMERO EL Sql, ASÍ EVITAMOS LAS INYECCIONES SQL
         PreparedStatement statement = connection.prepareStatement(sql);
@@ -195,10 +196,10 @@ public class PlayerDao {
         //ResultSet ESPECIE DE ARRAYLIST CURSOR QUE APUNTE AL CONTENIDO CARGADO EN LA MEMORIA JAVA DONDE METEMOS EL RESULTADO DE statement.executeQuery
         ResultSet resultSet = statement.executeQuery();
         if (resultSet.next()) {
-            player = fromResultSet(resultSet);
+            countPlayer = resultSet.getInt(1);
         }
         statement.close();
-        return player;
+        return countPlayer;
     }
 
     //PARA USARLO EN LOS LISTADO QUE DEVUELVE ResultSet
