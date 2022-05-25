@@ -43,11 +43,14 @@
                 <h5 class="card-title"><%= user.getFirstName() %></h5>
                 <p class="card-text">Correo: <strong><%= user.getEmail() %></strong></p>
                 <p class="card-text">Dni: <strong><%= user.getDni() %></strong></p>
-                <a href="addUser.jsp?id_user=<%= user.getIdUser() %>" class="btn btn-primary">Modificar</a>
+                <a href="addUser.jsp?id_user=<%= user.getIdUser() %>" class="btn btn-outline-warning">Modificar</a>
               </div>
               <div class="card-footer text-muted">
                 Código Coach:  <strong><%= user.getIdUser() %></strong>
               </div>
+                <div class="card-footer text-muted">
+                    <a href="index.jsp" class="btn btn-warning" type="submit">Menu Principal</a>
+                </div>
             </div>
         </div>
 

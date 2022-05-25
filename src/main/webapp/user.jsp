@@ -37,19 +37,23 @@
               <div class="card-header">
                 Detalles del Usuario
               </div>
-              <div class="card-body">
-                <h5 class="card-title"><%= user.getFirstName() %></h5>
-                <p class="card-text">Apellidos: <strong><%= user.getLastName() %></strong></p>
-                <p class="card-text">Email: <strong><%= user.getEmail() %></strong></p>
-                <p class="card-text">Dni: <strong><%= user.getDni() %></strong></p>
-                <p class="card-text">Username: <strong><%= user.getUsername() %></strong></p>
-                <a href="addUser.jsp?id=<%= user.getIdUser() %>" class="btn btn-outline-warning">Modificar Pendiente </a>
-                <a href="deleteUser?id_user=<%= user.getIdUser() %>" class="btn btn-outline-danger">Eliminar</a>
-                <a href="coach.jsp?id_user=<%= user.getIdUser() %>" class="btn btn-outline-info">Hacer Entrenador Pendiente </a>
-              </div>
-              <div class="card-footer text-muted">
-                Entrenador:  <strong><%= user.getCoach() %></strong>
-              </div>
+                <div class="card-body">
+                    <h5 class="card-title"><%= user.getFirstName() %></h5>
+                    <p class="card-text">Apellidos: <strong><%= user.getLastName() %></strong></p>
+                    <p class="card-text">Email: <strong><%= user.getEmail() %></strong></p>
+                    <p class="card-text">Dni: <strong><%= user.getDni() %></strong></p>
+                    <p class="card-text">Username: <strong><%= user.getUsername() %></strong></p>
+                    <a href="addUser.jsp?id=<%= user.getIdUser() %>" class="btn btn-outline-warning">Modificar Pendiente </a>
+                    <a href="deleteUser?id_user=<%= user.getIdUser() %>" class="btn btn-outline-danger">Eliminar</a>
+                    <a href="coach.jsp?id_user=<%= user.getIdUser() %>" class="btn btn-outline-info">Hacer Entrenador Pendiente </a>
+                </div>
+                    <div class="card-footer text-muted">
+                    Entrenador:  <strong><%= user.getCoach() %></strong>
+                    </div>
+                    <div class="card-footer text-muted">
+                    <a href="index.jsp" class="btn btn-warning" type="submit">Menu Principal</a>
+                    </div>
+                </div>
              </div>
         </div>
         <%

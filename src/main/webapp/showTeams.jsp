@@ -39,7 +39,7 @@
                           <div class="fw-bold"><a target="_blank" href="team.jsp?id_team=<%= team.getIdTeam() %>"><%= team.getName() %></a></div> <!-- target="_blank" para abrir una pestaña nueva en el enlace -->
                           <%= team.getCategory() %>
                         </div>
-                        <span class="list-group-item d-flex justify-content-between align-items-start w-35"><a href="user.jsp?id_user=<%= team.getIdUser() %>"> Coach </a></span>
+                        <span class="list-group-item d-flex justify-content-between align-items-start w-35"><a href="coach.jsp?id_user=<%= team.getIdUser() %>"> Coach </a></span>
                     </li>
           <%
                 }

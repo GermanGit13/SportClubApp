@@ -55,9 +55,6 @@
                   <div class="p-3 border bg-light"><p><a href="searchTeam.jsp">Buscador de Equipos</a></p></div>
                 </div>
                 <div class="col-6">
-                  <div class="p-3 border bg-light"><p><a href="searchTeam.jsp">Buscador de Equipos</a></p></div>
-                </div>
-                <div class="col-6">
                   <div class="p-3 border bg-light"><p><a href="searchUser.jsp">Buscador de Usuarios</a></p></div>
                 </div>
                 <div class="col-6">

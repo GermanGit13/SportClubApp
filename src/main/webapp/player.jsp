@@ -77,7 +77,11 @@
         %>
                 Equipo:  <strong><%=  name + " Categoria: " + category %></strong>
                 </div>
+                <div class="card-footer text-muted">
+                    <a href="index.jsp" class="btn btn-warning" type="submit">Menu Principal</a>
+                </div>
              </div>
+
         </div>
         <%
             } catch (SQLException sqle) {

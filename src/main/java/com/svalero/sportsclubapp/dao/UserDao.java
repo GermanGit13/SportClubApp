@@ -104,6 +104,7 @@ public class UserDao {
             user.setUsername(resultSet.getString("username"));
             user.setCoach(resultSet.getString("coach")); // USADO COMO ROL PARA ADMINISTRAR LA WEB
         }
+        statement.close();
         return Optional.ofNullable(user);
     }
 
@@ -121,17 +122,17 @@ public class UserDao {
             User user = fromResultSet(resultSet);
             users.add(user);
         }
+        statement.close();
         return users;
     }
 
     public ArrayList<User> findAll(String searchText) throws SQLException {
-        String sql = "SELECT * FROM users WHERE INSTR(firstName, ?) !=0 OR INSTR(lastName, ?) !=0 OR INSTR(DNI, ?) !=0 ORDEN BY firstName";
+        String sql = "SELECT * FROM users WHERE INSTR(firstName, ?) != 0 OR INSTR(lastname, ?) != 0 ORDER BY firstName";
         ArrayList<User> users = new ArrayList<>();
 
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, searchText);
         statement.setString(2, searchText);
-        statement.setString(3, searchText);
         ResultSet resultSet = statement.executeQuery();
         while (resultSet.next()) {
             User user = fromResultSet(resultSet);
@@ -153,7 +154,7 @@ public class UserDao {
         if (resultSet.next()) {
             user = fromResultSet(resultSet);
         }
-
+        statement.close();
         return user;
     }
 
@@ -176,7 +177,6 @@ public class UserDao {
         User user = findByDni(dni);
         return user != null;
     }
-
     public User findByUsername(String username) throws SQLException {
         String sql ="SELECT * FROM users WHERE username = ?";
         User user = null;
@@ -189,7 +189,7 @@ public class UserDao {
         if (resultSet.next()) {
             user = fromResultSet(resultSet);
         }
-
+        statement.close();
         return user;
     }
     public User findByIdUserTableTeam(int idUser) throws SQLException {
@@ -205,7 +205,7 @@ public class UserDao {
         if (resultSet.next()) {
             user = fromResultSet(resultSet);
         }
-
+        statement.close();
         return user;
     }
     private boolean existUsername(String username) throws SQLException{
@@ -228,6 +228,7 @@ public class UserDao {
         if (resultSet.next()) {
             user = fromResultSet(resultSet);
         }
+        statement.close();
         return Optional.ofNullable(user);
     }
 

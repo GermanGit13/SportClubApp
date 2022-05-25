@@ -55,10 +55,13 @@
                     pagina = "coach.jsp";
                 } else pagina = ""; %>
                 <a href="<%= pagina %>?id_user=<%= team.getIdUser() %>" class="btn btn-outline-info"><% if (team.getIdUser() != 0) out.print("Entrenador"); else out.print ("Asignar Entrenador"); %></a>
-              </div>
-              <div class="card-footer text-muted">
-                Jugadores del Equipo:  <strong><%-- playerDao.countByTeam(team.getIdTeam()); --%></strong>
-              </div>
+                </div>
+                <div class="card-footer text-muted">
+                    Jugadores del Equipo:  <strong><%-- playerDao.countByTeam(team.getIdTeam()); --%></strong>
+                </div>
+                <div class="card-footer text-muted">
+                    <a href="index.jsp" class="btn btn-warning" type="submit">Menu Principal</a>
+                </div>
             </div>
         </div>
         <%

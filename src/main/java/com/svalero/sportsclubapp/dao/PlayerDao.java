@@ -145,6 +145,7 @@ public class PlayerDao {
         if (resultSet.next()) {
             player = fromResultSet(resultSet);
         }
+        statement.close();
         return Optional.ofNullable(player);
     }
 

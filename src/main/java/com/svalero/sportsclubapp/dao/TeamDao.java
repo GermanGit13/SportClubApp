@@ -100,7 +100,7 @@ public class TeamDao {
             Team team = fromResultSet(resultSet);
             teams.add(team);
         }
-
+        statement.close();
         return teams;
     }
 
@@ -116,7 +116,7 @@ public class TeamDao {
             Team team = fromResultSet(resultSet);
             teams.add(team);
         }
-
+        statement.close();
         return teams;
     }
 
@@ -134,7 +134,7 @@ public class TeamDao {
         if (resultSet.next()) {
             team = fromResultSet(resultSet);
         }
-
+        statement.close();
         return Optional.ofNullable(team);
     }
 
@@ -151,7 +151,7 @@ public class TeamDao {
         if (resultSet.next()) {
             team = fromResultSet(resultSet);
         }
-
+        statement.close();
         return team;
     }
 
@@ -168,7 +168,7 @@ public class TeamDao {
         if (resultSet.next()) {
             team = fromResultSet(resultSet);
         }
-
+        statement.close();
         return team;
     }
 
@@ -182,6 +182,7 @@ public class TeamDao {
         if (resultSet.next()) {
             team = fromResultSet(resultSet);
         }
+        statement.close();
         return Optional.ofNullable(team);
     }
 
