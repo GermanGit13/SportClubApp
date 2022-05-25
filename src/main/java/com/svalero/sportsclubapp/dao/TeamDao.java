@@ -214,20 +214,6 @@ public class TeamDao {
         return Optional.ofNullable(team);
     }
 
-    public Optional<Team> findByIdUser(int idUser) throws SQLException {
-        String sql = "SELECT * FROM team WHERE id_user = ?";
-        Team team = null;
-
-        PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setInt(1, idUser);
-        ResultSet resultSet = statement.executeQuery();
-        if (resultSet.next()) {
-            team = fromResultSet(resultSet);
-        }
-        statement.close();
-        return Optional.ofNullable(team);
-    }
-
 
     //TODO modificar para que busque si existe por ejemplo el DNI, LO HACEMOS PRIVATE PORQUE SOLO USAREMOS INTERNAMENTE
     private boolean existTeamAndCategory(String name, String category) throws SQLException{

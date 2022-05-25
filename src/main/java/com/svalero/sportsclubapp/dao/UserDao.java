@@ -75,9 +75,11 @@ public class UserDao {
         return rows ==1;
     }
 
-    public boolean deleteById(int idUser) throws SQLException { //throws PARA PROPAGAR LA EXCEPCIÓN HACIA UNA CAPA SUPERIOR
+    public boolean deleteById(int idUser) throws SQLException, UserExistTablesException { //throws PARA PROPAGAR LA EXCEPCIÓN HACIA UNA CAPA SUPERIOR
         String sql = "DELETE FROM users WHERE id_user = ?";
 
+        if (existIdUserTeam(idUser))
+            throw new UserExistTablesException();
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setInt(1, idUser);
         //PARA DECIRNOS EL NÚMERO DE FILAS QUE HA BORRADO

@@ -5,7 +5,6 @@ import com.svalero.sportsclubapp.dao.PlayerDao;
 import com.svalero.sportsclubapp.dao.TeamDao;
 import com.svalero.sportsclubapp.dao.UserDao;
 import com.svalero.sportsclubapp.domain.Player;
-import com.svalero.sportsclubapp.domain.Team;
 import com.svalero.sportsclubapp.domain.User;
 import com.svalero.sportsclubapp.exception.UserExistTablesException;
 
@@ -32,19 +31,17 @@ public class DeleteUser extends HttpServlet {
         }
 
         String idUser = request.getParameter("id_user");
-        int idUserCero = 0;
 
         Database database = new Database();
         UserDao userDao = new UserDao(database.getConnection());
         TeamDao teamDao = new TeamDao(database.getConnection());
         PlayerDao playerDao = new PlayerDao(database.getConnection());
         try {
-            if (teamDao.findById(Integer.parseInt(idUser)) != null) {
-                teamDao.deleteById(Integer.parseInt(idUser))
-                teamDao.modifyByIdUser(Integer.parseInt(idUser));
-                out.println("<a href=\"index.jsp\" class=\"btn btn-warning\" type=\"submit\">Borrado Correctamente</a>");
-            }
-
+            userDao.deleteById(Integer.parseInt(idUser));
+            out.println("<a href=\"index.jsp\" class=\"btn btn-warning\" type=\"submit\">Borrado Correctamente</a>");
+        } catch (UserExistTablesException uete) {
+            out.println("<a href=\"index.jsp\" class=\"btn btn-warning\" type=\"submit\">Existen tablas relacionadas</a>");
+            uete.printStackTrace(); //PINTAMOS LAS TRAZAS DEL ERROR
         } catch (SQLException sqle) {
             out.println("<div class='alert alert-danger' role='alert'><Se ha producido un error al conectar con la BBDD</div>");
             sqle.printStackTrace(); //PINTAMOS LAS TRAZAS DEL ERROR
