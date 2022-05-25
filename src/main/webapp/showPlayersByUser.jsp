@@ -24,7 +24,7 @@
 
 <body>
     <div class="container"> <!-- Para que quede centrada la web gracias a la hoja de estilo de Bootstrap -->
-        <h2>Mi Jugadores</h2>
+        <h2>Mis Jugadores</h2>
         <ul class="list-group">
           <%
           Database database = new Database(); //creamos la conexión con la BBDD

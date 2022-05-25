@@ -49,7 +49,7 @@
         <div class="card-header">¿Estás seguro que quieres eliminar el equipo?</div>
         <div class="card-body">
             <a href="deleteTeam?id_team=<%= team.getIdTeam() %>" class="btn btn-danger">Si</a>
-            <a href="team.jsp?id_team<%= team.getIdTeam() %>" class="btn btn-outline-danger">No</a>
+            <a href="showTeams.jsp" class="btn btn-outline-danger">No</a>
         </div>
     </div>
 </div>
