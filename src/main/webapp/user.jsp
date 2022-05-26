@@ -4,6 +4,7 @@
 %>
 
 <%
+    String pagina = "";
     User currentUser = (User) session.getAttribute("currentUser");
     if (currentUser == null) {
         response.sendRedirect("login.jsp");
@@ -43,9 +44,15 @@
                     <p class="card-text">Email: <strong><%= user.getEmail() %></strong></p>
                     <p class="card-text">Dni: <strong><%= user.getDni() %></strong></p>
                     <p class="card-text">Username: <strong><%= user.getUsername() %></strong></p>
-                    <a href="addUser.jsp?id=<%= user.getIdUser() %>" class="btn btn-outline-warning">Modificar Pendiente </a>
+                    <a href="addUser.jsp?id_user=<%= user.getIdUser() %>" class="btn btn-outline-warning">Modificar</a>
                     <a href="deleteUser?id_user=<%= user.getIdUser() %>" class="btn btn-outline-danger">Eliminar</a>
-                    <a href="coach.jsp?id_user=<%= user.getIdUser() %>" class="btn btn-outline-info">Hacer Entrenador Pendiente </a>
+                    <%
+                        if (user.getCoach().equals("TRUE")) {
+                            pagina = "coach.jsp";
+                        } else
+                            pagina = "addPlayer.jsp";
+                    %>
+                    <a href="<%= pagina %>?id_user=<%= user.getIdUser() %>" class="btn btn-outline-info"><% if (user.getCoach().equals("TRUE")) out.print("Entrenador"); else out.print ("Hacer Entrenador"); %> </a>
                 </div>
                     <div class="card-footer text-muted">
                     Entrenador:  <strong><%= user.getCoach() %></strong>

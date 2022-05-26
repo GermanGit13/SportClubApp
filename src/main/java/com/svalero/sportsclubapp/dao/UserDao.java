@@ -51,14 +51,14 @@ public class UserDao {
     }
 
     public boolean modifyById(int idUser, User user) throws SQLException {
-        String sql = "UPDATE users SET firstname = ?, lastname = ?, email = ?, dni = ?, pass = ? WHERE id_user = ?";
+        String sql = "UPDATE users SET firstname = ?, lastname = ?, email = ?, dni = ?, coach = ? WHERE id_user = ?";
 
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, user.getFirstName());
         statement.setString(2, user.getLastName());
         statement.setString(3, user.getEmail());
         statement.setString(4, user.getDni());
-        statement.setString(5, user.getPass());
+        statement.setString(5, user.getCoach());
         statement.setInt(6, idUser);
         //PARA DECIRNOS EL NÚMERO DE FILAS QUE HA MODIFICADO
         int rows = statement.executeUpdate();

@@ -81,8 +81,8 @@
               <input name="dni" type="text" class="form-control w-25" id="dni" value="<% if (user != null) out.print(user.getDni()); %>">
             </div>
             <div class="mb-3">
-              <label for="pass" class="form-label">Contraseña</label>
-              <input name="pass" type="text" class="form-control w-25" id="pass" value="<% if (user != null) out.print(user.getPass()); %>">
+                <label for="coach" class="form-label">Entrenador: TRUE si es quieres hacerle que lo sea</label>
+                <input name="coach" type="text" class="form-control w-25" id="coach" value="<% if (user != null) out.print(user.getCoach()); %>">
             </div>
 
             <input type="hidden" name="action" value="<% if (user != null) out.print("Actualizar Perfil"); else out.print("register"); %>">

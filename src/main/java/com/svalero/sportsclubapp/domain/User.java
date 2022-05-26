@@ -28,15 +28,13 @@ public class User {
         this.dni = dni;
         this.username = username;
         this.pass = pass;
-        this.coach = coach;
     }
-
-    public User(String firstName, String lastName, String email, String dni, String pass) {
+    public User(String firstName, String lastName, String email, String dni, String coach) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.dni = dni;
-        this.pass = pass;
+        this.coach = coach;
     }
     public int getIdUser() {
         return id;

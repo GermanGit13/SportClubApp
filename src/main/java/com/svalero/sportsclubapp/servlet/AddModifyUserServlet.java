@@ -40,6 +40,8 @@ public class AddModifyUserServlet extends HttpServlet {
         String dni = request.getParameter("dni");
         dni = dni.toUpperCase();
         String pass = request.getParameter("pass");
+        String coach = request.getParameter("coach");
+        coach = coach.toUpperCase();
         String idUser = request.getParameter("idUser");
         String action = request.getParameter("action");
         User user = new User(firstname, lastname, email, dni, pass);
@@ -51,7 +53,7 @@ public class AddModifyUserServlet extends HttpServlet {
                 userDao.add(user);
                 out.println("<div class='alert alert-success' role='alert'>Usuario Registrado en la BBDD correctamente</div>");
             } else {
-                user = new User(firstname, lastname, email, dni, pass);
+                user = new User(firstname, lastname, email, dni, coach);
                 userDao.modifyById(Integer.parseInt(idUser), user);
                 out.println("<div class='alert alert-success' role='alert'>Usuario Modificado en la BBDD correctamente</div>");
             }
