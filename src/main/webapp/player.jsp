@@ -61,10 +61,15 @@
                 TeamDao teamDao = new TeamDao(db.getConnection());
                 Team team = null;
                 try {
-                    Optional<Team> optionalTeam = teamDao.findById(Integer.parseInt(idTeam));
-                    team = optionalTeam.get();
-                    name = team.getName();
-                    category = team.getCategory();
+                    if (player.getIdTeam() != 0) {
+                        Optional<Team> optionalTeam = teamDao.findById(Integer.parseInt(idTeam));
+                        team = optionalTeam.get();
+                        name = team.getName();
+                        category = team.getCategory();
+                    } else {
+                        name = "Sin Asignar";
+                        category = "Sin Categoria";
+                    }
                 } catch (SQLException sqle) {
         %>
             <div> class='alert alert-danger' role='alert'>Se ha producido al cargar el equipo del jugador</div>
@@ -75,7 +80,7 @@
                 category = "Sin Asignar";
             }
         %>
-                Equipo:  <strong><%=  name + " Categoria: " + category %></strong>
+                Equipo:  <strong><%= name %></strong> Categoria: <strong><%= category %></strong>
                 </div>
                 <div class="card-footer text-muted">
                     <a href="index.jsp" class="btn btn-warning" type="submit">Menu Principal</a>
