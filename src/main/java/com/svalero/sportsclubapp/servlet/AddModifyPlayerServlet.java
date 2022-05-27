@@ -48,17 +48,17 @@ public class AddModifyPlayerServlet extends HttpServlet {
         try {
             if (action.equals("register")) {
                 playerDao.add(player);
-                out.println("<div class='alert alert-success' role='alert'>Jugador Registrado en la BBDD correctamente</div>");
+                out.println("<a href=\"index.jsp\" class=\"btn btn-warning\" type=\"submit\">Jugador Registrado Correctamente</a>");
             } else {
                 player = new Player(firstname, lastname, Integer.parseInt(numbers), Integer.parseInt(yearOfBirth), dni);
                 playerDao.modifyById(Integer.parseInt(idPlayer), player);
-                out.println("<div class='alert alert-success' role='alert'>Jugador Modificado en la BBDD correctamente</div>");
+                out.println("<a href=\"index.jsp\" class=\"btn btn-warning\" type=\"submit\">Jugador Modificado Correctamente</a>");
             }
         } catch (DniAlredyExistException taee) {
-            out.println("<div class='alert alert-danger' role='alert'>DNI ya registrado en la BBDD</div>");
+            out.println("<a href=\"index.jsp\" class=\"btn btn-warning\" type=\"submit\">DNI ya registrado en la Base de Datos</a>");
             taee.printStackTrace(); //PINTAMOS LAS TRAZAS DEL ERROR
         } catch (SQLException sqle) {
-            out.println("<div class='alert alert-danger' role='alert'>Se ha producido un error al conectar con la BBDD</div>");
+            out.println("<a href=\"index.jsp\" class=\"btn btn-warning\" type=\"submit\">Se ha producido un error al conectar con la BBDD</a>");
             sqle.printStackTrace(); //PINTAMOS LAS TRAZAS DEL ERROR
         }
     }

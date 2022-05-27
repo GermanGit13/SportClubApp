@@ -37,10 +37,10 @@ public class LoginServlet extends HttpServlet {
                 System.out.println("sesión iniciada");
                 response.sendRedirect("index.jsp"); //REDIRIGIMOS
             } else {
-                out.println("<div class='alert alert-danger' role='alert'>No estás registrado ó tus datos de inicio de sesión no son correctos</div>");
+                out.println("<a href=\"index.jsp\" class=\"btn btn-warning\" type=\"submit\">No estás registrado o tus datos no son correctos</a>");
             }
         } catch (SQLException sqle) {
-            out.println("<div class='alert alert-danger' role='alert'>SQLException</div>");
+            out.println("<a href=\"index.jsp\" class=\"btn btn-warning\" type=\"submit\">Se ha producido un error al conectar con la BBDD</a>");
             sqle.printStackTrace();
         }
     }

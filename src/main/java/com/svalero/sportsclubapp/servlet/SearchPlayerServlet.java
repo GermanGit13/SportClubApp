@@ -36,7 +36,7 @@ public class SearchPlayerServlet extends HttpServlet {
             result.append("</ul>");
             out.println(result); //DEVOLVEMOS EL STRING CON TODOS LOS li
         } catch (SQLException sqle) {
-            out.println("<div class='alert alert-danger' role='alert'>Se ha producido un error al conectar con la BBDD</div>");
+            out.println("<a href=\"index.jsp\" class=\"btn btn-warning\" type=\"submit\">Se ha producido un error al conectar con la BBDD</a>");
             sqle.printStackTrace(); //PINTAMOS LAS TRAZAS DEL ERROR
         }
     }

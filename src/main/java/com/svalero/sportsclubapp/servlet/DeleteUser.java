@@ -4,9 +4,7 @@ import com.svalero.sportsclubapp.dao.Database;
 import com.svalero.sportsclubapp.dao.PlayerDao;
 import com.svalero.sportsclubapp.dao.TeamDao;
 import com.svalero.sportsclubapp.dao.UserDao;
-import com.svalero.sportsclubapp.domain.Player;
 import com.svalero.sportsclubapp.domain.User;
-import com.svalero.sportsclubapp.exception.UserExistTablesException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -39,11 +37,8 @@ public class DeleteUser extends HttpServlet {
         try {
             userDao.deleteById(Integer.parseInt(idUser));
             out.println("<a href=\"index.jsp\" class=\"btn btn-warning\" type=\"submit\">Borrado Correctamente</a>");
-        } catch (UserExistTablesException uete) {
-            out.println("<a href=\"index.jsp\" class=\"btn btn-warning\" type=\"submit\">Existen tablas relacionadas</a>");
-            uete.printStackTrace(); //PINTAMOS LAS TRAZAS DEL ERROR
         } catch (SQLException sqle) {
-            out.println("<div class='alert alert-danger' role='alert'><Se ha producido un error al conectar con la BBDD</div>");
+            out.println("<a href=\"index.jsp\" class=\"btn btn-warning\" type=\"submit\">Se ha producido un error al conectar con la BBDD</a>");
             sqle.printStackTrace(); //PINTAMOS LAS TRAZAS DEL ERROR
         }
     }

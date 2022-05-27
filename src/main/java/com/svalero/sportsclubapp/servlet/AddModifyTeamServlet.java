@@ -46,16 +46,16 @@ public class AddModifyTeamServlet extends HttpServlet {
         try {
             if (action.equals("register")) {
                 teamDao.add(team);
-                out.println("<div class='alert alert-success' role='alert'>Equipo Registrado en la BBDD correctamente</div>");
+                out.println("<a href=\"index.jsp\" class=\"btn btn-warning\" type=\"submit\">Equipo Registrado Correctamente</a>");
             } else {
                 teamDao.modifyById(Integer.parseInt(idTeam), team);
-                out.println("<div class='alert alert-success' role='alert'>Equipo Modificado en la BBDD correctamente</div>");
+                out.println("<a href=\"index.jsp\" class=\"btn btn-warning\" type=\"submit\">Equipo Modificado Correctamente</a>");;
             }
         } catch (TeamAlreadyExistException taee) {
-            out.println("<div class='alert alert-danger' role='alert'>El equipo ya existe en la BBDD</div>");
+            out.println("<a href=\"index.jsp\" class=\"btn btn-warning\" type=\"submit\">El equipo ya existe en la Base de Datos</a>");
             taee.printStackTrace(); //PINTAMOS LAS TRAZAS DEL ERROR
         } catch (SQLException sqle) {
-            out.println("<div class='alert alert-danger' role='alert'>Se ha producido un error al conectar con la BBDD</div>");
+            out.println("<a href=\"index.jsp\" class=\"btn btn-warning\" type=\"submit\">Se ha producido un error al conectar con la BBDD</a>");
             sqle.printStackTrace(); //PINTAMOS LAS TRAZAS DEL ERROR
         }
     }
