@@ -15,12 +15,16 @@ public class ClothingDao {
 
     private Connection connection;
 
-    ////MEDIANTE EL CONSTRUCTOR LE PASAMOS LA CONEXIÓN PARA HABLAR CON LA BBDD
+    /**
+     * CONSTRUCTOR PARA CONECTAR CON LA BBDD
+     */
     public ClothingDao(Connection connection) {
         this.connection = connection;
     }
 
-    //CONSTRUCTOR VACÍO PARA USARLO EN EL DAO EN LOS ARRAYLIST
+    /**
+     * CONSTRUCTOR VACIO PARA USARLO CON LOS ARRAYLIST
+     */
     public ClothingDao() {
 
     }
@@ -76,12 +80,14 @@ public class ClothingDao {
             clothing.setSize(resultSet.getString("sizes"));
             clothings.add(clothing);
         }
-
+        statement.close();
         return clothings;
     }
-
-    //OPTIONAL SE USA PARA CONTROLAR LA POSIBLE EXCEPCIÓN QUE DEVUELVE UN OBJETO NULO
-    public Optional<Clothing> findByDni(String dni) throws SQLException { //throws PARA PROPAGAR LA EXCEPCIÓN HACIA UNA CAPA SUPERIOR
+    /**
+     * OPTIONAL SE USA PARA CONTROLAR LA POSIBLE EXCEPCIÓN QUE DEVUELVE UN OBJETO NULO
+     * throws PARA PROPAGAR LA EXCEPCIÓN HACIA UNA CAPA SUPERIOR
+     */
+    public Optional<Clothing> findByDni(String dni) throws SQLException { //
         //PRIMERO EL Sql, ASÍ EVITAMOS LAS INYECCIONES SQL
         String sql = "SELECT * FROM clothing WHERE dni = ?";
         Clothing clothing = null;
@@ -96,9 +102,9 @@ public class ClothingDao {
             clothing.setSerigraphy(resultSet.getString("serigraphy"));
             clothing.setNumber(resultSet.getInt("numbers"));
             clothing.setSize(resultSet.getString("sizes"));
-            clothing.getPrice(); //TODO REVISAR COMO IMPRIMIR LA QUOTA
+            clothing.getPrice();
         }
-
+        statement.close();
         return Optional.ofNullable(clothing);
     }
 }

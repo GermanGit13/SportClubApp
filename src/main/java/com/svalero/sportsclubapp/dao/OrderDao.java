@@ -51,17 +51,23 @@ public class OrderDao {
         connection.setAutoCommit(true); //PONEMOS A TRUE DE NUEVO EL AUTOCOMMIT
       }
 
-    //DETALLES DE UN PEDIDO
+    /**
+     * DETALLES DE UN PEDIDO
+     */
     public Order getOrder() {
         return null;
     }
 
-    //MARCAR PEDIDO COMO PAGADO, idem para marcar coach
+    /**
+     * PARA MARCAR COMO PAGADO
+     */
     public void payOrder() {
 
     }
 
-    //DETALLES DE UN PEDIDO ENTRE DOS FECHAS
+    /**
+     * DETALLES DE UN PEDIDO ENTRE DOS FECHAS
+     */
     public List<Order> getOrdersBetweenDates(LocalDate fromDate, LocalDate toDate) throws SQLException{
         String sql = "SELECT * FROM orders ORDER WHERE  date BETWEEN ? AND ?";
         List<Order> orders = new ArrayList<>();
