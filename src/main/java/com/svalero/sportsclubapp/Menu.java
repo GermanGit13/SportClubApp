@@ -13,7 +13,6 @@ import com.svalero.sportsclubapp.util.DateUtils;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -84,10 +83,10 @@ public class Menu {
                     addUser(); //OK
                     break;
                 case "2":
-                    addTeam(); //OK
+                    //addTeam(); //OK
                     break;
                 case "3":
-                    addPlayer(); //TODO REVISAR PARA ASIGNAR EL CURRENTUSER
+                    addPlayer();
                     break;
                 case "4":
                     addClothing(); //OK
@@ -99,7 +98,7 @@ public class Menu {
                     //assignCoach);
                     break;
                 case "7":
-                    modifyTeam();
+                    //modifyTeam();
                     break;
                 case "8":
                     modifyPlayer();
@@ -201,7 +200,7 @@ public class Menu {
         }
     }
 
-    private void addTeam() {
+    /*private void addTeam() {
         //PARA DARLO DE ALTA EN LA BBDD CON EL DAO
         TeamDao teamDao = new TeamDao(connection);
 
@@ -209,7 +208,6 @@ public class Menu {
         String name = keyboard.nextLine();
         System.out.print("Introduzca la categoría equipo: ");
         String category = keyboard.nextLine();
-        //TODO FALTA ENTRENADOR
         //System.out.print("Introduzca el entrenador del equipo: ");
         //String coach = keyboard.nextLine();
         //CREAMOS EL OBJETO TEAM CON LOS DATOS INTRODUCIDOS POR KEYBOARD
@@ -225,7 +223,7 @@ public class Menu {
             System.out.println("No se ha podido conectar con el servidor de base de datos. Comprueba que los datos son correctos y que el servidor se ha iniciado");
             sqle.printStackTrace();  //PARA OBTENER LAS TRAZAS DE LA EXCEPCIÓN Y ASI LUEGO SEGUIR CON PRECISION EL ERROR
         }
-    }
+    }*/
 
     private void addPlayer() {
         //PARA DARLO DE ALTA EN LA BBDD CON EL DAO
@@ -309,7 +307,7 @@ public class Menu {
         }
     }
 
-    private void modifyTeam() {
+    /*private void modifyTeam() {
         //PARA DARLO DE ALTA EN LA BBDD CON EL DAO
         TeamDao teamDao = new TeamDao(connection);
 
@@ -317,12 +315,12 @@ public class Menu {
         String nameTeam = keyboard.nextLine();
         System.out.println(("Introduzca la categoría del equipo"));
         String categoryTeam = keyboard.next();
-        //TODO BUSCAR EL EQUIPO ANTES DE MODIFICARLO
+
         System.out.print("Introduzca nuevo nombre del equipo: ");
         String newName = keyboard.nextLine();
         System.out.print("Introduzca la categoría equipo: ");
         String newCategory = keyboard.nextLine();
-        //TODO FALTA ENTRENADOR
+
         //System.out.print("Introduzca el entrenador del equipo: ");
         //String coach = keyboard.nextLine();
         //CREAMOS EL OBJETO TEAM CON LOS DATOS INTRODUCIDOS POR KEYBOARD
@@ -338,7 +336,7 @@ public class Menu {
             System.out.println("No se ha podido conectar con el servidor de base de datos. Comprueba que los datos son correctos y que el servidor se ha iniciado");
             sqle.printStackTrace();  //PARA OBTENER LAS TRAZAS DE LA EXCEPCIÓN Y ASI LUEGO SEGUIR CON PRECISION EL ERROR
         }
-    }
+    }*/
 
     private void modifyPlayer() {
         PlayerDao playerDao = new PlayerDao(connection);
@@ -352,7 +350,7 @@ public class Menu {
         try {
             playerDao.findByDni(dniPlayer);
 
-            boolean modified = playerDao.modify(dniPlayer, player); //TODO REVISAR SI CREA EL OBJETO PLAYER USANDO YA EL MÉTODO ADDPLAYER SINO HACER IGUAL QUE MODIFICAR TEAM
+            boolean modified = playerDao.modify(dniPlayer, player);
             if (modified)
                 System.out.println("Jugador Modificado correctamente");
             else
@@ -368,7 +366,7 @@ public class Menu {
         boolean modify = false;
         System.out.println("Introduzca el dni del jugador para modificar su pedido: ");
         String dni = keyboard.nextLine();
-        //TODO realizar modificar Clothing
+
     }
 
     private void showTeam() {
@@ -439,17 +437,16 @@ public class Menu {
     private void showOrderDetails() {
         OrderDao orderDao = new OrderDao(connection);
 
-        //TODO INDICAR QUE PEDIDO QUIERE VER
+
 
         Order order = orderDao.getOrder(); //PARA TRAERNOS EL OBJETO Y PODER MOSTRARLO
 
-        //TODO MOSTRAR DATOS DEL PEDIDO
+
     }
 
     private void payOrder() {
         OrderDao orderDao = new OrderDao(connection);
 
-        //TODO INDICAR EL PEDIDO - OJO ME SIRVE PARA ASIGNAR EL ENTRENADOR
 
         orderDao.payOrder();
     }
@@ -493,7 +490,7 @@ public class Menu {
 
             System.out.println(team.getName());
             System.out.println(team.getCategory());
-            //TODO IMPRIMIR ENTRENADOR Y DEMÁS
+
         } catch (SQLException sqle) {
             System.out.println("No se ha podido comunicar con la base de datos. Inténtelo de nuevo");
             sqle.printStackTrace();  //PARA OBTENER LAS TRAZAS DE LA EXCEPCIÓN Y ASI LUEGO SEGUIR CON PRECISION EL ERROR

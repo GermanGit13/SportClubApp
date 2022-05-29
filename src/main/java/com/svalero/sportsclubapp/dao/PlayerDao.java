@@ -110,6 +110,18 @@ public class PlayerDao {
     }
 
     /**
+     * METODO PARA BORRAR POR ID
+     */
+    public boolean deleteById(int idPlayer) throws SQLException {
+        String sql = "DELETE FROM player WHERE id_player = ?";
+
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setInt(1, idPlayer);
+        int rows = statement.executeUpdate();
+        return rows ==1;
+    }
+
+    /**
      * LISTADO DE LA TABLA PLAYER
      * ResultSet ESPECIE DE ARRAYLIST CURSOR QUE APUNTE AL CONTENIDO CARGADO EN LA MEMORIA JAVA DONDE METEMOS EL RESULTADO DE statement.executeQuery
      */
