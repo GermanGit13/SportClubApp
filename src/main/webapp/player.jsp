@@ -17,6 +17,8 @@
 <%@ page import="java.util.Optional" %>
 <%@ page import="java.sql.SQLException" %>
 <%@ page import="java.util.List" %>
+<%@ page import="com.svalero.sportsclubapp.dao.TeamDao" %>
+<%@ page import="com.svalero.sportsclubapp.domain.Team" %>
 <!-- FIN importar las clases que nos van a  hacer falta -->
 
 <jsp:include page="header.jsp" />
@@ -42,18 +44,54 @@
                 <p class="card-text">Apellidos: <strong><%= player.getLastName() %></strong></p>
                 <p class="card-text">Año Nacimiento: <strong><%= player.getYearOfBirth() %></strong></p>
                 <p class="card-text">Dni: <strong><%= player.getDni() %></strong></p>
-                <p class="card-text">umero: <strong><%= user.getNumber() %></strong></p>
-                <a href="buy?id=<%= player.getIdPlayer() %>" class="btn btn-primary">Modificar</a>
+                <p class="card-text">Número: <strong><%= player.getNumber() %></strong></p>
+                <a href="addPlayer.jsp?id_player=<%= player.getIdPlayer() %>" class="btn btn-outline-warning">Modificar</a>
+                <a href="deletePlayer?id_player=<%= player.getIdUser() %>" class="btn btn-outline-danger">Eliminar</a>
+                <a href="=<%= player.getIdUser() %>" class="btn btn-outline-success">Asignar Equipo Pendiente</a>
+                <a href="user.jsp?id_user=<%= player.getIdUser() %>" class="btn btn-outline-info">Datos Padres</a>
               </div>
               <div class="card-footer text-muted">
-                Equipo:  <strong><%= player.getIdTeam() %></strong>
-              </div>
+        <%
+            String idTeam = String.valueOf(player.getIdTeam());
+            String name = null;
+            String category = null;
+
+            if (idTeam != null) {
+                Database db = new Database();
+                TeamDao teamDao = new TeamDao(db.getConnection());
+                Team team = null;
+                try {
+                    if (player.getIdTeam() != 0) {
+                        Optional<Team> optionalTeam = teamDao.findById(Integer.parseInt(idTeam));
+                        team = optionalTeam.get();
+                        name = team.getName();
+                        category = team.getCategory();
+                    } else {
+                        name = "Sin Asignar";
+                        category = "Sin Categoria";
+                    }
+                } catch (SQLException sqle) {
+        %>
+            <div> class='alert alert-danger' role='alert'>Se ha producido al cargar el equipo del jugador</div>
+        <%
+                }
+            } else {
+                name = "Sin Asignar";
+                category = "Sin Asignar";
+            }
+        %>
+                Equipo:  <strong><%= name %></strong> Categoria: <strong><%= category %></strong>
+                </div>
+                <div class="card-footer text-muted">
+                    <a href="index.jsp" class="btn btn-warning" type="submit">Menu Principal</a>
+                </div>
              </div>
+
         </div>
         <%
             } catch (SQLException sqle) {
         %>
-            <div class='alert alert-danger' role='alert'>Se ha producido al cargar los datos del equipo</div>
+            <div class='alert alert-danger' role='alert'>Se ha producido al cargar los datos del jugador</div>
         <%
             }
         %>

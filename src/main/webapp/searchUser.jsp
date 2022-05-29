@@ -36,7 +36,8 @@
               <label for="searchtext" class="form-label">Cadena de texto a buscar</label>
               <input name="searchtext" type="text"  class="form-control w-25" id="searchtext"> <!-- input name: vital para poder acceder desde java como variables. w-25 anchura de la caja -->
             </div>
-            <button type="submit" class="btn btn-primary">Buscar</button>
+            <button type="submit" class="btn btn-dark">Buscar</button>
+            <a href="index.jsp" class="btn btn-warning" type="submit">Menu Principal</a>
         </form>
         <div id="result"></div> <!-- Pinta el resultado del envio asincrono con AJAX -->
     </div> <!-- Fin del container de Bootstrap -->

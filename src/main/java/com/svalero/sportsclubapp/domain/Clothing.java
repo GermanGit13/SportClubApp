@@ -14,8 +14,10 @@ public class Clothing {
     private int number;
     private String size;
 
-    private List<Order> orders; //RELACIÓN N A N ENTRE LAS TABLAS ORDER Y CLOTHING - CON ESTA LISTA MANTIENE LA RELACIÓN DE LADO A LADO
-
+    /**
+     * RELACIÓN N A N ENTRE LAS TABLAS ORDER Y CLOTHING - CON ESTA LISTA MANTIENE LA RELACIÓN DE LADO A LADO
+     */
+    private List<Order> orders;
 
     public Clothing() {
         orders = new ArrayList<>();

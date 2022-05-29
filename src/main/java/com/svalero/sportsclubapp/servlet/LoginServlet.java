@@ -18,14 +18,16 @@ import java.util.Optional;
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
-    //doPost PORQUE ESTOY DANDO DE ALTA DESDE UN FOMULARIO DESDE login.JSP
+    /**
+     * doPost PORQUE ESTOY DANDO DE ALTA DESDE UN FOMULARIO DESDE login.JSP
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/html"); //PONERLO SIEMPRE PARA QUE NOS DEVUELVA COMO HTML Y NO TEXTO SIMPLE
-        PrintWriter out = response.getWriter(); //DE ESTA FORMA ES MÁS CÓMODO PINTAR POR PANTALLA SOLO USANDO out.
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
 
         String username = request.getParameter("username"); //RECOGEMOS LOS PARAMETROS QUE NOS ENVIA LOGIN.JSP MEDIANTE EL NAME
-        String password = request.getParameter("password");
+        String password = request.getParameter("password"); //RECOGEMOS LOS PARAMETROS QUE NOS ENVIA LOGIN.JSP MEDIANTE EL NAME
 
         Database database = new Database();
         UserDao userDao = new UserDao(database.getConnection());
@@ -37,10 +39,10 @@ public class LoginServlet extends HttpServlet {
                 System.out.println("sesión iniciada");
                 response.sendRedirect("index.jsp"); //REDIRIGIMOS
             } else {
-                out.println("<div class='alert alert-danger' role='alert'>No estás registrado ó tus datos de inicio de sesión no son correctos</div>");
+                out.println("<a href=\"index.jsp\" class=\"btn btn-warning\" type=\"submit\">No estás registrado o tus datos no son correctos</a>");
             }
         } catch (SQLException sqle) {
-            out.println("<div class='alert alert-danger' role='alert'>SQLException</div>");
+            out.println("<a href=\"index.jsp\" class=\"btn btn-warning\" type=\"submit\">Se ha producido un error al conectar con la BBDD</a>");
             sqle.printStackTrace();
         }
     }

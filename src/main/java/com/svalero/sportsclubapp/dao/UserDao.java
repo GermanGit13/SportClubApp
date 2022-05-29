@@ -1,35 +1,35 @@
 package com.svalero.sportsclubapp.dao;
 
-import com.svalero.sportsclubapp.domain.Team;
-import com.svalero.sportsclubapp.domain.User;
 import com.svalero.sportsclubapp.domain.User;
 import com.svalero.sportsclubapp.exception.UserAlredyExistException;
-import com.svalero.sportsclubapp.exception.UserNotFoundException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.Optional;
 
 public class UserDao {
 
     private Connection connection;
 
+    /**
+     * MEDIANTE EL CONSTRUCTOR LE PASAMOS LA CONEXIÓN PARA HABLAR CON LA BBDD
+     */
     public UserDao(Connection connection) {
         this.connection = connection;
     }
 
-    public void add(User user) throws SQLException, UserAlredyExistException { //throws PARA PROPAGAR LA EXCEPCIÓN HACIA UNA CAPA SUPERIOR
+    /**
+     * METODO PARA AÑADIR USUARIOS
+     */
+    public void add(User user) throws SQLException, UserAlredyExistException {
         if (existUsername(user.getUsername()))
             throw new UserAlredyExistException();
 
-        //PRIMERO EL Sql, ASÍ EVITAMOS LAS INYECCIONES SQL
         String sql = "INSERT INTO users (firstname, lastname, email, dni, username, pass) VALUES (?, ?, ?, ?, ?, ?)";
 
-        //COMPONER EL SQL CON PreparedStatement EN BASE A LA SENTENCIA sql
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, user.getFirstName());
         statement.setString(2, user.getLastName());;
@@ -37,35 +37,71 @@ public class UserDao {
         statement.setString(4, user.getDni());
         statement.setString(5, user.getUsername());
         statement.setString(6, user.getPass());
-        //CUALQUIER CONSULTA QUE NO SEA UN SELECT SE LANZA CON executeUpdate. PARA SELECT USAMOS executeQuery
         statement.executeUpdate();
     }
 
-    //LE PASAMOS QUE USERNAME QUEREMOS MODIFICAR Y EL OBJETO PARA A MODIFICAR
-    public boolean modify(String username, User user) throws SQLException{ //throws PARA PROPAGAR LA EXCEPCIÓN HACIA UNA CAPA SUPERIOR
+    /**
+     * METODO PARA MODIFICAR EL NOMBRE DE USUARIO
+     */
+    public boolean modify(String username, User user) throws SQLException{
         String sql = "UPDATE users SET username = ? WHERE username = ?";
 
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, user.getUsername());
-        statement.setString(3, username);
-        //PARA DECIRNOS EL NÚMERO DE FILAS QUE HA MODIFICADO
+        statement.setString(2, username);
         int rows = statement.executeUpdate();
         return rows ==1;
     }
 
+    /**
+     * METODO PARA MODIFICAR POR ID
+     */
+    public boolean modifyById(int idUser, User user) throws SQLException {
+        String sql = "UPDATE users SET firstname = ?, lastname = ?, email = ?, dni = ?, coach = ? WHERE id_user = ?";
+
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, user.getFirstName());
+        statement.setString(2, user.getLastName());
+        statement.setString(3, user.getEmail());
+        statement.setString(4, user.getDni());
+        statement.setString(5, user.getCoach());
+        statement.setInt(6, idUser);
+        int rows = statement.executeUpdate();
+        return rows ==1;
+    }
+
+    /**
+     * METODO PARA BORRAR POR NOMBRE DE USUARIO
+     */
     public boolean delete(String username, User user) throws SQLException {
         String sql = "DELETE FROM users WHERE username = ?";
 
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, username);
-        //PARA DECIRNOS EL NÚMERO DE FILAS QUE HA BORRADO
         int rows = statement.executeUpdate();
         return rows ==1;
     }
 
+    /**
+     * METODO PARA BORRAR POR ID
+     */
+    public boolean deleteById(int idUser) throws SQLException {
+        String sql = "DELETE FROM users WHERE id_user = ?";
+
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setInt(1, idUser);
+        int rows = statement.executeUpdate();
+        return rows ==1;
+    }
+
+    /**
+     * METODO PARA OBTENER UN USUARIO POR SU USERNAME Y PASS
+     * ENCRIPTAR LA PASS CON SHA1(?)
+     * USAMOS COACH COMO ROL PARA ADMINISTRAR LA WEB
+     */
     //PARA PODER OBTENER UN USUARIO EN CONCRETO
     public Optional<User> login(String username, String password) throws SQLException {
-        String sql ="SELECT * FROM users WHERE username = ? AND pass = ?"; //ENCRIPTAR LA PASS CON SHA1(?)
+        String sql ="SELECT * FROM users WHERE username = ? AND pass = ?";
         User user = null;
 
         PreparedStatement statement = connection.prepareStatement(sql);
@@ -77,36 +113,20 @@ public class UserDao {
             user.setIdUser(resultSet.getInt("id_user"));
             user.setFirstName(resultSet.getString("firstname"));
             user.setUsername(resultSet.getString("username"));
-            user.setCoach(resultSet.getString("coach")); // USADO COMO ROL PARA ADMINISTRAR LA WEB
+            user.setCoach(resultSet.getString("coach"));
         }
+        statement.close();
         return Optional.ofNullable(user);
     }
 
-    public ArrayList<User> findAll() throws SQLException { //throws PARA PROPAGAR LA EXCEPCIÓN HACIA UNA CAPA SUPERIOR
-        //PRIMERO EL Sql, ASÍ EVITAMOS LAS INYECCIONES SQL
+    /**
+     * METODO PARA LISTAR EL CONTENIDO DE LA TABLA USERS ORDENADO POR NOMBRE
+     */
+    public ArrayList<User> findAll() throws SQLException {
         String sql = "SELECT * FROM users ORDER BY FirstName";
         ArrayList<User> users = new ArrayList<>();
 
-        //COMPONER EL SQL CON PreparedStatement EN BASE A LA SENTENCIA sql
         PreparedStatement statement = connection.prepareStatement(sql);
-        //ResultSet ESPECIE DE ARRAYLIST CURSOR QUE APUNTE AL CONTENIDO CARGADO EN LA MEMORIA JAVA DONDE METEMOS EL RESULTADO DE statement.executeQuery
-        ResultSet resultSet = statement.executeQuery();
-        //RECORREMOS EL resultSet
-        while (resultSet.next()) {
-            User user = fromResultSet(resultSet);
-            users.add(user);
-        }
-        return users;
-    }
-
-    public ArrayList<User> findAll(String searchText) throws SQLException {
-        String sql = "SELECT * FROM users WHERE INSTR(firstName, ?) !=0 OR INSTR(lastName, ?) !=0 OR INSTR(DNI, ?) !=0 ORDEN BY firstName";
-        ArrayList<User> users = new ArrayList<>();
-
-        PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setString(1, searchText);
-        statement.setString(2, searchText);
-        statement.setString(3, searchText);
         ResultSet resultSet = statement.executeQuery();
         while (resultSet.next()) {
             User user = fromResultSet(resultSet);
@@ -116,48 +136,122 @@ public class UserDao {
         return users;
     }
 
+    /**
+     * METODO PARA BUSCAR EN LA TABLA POR CADENA DE TEXTO EN LAS COLUMNAS QUE DESEEMOS
+     */
+    public ArrayList<User> findAll(String searchText) throws SQLException {
+        String sql = "SELECT * FROM users WHERE INSTR(firstName, ?) != 0 OR INSTR(lastname, ?) != 0 ORDER BY firstName";
+        ArrayList<User> users = new ArrayList<>();
+
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, searchText);
+        statement.setString(2, searchText);
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            User user = fromResultSet(resultSet);
+            users.add(user);
+        }
+        statement.close();
+        return users;
+    }
+
+    /**
+     * METODO PARA BUSCAR POR DNI
+     */
     public User findByDni(String dni) throws SQLException {
         String sql ="SELECT * FROM users WHERE dni = ?";
         User user = null;
 
-        //PRIMERO EL Sql, ASÍ EVITAMOS LAS INYECCIONES SQL
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, dni);
-        //ResultSet ESPECIE DE ARRAYLIST CURSOR QUE APUNTE AL CONTENIDO CARGADO EN LA MEMORIA JAVA DONDE METEMOS EL RESULTADO DE statement.executeQuery
         ResultSet resultSet = statement.executeQuery();
         if (resultSet.next()) {
             user = fromResultSet(resultSet);
         }
-
+        statement.close();
         return user;
     }
 
+    /**
+     * METODO PARA BUSCAR LOS USUARIOS QUE SON ENTRENADORES ORDENADOS POR NOMBRE
+     */
+    public ArrayList<User> findAllCoach(String searchCoach) throws SQLException {
+        String sql = "SELECT * FROM users WHERE coach = ? ORDER BY firstname";
+        ArrayList<User> users = new ArrayList<>();
+
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, searchCoach);
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            User user = fromResultSet(resultSet);
+            users.add(user);
+        }
+        statement.close();
+        return users;
+    }
+
+    /**
+     * METODO PARA BUSCAR SI EXISTE UN DNI EN LA BBDD
+     */
     private boolean existDni(String dni) throws SQLException{
         User user = findByDni(dni);
         return user != null;
     }
 
+    /**
+     * METODO PARA BUSCAR POR USERNAME
+     */
     public User findByUsername(String username) throws SQLException {
         String sql ="SELECT * FROM users WHERE username = ?";
         User user = null;
 
-        //PRIMERO EL Sql, ASÍ EVITAMOS LAS INYECCIONES SQL
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, username);
-        //ResultSet ESPECIE DE ARRAYLIST CURSOR QUE APUNTE AL CONTENIDO CARGADO EN LA MEMORIA JAVA DONDE METEMOS EL RESULTADO DE statement.executeQuery
         ResultSet resultSet = statement.executeQuery();
         if (resultSet.next()) {
             user = fromResultSet(resultSet);
         }
-
+        statement.close();
         return user;
     }
 
+    /**
+     * METODO PARA SI UN USUARIO EXISTE COMO ENTRENADOR DE ALGUN EQUIPO
+     */
+    public ArrayList<User> findByIdUserTableTeam(int idUser) throws SQLException {
+        String sql ="SELECT * FROM team Where id_user = ?";
+        ArrayList<User> users = new ArrayList<>();
+
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setInt(1, idUser);
+        ResultSet resultSet = statement.executeQuery();
+        if (resultSet.next()) {
+            User user = fromResultSet(resultSet);
+            users.add(user);
+        }
+        statement.close();
+        return users;
+    }
+
+    /**
+     * METODO PARA SI EL NOMBRE DE USUARIO YA EXISTE
+     */
     private boolean existUsername(String username) throws SQLException{
         User user = findByUsername(username);
         return user != null;
     }
 
+    /**
+     * METODO PARA SI UN USUARIO EXISTE COMO ENTRENADOR DE ALGUN EQUIPO
+     */
+    private boolean existIdUserTeam(int idUser) throws SQLException{
+        ArrayList<User> users = findByIdUserTableTeam(idUser);
+        return users != null;
+    }
+
+    /**
+     * METODO PARA BUSCAR POR ID
+     */
     public Optional<User> findById(int id) throws SQLException {
         String sql = "SELECT * FROM users WHERE id_user = ?";
         User user = null;
@@ -168,10 +262,13 @@ public class UserDao {
         if (resultSet.next()) {
             user = fromResultSet(resultSet);
         }
+        statement.close();
         return Optional.ofNullable(user);
     }
 
-    //PARA USARLO EN LOS LISTADO QUE DEVUELVE ResultSet
+    /**
+     * PARA USARLO EN LOS LISTADOS QUE DEVUELVE ResultSet
+     */
     private User fromResultSet(ResultSet resultSet) throws SQLException {
         User user = new User();
         user.setIdUser(resultSet.getInt("id_user"));

@@ -6,6 +6,9 @@ public class UserNotFoundException extends Exception {
         super(message);
     }
 
+    /**
+     * SEGUNDO CONSTRUCTOR PARA PASARLE NOSOTROS EL MENSAJE PERSONALIZADO
+     */
     public UserNotFoundException() {
         super("Datos de Usuario no válidos");
     }

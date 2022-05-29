@@ -10,22 +10,22 @@ public class Team {
     private String name;
     private String category;
 
-    private User user; //PARA RELACIONAR LOS ENTRENADORES
+    /**
+     * User: PARA RELACIONAR LOS ENTRENADORES
+     */
+    private User user;
 
-    //MÉTODO PARA PRUEBAS
-    public Team(String name, String category, float quota) {
-        this.name = name;
-        this.category = category;
-        quota = QUOTA;
-    }
-
-    //MÉTODO PARA BUSCAR POR CATEGORY
+    /**
+     * MÉTODO PARA BUSCAR POR CATEGORY
+     */
     public Team(String name, String category) {
         this.name = name;
         this.category = category;
     }
 
-    //CONSTRUCTOR VACÍO PARA USARLO EN EL DAO EN LOS ARRAYLIST
+    /**
+     * CONSTRUCTOR VACÍO PARA USARLO EN EL DAO EN LOS ARRAYLIST
+     */
     public Team() {
 
     }

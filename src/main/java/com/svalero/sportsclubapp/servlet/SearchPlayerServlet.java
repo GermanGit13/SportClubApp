@@ -17,16 +17,18 @@ import java.util.ArrayList;
 @WebServlet("/search-player")
 public class SearchPlayerServlet extends HttpServlet {
 
-    //doPost PORQUE ESTOY DANDO DE ALTA DESDE UN FOMULARIO DESDE searchPlayer.JSP
+    /**
+     * doPost PORQUE ESTOY DANDO DE ALTA DESDE UN FOMULARIO DESDE newUser.JSP
+     */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServerException, IOException {
-        response.setContentType(("text/html")); //PONERLO SIEMPRE PARA QUE NOS DEVUELVA COMO HTML Y NO TEXTO SIMPLE
-        PrintWriter out = response.getWriter(); //DE ESTA FORMA ES MÁS CÓMODO PINTAR POR PANTALLA SOLO USANDO out.
+        response.setContentType(("text/html"));
+        PrintWriter out = response.getWriter();
 
         String searchText = request.getParameter("searchtext"); //REQUEST PARA RECOGER LO QUE PROVIENE DEL USUARIO --> input searchtext del formulario
         searchText = searchText.toUpperCase();
 
-        Database database = new Database(); //CREAMOS UN OBJETO Database PARA CONECTARNOS A LA BBDD
-        PlayerDao playerDao = new PlayerDao(database.getConnection()); //CREAMOS EL OBJETO DAO CORRESPONDIENTE Y LE PASAMOS LA CONEXIÓN A LA BBDD
+        Database database = new Database();
+        PlayerDao playerDao = new PlayerDao(database.getConnection());
         try {
             ArrayList<Player> players = playerDao.findAll(searchText); //USO EL METODO FINDALL CON PARAMETRO SEARCHTEXT
             StringBuilder result = new StringBuilder("<ul class='list-group'>"); //CONSTRUYO UN STRING CON LOS li
@@ -36,8 +38,8 @@ public class SearchPlayerServlet extends HttpServlet {
             result.append("</ul>");
             out.println(result); //DEVOLVEMOS EL STRING CON TODOS LOS li
         } catch (SQLException sqle) {
-            out.println("<div class='alert alert-danger' role='alert'>Se ha producido un error al conectar con la BBDD</div>");
-            sqle.printStackTrace(); //PINTAMOS LAS TRAZAS DEL ERROR
+            out.println("<a href=\"index.jsp\" class=\"btn btn-warning\" type=\"submit\">Se ha producido un error al conectar con la BBDD</a>");
+            sqle.printStackTrace();
         }
     }
 }

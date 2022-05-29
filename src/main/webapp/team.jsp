@@ -18,6 +18,8 @@
 <%@ page import="java.util.Optional" %>
 <%@ page import="java.sql.SQLException" %>
 <%@ page import="java.util.List" %>
+<%@ page import="com.svalero.sportsclubapp.dao.PlayerDao" %>
+<%@ page import="com.svalero.sportsclubapp.domain.Player" %>
 <!-- FIN importar las clases que nos van a  hacer falta -->
 
 <jsp:include page="headerAjax.jsp" />
@@ -25,10 +27,14 @@
 <body>
     <div class="container"> <!-- Para que quede centrada la web gracias a la hoja de estilo de Bootstrap -->
     <%
+        String pagina = "";
+        String variable ="";
         String teamId = request.getParameter("id_team");
         Database database = new Database();
         TeamDao teamDao = new TeamDao(database.getConnection());
         Team team = null;
+        PlayerDao playerDao = new PlayerDao(database.getConnection());
+        Player player = null;
         try {
             Optional<Team> optionalTeam = teamDao.findById(Integer.parseInt(teamId));
             team = optionalTeam.get();
@@ -43,13 +49,24 @@
                 <p class="card-text">Categoria: <strong><%= team.getCategory() %></strong></p>
                 <p class="card-text">Cuota: <strong><%= team.getQuota() %></strong></p>
                 <a href="addTeam.jsp?id_team=<%= team.getIdTeam() %>" class="btn btn-outline-warning">Modificar</a>
-                <a href="coach.jsp?id_user=<%= team.getIdUser() %>" class="btn btn-outline-danger">Eliminar</a>
-                <a href="coach.jsp?id_user=<%= team.getIdUser() %>" class="btn btn-outline-success">Asignar Jugadores</a>
-                <a href="coach.jsp?id_user=<%= team.getIdUser() %>" class="btn btn-outline-info">Entrenador</a>
-              </div>
-              <div class="card-footer text-muted">
-                Jugadores del Equipo:  <strong><%= team.getIdUser() %></strong>
-              </div>
+                <a href="confirmDelete.jsp?id_team=<%= team.getIdTeam() %>" class="btn btn-outline-danger">Eliminar</a>
+                <a href="" class="btn btn-outline-success">Asignar Jugadores Pendiente</a>
+                <%
+                if (team.getIdUser() != 0) {
+                    pagina = "coach.jsp";
+                    variable = "team.getIdUser()";
+                } else
+                    pagina = "addTeam.jsp";
+                    variable = "team.getIdTeam()";
+                %>
+                <a href="<%= pagina %>?id_user=<%= variable %>" class="btn btn-outline-info"><% if (team.getIdUser() != 0) out.print("Entrenador"); else out.print ("Asignar Entrenador"); %></a>
+                </div>
+                <div class="card-footer text-muted">
+                    Jugadores del Equipo:  <strong><%-- playerDao.countByTeam(team.getIdTeam()); --%></strong>
+                </div>
+                <div class="card-footer text-muted">
+                    <a href="index.jsp" class="btn btn-warning" type="submit">Menu Principal</a>
+                </div>
             </div>
         </div>
         <%

@@ -4,6 +4,7 @@
 %>
 
 <%
+    String pagina = "";
     User currentUser = (User) session.getAttribute("currentUser");
     if (currentUser == null) {
         response.sendRedirect("login.jsp");
@@ -12,9 +13,7 @@
 
 <!-- Para importar las clases que nos van a  hacer falta -->
 <%@ page import="com.svalero.sportsclubapp.dao.Database" %>
-<%@ page import="com.svalero.sportsclubapp.dao.TeamDao" %>
 <%@ page import="com.svalero.sportsclubapp.dao.UserDao" %>
-<%@ page import="com.svalero.sportsclubapp.domain.Team" %>
 <%@ page import="com.svalero.sportsclubapp.domain.User" %>
 <%@ page import="java.util.Optional" %>
 <%@ page import="java.sql.SQLException" %>
@@ -39,19 +38,29 @@
               <div class="card-header">
                 Detalles del Usuario
               </div>
-              <div class="card-body">
-                <h5 class="card-title"><%= user.getFirstName() %></h5>
-                <p class="card-text">Apellidos: <strong><%= user.getLastName() %></strong></p>
-                <p class="card-text">Email: <strong><%= user.getEmail() %></strong></p>
-                <p class="card-text">Dni: <strong><%= user.getDni() %></strong></p>
-                <p class="card-text">Username: <strong><%= user.getUsername() %></strong></p>
-                <a href="buy?id=<%= user.getIdUser() %>" class="btn btn-outline-warning">Modificar</a>
-                <a href="coach.jsp?id_user=<%= user.getIdUser() %>" class="btn btn-outline-danger">Eliminar</a>
-                <a href="coach.jsp?id_user=<%= user.getIdUser() %>" class="btn btn-outline-info">Hacer Entrenador</a>
-              </div>
-              <div class="card-footer text-muted">
-                Entrenador:  <strong><%= user.getCoach() %></strong>
-              </div>
+                <div class="card-body">
+                    <h5 class="card-title"><%= user.getFirstName() %></h5>
+                    <p class="card-text">Apellidos: <strong><%= user.getLastName() %></strong></p>
+                    <p class="card-text">Email: <strong><%= user.getEmail() %></strong></p>
+                    <p class="card-text">Dni: <strong><%= user.getDni() %></strong></p>
+                    <p class="card-text">Username: <strong><%= user.getUsername() %></strong></p>
+                    <a href="addUser.jsp?id_user=<%= user.getIdUser() %>" class="btn btn-outline-warning">Modificar</a>
+                    <a href="deleteUser?id_user=<%= user.getIdUser() %>" class="btn btn-outline-danger">Eliminar</a>
+                    <%
+                        if (user.getCoach().equals("TRUE")) {
+                            pagina = "coach.jsp";
+                        } else
+                            pagina = "addUser.jsp";
+                    %>
+                    <a href="<%= pagina %>?id_user=<%= user.getIdUser() %>" class="btn btn-outline-info"><% if (user.getCoach().equals("TRUE")) out.print("Entrenador"); else out.print ("Hacer Entrenador"); %> </a>
+                </div>
+                    <div class="card-footer text-muted">
+                    Entrenador:  <strong><%= user.getCoach() %></strong>
+                    </div>
+                    <div class="card-footer text-muted">
+                    <a href="index.jsp" class="btn btn-warning" type="submit">Menu Principal</a>
+                    </div>
+                </div>
              </div>
         </div>
         <%

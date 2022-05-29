@@ -36,26 +36,48 @@
           font-size: 3.5rem;
         }
       }
+
+      .b-example-divider {
+        height: 3rem;
+        background-color: rgba(0, 0, 0, .1);
+        border: solid rgba(0, 0, 0, .15);
+        border-width: 1px 0;
+        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+      }
+      .b-example-vr {
+        flex-shrink: 0;
+        width: 1.5rem;
+        height: 100vh;
+      }
+      .bi {
+        vertical-align: -.125em;
+        fill: currentColor;
+      }
+      .nav-scroller {
+        position: relative;
+        z-index: 2;
+        height: 2.75rem;
+        overflow-y: hidden;
+      }
+      .nav-scroller .nav {
+        display: flex;
+        flex-wrap: nowrap;
+        padding-bottom: 1rem;
+        margin-top: -1px;
+        overflow-x: auto;
+        text-align: center;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
     </style>
 
     <link href="css/login.css" rel="stylesheet"> <!-- Ruta donde hemos creado el css en el proyecto -->
   </head>
 
   <body class="text-center">
-  <!-- Código para enviar el formulario de forma asíncrona -->
-      <script type="text/javascript">
-              $(document).ready(function() {
-                  $("form").on("submit", function(event) {
-                      event.preventDefault();
-                      var formValue = $(this).serialize();
-                      $.post("login", formValue, function(data) { <!-- servlet que recibe todos los datos del formulario -->
-                          $("#result").html(data); <!-- Lo usamos para enviar la respuesta al div en la misma página -->
-                      });
-                  });
-              });
-      </script>
 
-<main class="form-signin">
+  <main class="form-signin w-100 m-auto">
+
   <form action="login" method="post"> <!-- Para enviar el formulario -->
     <img class="mb-4" src="images/logo.png"> <!-- Podemos asignarle un tamaño alt="" width="72" height="57" si queremos -->
     <h1 class="h3 mb-3 fw-normal">INGRESA TUS DATOS PARA ENTRAR</h1>
@@ -70,10 +92,12 @@
     </div>
 
 
-    <button class="btn btn-warning" type="submit">ENTRAR</button>
+    <button class="btn btn-dark" type="submit">ENTRAR</button>
+    <a href="newUser.jsp" class="btn btn-warning" type="submit">REGISTRARSE</a>
     <p class="mt-5 mb-3 text-muted">Cb Smv 2022</p>
   </form>
-  <div id="result"></div> <!-- Pinta el resultado del envio asincrono con AJAX -->
+
 </main>
+
 </body>
 </html>
