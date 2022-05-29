@@ -50,7 +50,7 @@
                         if (user.getCoach().equals("TRUE")) {
                             pagina = "coach.jsp";
                         } else
-                            pagina = "addPlayer.jsp";
+                            pagina = "addUser.jsp";
                     %>
                     <a href="<%= pagina %>?id_user=<%= user.getIdUser() %>" class="btn btn-outline-info"><% if (user.getCoach().equals("TRUE")) out.print("Entrenador"); else out.print ("Hacer Entrenador"); %> </a>
                 </div>

@@ -50,7 +50,7 @@
                 <p class="card-text">Cuota: <strong><%= team.getQuota() %></strong></p>
                 <a href="addTeam.jsp?id_team=<%= team.getIdTeam() %>" class="btn btn-outline-warning">Modificar</a>
                 <a href="confirmDelete.jsp?id_team=<%= team.getIdTeam() %>" class="btn btn-outline-danger">Eliminar</a>
-                <a href="coach.jsp?id_user=<%= team.getIdUser() %>" class="btn btn-outline-success">Asignar Jugadores Pendiente</a>
+                <a href="" class="btn btn-outline-success">Asignar Jugadores Pendiente</a>
                 <%
                 if (team.getIdUser() != 0) {
                     pagina = "coach.jsp";

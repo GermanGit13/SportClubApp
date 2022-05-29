@@ -82,7 +82,7 @@
               <input name="dni" type="text" class="form-control w-25" id="dni" value="<% if (user != null) out.print(user.getDni()); %>">
             </div>
             <div class="mb-3">
-                <label for="coach" class="form-label">Entrenador: TRUE si es quieres hacerle que lo sea</label>
+                <label for="coach" class="form-label">Entrenador: Poner TRUE para hacerle entrenador FALSE para dejar de serlo</label>
                 <input name="coach" type="text" class="form-control w-25" id="coach" value="<% if (user != null) out.print(user.getCoach()); %>">
             </div>
 

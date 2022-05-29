@@ -28,18 +28,27 @@
         <h2>Listado Completo de Equipos</h2>
         <ul class="list-group">
           <%
+            String pagina = "";
+            String variable = "";
             Database database = new Database(); //creamos la conexión con la BBDD
             TeamDao teamDao = new TeamDao(database.getConnection()); //Creamos un teamdao y le pasamos la conexion
             try {
                 List<Team> teams = teamDao.findAll();
                 for (Team team: teams) {
           %>
+
+            <%
+                if (team.getIdUser() != 0) {
+                    pagina = "coach.jsp";
+                } else
+                    pagina = " ";
+            %>
                     <li class="list-group-item d-flex justify-content-between align-items-start w-50">
                         <div class="ms-2 me-auto">
                           <div class="fw-bold"><a target="_blank" href="team.jsp?id_team=<%= team.getIdTeam() %>"><%= team.getName() %></a></div> <!-- target="_blank" para abrir una pestaña nueva en el enlace -->
                           <%= team.getCategory() %>
                         </div>
-                        <span class="list-group-item d-flex justify-content-between align-items-start w-35"><a href="coach.jsp?id_user=<%= team.getIdUser() %>"> Coach </a></span>
+                        <span class="list-group-item d-flex justify-content-between align-items-start w-35"><a href="<%= pagina %>?id_user=<%= team.getIdUser() %>"> Coach </a></span>
                     </li>
           <%
                 }

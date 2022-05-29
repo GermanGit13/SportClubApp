@@ -21,6 +21,10 @@ Las funciones para los USUARIOS ENTRENADORES añadidas a las anteriores son:
                 * Modificar su Datos (para dejar de ser entrenador poner FALSE)
     * Listar todos los Usuarios:
         * Ver el detalle de cada usuario
+            * Dentro de cada detalle:
+                * Modificar
+                * Eliminar
+                * Hacer Entrenador
     * Listar todos los Jugadores: 
         * Ver el detalle de cada Jugador:
             * Modificar
@@ -28,6 +32,13 @@ Las funciones para los USUARIOS ENTRENADORES añadidas a las anteriores son:
             * Ver Datos de los padres
             * Ver el equipo asociado al que está
     * Dispone de tres buscadores por cadena de texto; Jugadores - Equipo y Usuarios
+
+
+Mejoras Pendientes
+    Crear Pedido de Ropa Deportiva
+    Buscar un pedido
+    Mis Pedidos 
+    Listar Todos los pedidos
 
         
 
