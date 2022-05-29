@@ -15,12 +15,13 @@ public class User {
 
     }
 
-    //CONSTRUCTOR PARA PODER BUSCAR SI EXISTE EL USERNAME AL CREARLO
+    /**
+     * CONSTRUCTOR PARA PODER BUSCAR SI EXISTE EL USERNAME AL CREARLO
+     */
     public User(String username) {
         this.username = username;
     }
 
-    //TODO REVISAR COMO HACER COACH A LOS USUARIOS
     public User(String firstName, String lastName, String email, String dni, String username, String pass) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -29,6 +30,7 @@ public class User {
         this.username = username;
         this.pass = pass;
     }
+
     public User(String firstName, String lastName, String email, String dni, String coach) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -36,6 +38,7 @@ public class User {
         this.dni = dni;
         this.coach = coach;
     }
+
     public int getIdUser() {
         return id;
     }

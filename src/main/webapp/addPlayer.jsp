@@ -7,7 +7,6 @@
 <%@ page import="com.svalero.sportsclubapp.dao.Database" %>
 <%@ page import="java.util.Optional" %>
 <%@ page import="java.sql.SQLException" %>
-<%@ page import="com.svalero.sportsclubapp.dao.UserDao" %>
 <%@ page import="com.svalero.sportsclubapp.domain.Player" %>
 <%@ page import="com.svalero.sportsclubapp.dao.PlayerDao" %>
 
@@ -63,6 +62,7 @@
             }
             %>
         </h2>
+
         <%-- action es la URL que va a procesar el formulario, post para dar de alta algo a través de un formulario --%>
         <%-- method http que voy a usar para comunicarme con el action   --%>
         <form> <!-- action="addplayer" method="post" -->

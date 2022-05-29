@@ -13,8 +13,8 @@ public class GetTeamServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/html"); //PONERLO SIEMPRE PARA QUE NOS DEVUELVA COMO HTML Y NO TEXTO SIMPLE
-        PrintWriter out = response.getWriter(); //DE ESTA FORMA ES MÁS CÓMODO PINTAR POR PANTALLA SOLO USANDO out.
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
 
         int idTeam = Integer.parseInt(request.getParameter("idTeam"));
         out.println("Team consultado con id" + idTeam);

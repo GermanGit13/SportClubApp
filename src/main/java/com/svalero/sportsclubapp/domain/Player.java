@@ -11,8 +11,12 @@ public class Player {
     private int yearOfBirth;
     private String dni;
 
-    private Team team; //PARA RELACIONAR LOS EQUIPOS CON LOS JUGADORES
-    private User user; //PARA RELACIONAR LOS JUGADORES CON LOS PADRES
+    /**
+     * Team: PARA RELACIONAR LOS EQUIPOS CON LOS JUGADORES
+     * User: PARA RELACIONAR LOS JUGADORES CON LOS PADRES
+     */
+    private Team team;
+    private User user;
 
     public Player() {
 

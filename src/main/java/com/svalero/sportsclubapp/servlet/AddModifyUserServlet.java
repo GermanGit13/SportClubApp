@@ -59,10 +59,10 @@ public class AddModifyUserServlet extends HttpServlet {
             }
         } catch (UserAlredyExistException uaee) {
             out.println("<a href=\"index.jsp\" class=\"btn btn-warning\" type=\"submit\">Usuario ya registrado en la Base de Datos</a>");;
-            uaee.printStackTrace(); //PINTAMOS LAS TRAZAS DEL ERROR
+            uaee.printStackTrace();
         } catch (SQLException sqle) {
             out.println("<a href=\"index.jsp\" class=\"btn btn-warning\" type=\"submit\">Se ha producido un error al conectar con la BBDD</a>");
-            sqle.printStackTrace(); //PINTAMOS LAS TRAZAS DEL ERROR
+            sqle.printStackTrace();
         }
     }
 }

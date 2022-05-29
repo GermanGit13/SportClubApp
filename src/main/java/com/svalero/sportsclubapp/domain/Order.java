@@ -13,8 +13,15 @@ public class Order {
     private boolean paid;
     private LocalDate date;
 
-    private List<Clothing> clothings; //RELACIÓN N A N ENTRE LAS TABLAS ORDER Y CLOTHING - CON ESTA LISTA MANTIENE LA RELACIÓN DE LADO A LADO
-    private User user; //OBJETO RELACIONADO CON EL PEDIDO
+    /**
+     * RELACIÓN N A N ENTRE LAS TABLAS ORDER Y CLOTHING - CON ESTA LISTA MANTIENE LA RELACIÓN DE LADO A LADO
+     */
+    private List<Clothing> clothings;
+
+    /**
+     * OBJETO RELACIONADO CON EL PEDIDO
+     */
+    private User user;
 
     public Order() {
         clothings = new ArrayList<>();
@@ -60,7 +67,9 @@ public class Order {
         this.date = date;
     }
 
-    //SOBREESCRIBIMOS toString PARA DEVUELVA POR PANTALLA LO QUE NOS INTERESA Y COMO
+    /**
+     * SOBREESCRIBIMOS toString PARA DEVUELVA POR PANTALLA LO QUE NOS INTERESA Y COMO
+     */
     @Override
     public String toString() {
         return "Código: " + code + "\n" +

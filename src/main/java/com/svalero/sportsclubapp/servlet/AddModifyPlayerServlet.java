@@ -19,18 +19,27 @@ import java.sql.SQLException;
 @WebServlet("/add-modify-player")
 public class AddModifyPlayerServlet extends HttpServlet {
 
-    //doPost PORQUE ESTOY DANDO DE ALTA DESDE UN FOMULARIO DESDE ADDPLAYER.JSP
+    /**
+     * doPost PORQUE ESTOY DANDO DE ALTA DESDE UN FOMULARIO DESDE ADDPLAYER.JSP
+     * response.setContentType("text/html"); PONERLO SIEMPRE PARA QUE NOS DEVUELVA COMO HTML Y NO TEXTO SIMPLE
+     * PrintWriter out: CÓMODO PINTAR POR PANTALLA SOLO USANDO out.
+     */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/html"); //PONERLO SIEMPRE PARA QUE NOS DEVUELVA COMO HTML Y NO TEXTO SIMPLE
-        PrintWriter out = response.getWriter(); //DE ESTA FORMA ES MÁS CÓMODO PINTAR POR PANTALLA SOLO USANDO out.
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
 
-        //SINO ESTA LOGEADO LO MANDO DE NUEVO AL INICIO DE SESIÓN
+        /**
+         * SINO ESTA LOGEADO LO MANDO DE NUEVO AL INICIO DE SESIÓN
+         */
         User currentUser = (User) request.getSession().getAttribute("currentUser");
         if (currentUser == null) {
             response.sendRedirect("login.jsp");
         }
 
-        String firstname = request.getParameter("firstname"); //REQUEST PARA RECOGER LO QUE PROVIENE DEL USUARIO --> input name del formulario
+        /**
+         * REQUEST PARA RECOGER LO QUE PROVIENE DEL USUARIO --> input name del formulario
+         */
+        String firstname = request.getParameter("firstname");
         firstname = firstname.toUpperCase();
         String lastname = request.getParameter("lastname");
         lastname = lastname.toUpperCase();

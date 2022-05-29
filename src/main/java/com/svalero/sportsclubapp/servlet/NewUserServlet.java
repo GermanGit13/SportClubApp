@@ -20,10 +20,12 @@ import java.sql.SQLException;
 @WebServlet("/new-user")
 public class NewUserServlet extends HttpServlet {
 
-    //doPost PORQUE ESTOY DANDO DE ALTA DESDE UN FOMULARIO DESDE ADDPLAYER.JSP
+    /**
+     * doPost PORQUE ESTOY DANDO DE ALTA DESDE UN FOMULARIO DESDE newUser.JSP
+     */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/html"); //PONERLO SIEMPRE PARA QUE NOS DEVUELVA COMO HTML Y NO TEXTO SIMPLE
-        PrintWriter out = response.getWriter(); //DE ESTA FORMA ES MÁS CÓMODO PINTAR POR PANTALLA SOLO USANDO out.
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
 
         String firstname = request.getParameter("firstname"); //REQUEST PARA RECOGER LO QUE PROVIENE DEL USUARIO --> input name del formulario
         firstname = firstname.toUpperCase();
@@ -36,17 +38,17 @@ public class NewUserServlet extends HttpServlet {
         String pass = request.getParameter("pass");
         User user = new User(firstname, lastname, email, dni, username, pass);
 
-        Database database = new Database(); //CREAMOS UN OBJETO Database PARA CONECTARNOS A LA BBDD
-        UserDao userDao = new UserDao(database.getConnection()); //CREAMOS EL OBJETO DAO CORRESPONDIENTE Y LE PASAMOS LA CONEXIÓN A LA BBDD
+        Database database = new Database();
+        UserDao userDao = new UserDao(database.getConnection());
         try {
             userDao.add(user);
             out.println("<a href=\"index.jsp\" class=\"btn btn-warning\" type=\"submit\">Usuario registrado correctamente</a>");
         } catch (UserAlredyExistException uaee) {
             out.println("<a href=\"index.jsp\" class=\"btn btn-warning\" type=\"submit\">Usuario ya existe en la Base de Datos</a>");
-            uaee.printStackTrace(); //PINTAMOS LAS TRAZAS DEL ERROR
+            uaee.printStackTrace();
         } catch (SQLException sqle) {
             out.println("<a href=\"index.jsp\" class=\"btn btn-warning\" type=\"submit\">Se ha producido un error al conectar con la BBDD</a>");
-            sqle.printStackTrace(); //PINTAMOS LAS TRAZAS DEL ERROR
+            sqle.printStackTrace();
         }
     }
 }

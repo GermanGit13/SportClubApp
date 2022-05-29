@@ -58,6 +58,7 @@
 
     <div class="container">
         <h2><%= textHead %></h2>
+
         <%-- action es la URL que va a procesar el formulario, post para dar de alta algo a través de un formulario --%>
         <%-- method http que voy a usar para comunicarme con el action   --%>
         <form>

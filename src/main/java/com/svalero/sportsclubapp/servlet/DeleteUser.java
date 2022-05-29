@@ -22,7 +22,6 @@ public class DeleteUser extends HttpServlet {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
 
-        //SINO ESTA LOGEADO LO MANDO DE NUEVO AL INICIO DE SESIÓN
         User currentUser = (User) request.getSession().getAttribute("currentUser");
         if (currentUser == null) {
             response.sendRedirect("login.jsp");
@@ -32,14 +31,12 @@ public class DeleteUser extends HttpServlet {
 
         Database database = new Database();
         UserDao userDao = new UserDao(database.getConnection());
-        TeamDao teamDao = new TeamDao(database.getConnection());
-        PlayerDao playerDao = new PlayerDao(database.getConnection());
         try {
             userDao.deleteById(Integer.parseInt(idUser));
             out.println("<a href=\"index.jsp\" class=\"btn btn-warning\" type=\"submit\">Borrado Correctamente</a>");
         } catch (SQLException sqle) {
             out.println("<a href=\"index.jsp\" class=\"btn btn-warning\" type=\"submit\">Se ha producido un error al conectar con la BBDD</a>");
-            sqle.printStackTrace(); //PINTAMOS LAS TRAZAS DEL ERROR
+            sqle.printStackTrace();
         }
     }
 }
