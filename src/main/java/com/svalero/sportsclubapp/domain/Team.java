@@ -74,7 +74,7 @@ public class Team {
         this.idTeam = idTeam;
     }
 
-    public void setIdUser(String  idUser) {
+    public void setIdUser(String idUser) {
         this.idUser = idUser;
     }
 

@@ -31,12 +31,14 @@ public class TeamDao {
         if (existTeamAndCategory(team.getName(), team.getCategory()))
             throw new TeamAlreadyExistException();  //AL SER UN OBJETO LA EXCEPCIÓN LA CREAMOS CON NEW
 
-        String sql = "INSERT INTO team (name, category, QUOTA) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO team (name, category, QUOTA, id_user) VALUES (?, ?, ?, ?)";
 
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, team.getName());
         statement.setString(2, team.getCategory());
         statement.setFloat(3, team.getQuota());
+        statement.setString(4, team.getIdUser());
+
         statement.executeUpdate();
     }
 
@@ -63,12 +65,13 @@ public class TeamDao {
      * METODO PARA MODIFICAR POR ID
      */
     public boolean modifyById(int idTeam, Team team) throws SQLException{
-        String sql = "UPDATE team SET name = ?, category = ? WHERE id_team = ?";
+        String sql = "UPDATE team SET name = ?, category = ?, id_user = ? WHERE id_team = ?";
 
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, team.getName());
-        statement.setString(2, String.valueOf(team.getIdTeam()));
-        statement.setInt(3, idTeam);
+        statement.setString(2, team.getCategory());
+        statement.setString(3, String.valueOf(team.getIdTeam()));
+        statement.setInt(4, idTeam);
         int rows = statement.executeUpdate();
         statement.close();
         return rows ==1;

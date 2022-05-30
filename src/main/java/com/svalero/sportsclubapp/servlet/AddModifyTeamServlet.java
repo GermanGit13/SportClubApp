@@ -49,11 +49,12 @@ public class AddModifyTeamServlet extends HttpServlet {
         String action = request.getParameter("action");
         String idUser = request.getParameter("idCoach");
         String idTeam = request.getParameter("idTeam");
+        out.println(idUser);
+        Team team = new Team(name.trim(), category.trim(), QUOTA, idUser.trim());
 
         Database database = new Database();
         TeamDao teamDao = new TeamDao(database.getConnection());
         try {
-            Team team = new Team(name.trim(), category.trim(), QUOTA, idUser.trim());
             if (action.equals("register")) {
                 teamDao.add(team);
                 out.println("<a href=\"index.jsp\" class=\"btn btn-warning\" type=\"submit\">Equipo Registrado Correctamente</a>");
