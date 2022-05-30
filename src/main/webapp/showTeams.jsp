@@ -38,7 +38,7 @@
           %>
 
             <%
-                if (team.getIdUser() != 0) {
+                if (team.getIdUser() != null) {
                     pagina = "coach.jsp";
                 } else
                     pagina = " ";

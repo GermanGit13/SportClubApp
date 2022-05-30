@@ -51,15 +51,15 @@
                 <a href="addTeam.jsp?id_team=<%= team.getIdTeam() %>" class="btn btn-outline-warning">Modificar</a>
                 <a href="confirmDelete.jsp?id_team=<%= team.getIdTeam() %>" class="btn btn-outline-danger">Eliminar</a>
                 <a href="" class="btn btn-outline-success">Asignar Jugadores Pendiente</a>
-                <%
-                if (team.getIdUser() != 0) {
+                <%--
+                if (team.getIdUser() != null) {
                     pagina = "coach.jsp";
                     variable = "team.getIdUser()";
                 } else
                     pagina = "addTeam.jsp";
                     variable = "team.getIdTeam()";
-                %>
-                <a href="<%= pagina %>?id_user=<%= variable %>" class="btn btn-outline-info"><% if (team.getIdUser() != 0) out.print("Entrenador"); else out.print ("Asignar Entrenador"); %></a>
+                --%>
+                <!--<a href="<%= pagina %>?id_user=<%= variable %>" class="btn btn-outline-info"><% if (team.getIdUser() != null) out.print("Entrenador Pendiente"); else out.print ("Asignar Entrenador Pendiente"); %></a>-->
                 </div>
                 <div class="card-footer text-muted">
                     Jugadores del Equipo:  <strong><%-- playerDao.countByTeam(team.getIdTeam()); --%></strong>

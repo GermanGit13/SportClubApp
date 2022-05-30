@@ -31,12 +31,14 @@ public class TeamDao {
         if (existTeamAndCategory(team.getName(), team.getCategory()))
             throw new TeamAlreadyExistException();  //AL SER UN OBJETO LA EXCEPCIÓN LA CREAMOS CON NEW
 
-        String sql = "INSERT INTO team (name, category, QUOTA) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO team (name, category, QUOTA, id_user) VALUES (?, ?, ?, ?)";
 
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, team.getName());
         statement.setString(2, team.getCategory());
         statement.setFloat(3, team.getQuota());
+        statement.setString(4, team.getIdUser());
+
         statement.executeUpdate();
     }
 
@@ -63,12 +65,13 @@ public class TeamDao {
      * METODO PARA MODIFICAR POR ID
      */
     public boolean modifyById(int idTeam, Team team) throws SQLException{
-        String sql = "UPDATE team SET name = ?, category = ? WHERE id_team = ?";
+        String sql = "UPDATE team SET name = ?, category = ?, id_user = ? WHERE id_team = ?";
 
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, team.getName());
         statement.setString(2, team.getCategory());
-        statement.setInt(3, idTeam);
+        statement.setString(3, team.getIdUser());
+        statement.setInt(4, idTeam);
         int rows = statement.executeUpdate();
         statement.close();
         return rows ==1;
@@ -81,7 +84,7 @@ public class TeamDao {
         String sql = "UPDATE team SET id_user = ? WHERE id_user = ?";
 
         PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setInt(1, team.getIdUser());
+        statement.setString(1, team.getIdUser());
         statement.setInt(2, idUser);
         int rows = statement.executeUpdate();
         statement.close();
@@ -267,7 +270,7 @@ public class TeamDao {
         team.setName(resultSet.getString("name"));
         team.setCategory(resultSet.getString("category"));
         team.setIdTeam(resultSet.getInt("id_Team"));
-        team.setIdUser(resultSet.getInt("id_User"));
+        team.setIdUser(resultSet.getString("id_User"));
         team.setQuota(resultSet.getFloat("QUOTA"));
         return team;
     }

@@ -55,7 +55,7 @@
         <h2>
             <%
                 String textHead = "";
-                if (idPlayer !=null) {
+                if (idPlayer != null) {
                 textHead = "Modificar";
             } else {
                 textHead = "Registrar nuevo Usuario";
@@ -86,6 +86,16 @@
               <label for="dni" class="form-label">DNI</label>
               <input name="dni" type="text" class="form-control w-25" id="dni" value="<% if (player != null) out.print(player.getDni()); %>">
             </div>
+            <%
+                if ((currentUser !=null && (currentUser.getCoach().equals("TRUE")))) {
+            %>
+            <div class="mb-3">
+                <label for="idTeam" class="form-label">Equipo "Pendiente de crear opcional"</label>
+                <input name="idTeam" type="text" class="form-control w-25" id="idTeam" value="<% if (player != null) out.print(player.getIdTeam()); %>">
+            </div>
+            <%
+                }
+            %>
 
             <input type="hidden" name="action" value="<% if (player != null) out.print("modify"); else out.print("register"); %>">
             <input type="hidden" name="idPlayer" value="<% if (player != null) out.print(player.getIdPlayer()); %>">
