@@ -71,30 +71,28 @@
               <input name="category" type="text" class="form-control w-25" id="category" value="<%if (team != null) out.print(team.getCategory()); %>"> <!-- placeholder="Ej: INFANTIL" -->
             </div>
 
-            <div class="form-group">
-                <label for="coach">(Opcional): Entrenador </label>
-                <select class="form-control" id="coach" name="coach">
-                    <option value="Todos">Todos</option>
+            <div class="form-label">
+                <label for="idCoach">(Opcional): Entrenador </label>
+                <select class="form-control w-25" id="idCoach" name="idCoach">
+                    <option> Entrenadores </option>
                     <%
-                        Database database = new Database();
-                        UserDao userDao = new UserDao(database.getConnection());
-                        ArrayList<User> users = userDao.findAllCoach("TRUE");
+                        String searchCoach = "TRUE";
+                        Database databaseUser = new Database();
+                        UserDao userDao = new UserDao(databaseUser.getConnection());
+                        ArrayList<User> users = userDao.findAllCoach(searchCoach);
                         for (User user : users) {
-                            out.println("<option value="  + user.getFirstName() + "-" + user.getLastName() + "-" + user.getDni() + "</option>");
+                            out.println("<option value=\"" + user.getIdUser() + "\">" + user.getFirstName() + "\">" + user.getLastName() + "</option>");
                         }
                     %>
                 </select>
+            </div>
 
-            </div>
-            <div class="form-group">
-            </div>
             <input type="hidden" name="action" value="<% if (team != null) out.print("modify"); else out.print("register"); %>"> <!-- Para que vaya a modificar o crear nuevo -->
             <input type="hidden" name="idTeam" value="<% if (team != null) out.print(team.getIdTeam()); %>"> <!-- Para que vaya a modificar o crear nuevo -->
             <button type="submit" class="btn btn-dark"><%= textButton %></button> <!-- Variable para que en función del if declarado arriba aparezca registrar o modificar -->
-            <a href="index.jsp" class="btn btn-warning" type="submit">Menu Principal</a>
         </form>
-
         <div id="result"></div> <!-- Pinta el resultado del envio asincrono con AJAX -->
+        <a href="index.jsp" class="btn btn-warning" type="submit">Menu Principal</a>
     </div> <!-- Fin del container de Bootstrap -->
 </body>
 </html>

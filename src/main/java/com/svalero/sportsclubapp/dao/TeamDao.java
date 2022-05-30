@@ -67,7 +67,7 @@ public class TeamDao {
 
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, team.getName());
-        statement.setString(2, team.getCategory());
+        statement.setString(2, String.valueOf(team.getIdTeam()));
         statement.setInt(3, idTeam);
         int rows = statement.executeUpdate();
         statement.close();
@@ -81,7 +81,7 @@ public class TeamDao {
         String sql = "UPDATE team SET id_user = ? WHERE id_user = ?";
 
         PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setInt(1, team.getIdUser());
+        statement.setString(1, team.getIdUser());
         statement.setInt(2, idUser);
         int rows = statement.executeUpdate();
         statement.close();
@@ -267,7 +267,7 @@ public class TeamDao {
         team.setName(resultSet.getString("name"));
         team.setCategory(resultSet.getString("category"));
         team.setIdTeam(resultSet.getInt("id_Team"));
-        team.setIdUser(resultSet.getInt("id_User"));
+        team.setIdUser(resultSet.getString("id_User"));
         team.setQuota(resultSet.getFloat("QUOTA"));
         return team;
     }

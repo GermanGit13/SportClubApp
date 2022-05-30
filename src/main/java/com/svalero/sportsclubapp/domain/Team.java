@@ -6,7 +6,7 @@ import static com.svalero.sportsclubapp.util.Constants.QUOTA;
 public class Team {
 
     private int idTeam;
-    private int idUser;
+    private String idUser;
     private String name;
     private String category;
 
@@ -37,10 +37,16 @@ public class Team {
         quota = QUOTA;
     }
 
-    public Team(String name, String category, float quota, int idUser) {
+    public Team(String name, String category, float quota, String idUser) {
         this.name = name;
         this.category = category;
         quota = QUOTA;
+        this.idUser = idUser;
+    }
+
+    public Team(String name, String category, String idUser) {
+        this.name = name;
+        this.category = category;
         this.idUser = idUser;
     }
 
@@ -48,7 +54,7 @@ public class Team {
         return idTeam;
     }
 
-    public int getIdUser() {
+    public String getIdUser() {
         return idUser;
     }
 
@@ -68,7 +74,7 @@ public class Team {
         this.idTeam = idTeam;
     }
 
-    public void setIdUser(int idUser) {
+    public void setIdUser(String  idUser) {
         this.idUser = idUser;
     }
 
