@@ -49,7 +49,6 @@ public class AddModifyTeamServlet extends HttpServlet {
         String action = request.getParameter("action");
         String idUser = request.getParameter("idCoach");
         String idTeam = request.getParameter("idTeam");
-        out.println(idUser);
         Team team = new Team(name.trim(), category.trim(), QUOTA, idUser.trim());
 
         Database database = new Database();
