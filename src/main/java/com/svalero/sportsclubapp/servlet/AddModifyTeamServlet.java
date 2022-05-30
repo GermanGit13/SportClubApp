@@ -59,8 +59,8 @@ public class AddModifyTeamServlet extends HttpServlet {
                 teamDao.add(team);
                 out.println("<a href=\"index.jsp\" class=\"btn btn-warning\" type=\"submit\">Equipo Registrado Correctamente</a>");
             } else {
-                team = new Team(name.trim(),category.trim(), idUser.trim());
-                teamDao.modifyById(Integer.parseInt(idTeam), team);
+                Team teamModify = new Team(name.trim(),category.trim(), idUser.trim());
+                teamDao.modifyById(Integer.parseInt(idTeam), teamModify);
                 out.println("<a href=\"index.jsp\" class=\"btn btn-warning\" type=\"submit\">Equipo Modificado Correctamente</a>");;
             }
         } catch (TeamAlreadyExistException taee) {

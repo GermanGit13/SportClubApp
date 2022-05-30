@@ -70,7 +70,7 @@ public class TeamDao {
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, team.getName());
         statement.setString(2, team.getCategory());
-        statement.setString(3, String.valueOf(team.getIdTeam()));
+        statement.setString(3, team.getIdUser());
         statement.setInt(4, idTeam);
         int rows = statement.executeUpdate();
         statement.close();
