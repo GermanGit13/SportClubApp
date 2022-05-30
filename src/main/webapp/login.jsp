@@ -83,11 +83,11 @@
     <h1 class="h3 mb-3 fw-normal">INGRESA TUS DATOS PARA ENTRAR</h1>
 
     <div class="form-floating">
-      <input type="text" name="username" class="form-control" id="floatingInput" placeholder="Usuario" value="JSR"> <!-- name: vital para poder acceder desde java como variables -->
+      <input type="text" name="username" class="form-control" id="floatingInput" placeholder="Usuario"> <!-- name: vital para poder acceder desde java como variables value="JSR"-->
       <label for="floatingInput">Usuario</label>
     </div>
     <div class="form-floating">
-      <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Contraseña" value="1234"> <!-- name: vital para poder acceder desde java como variables -->
+      <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Contraseña"> <!-- name: vital para poder acceder desde java como variables value="1234"-->
       <label for="floatingPassword">Contraseña</label>
     </div>
 
